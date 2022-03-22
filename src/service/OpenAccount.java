@@ -1,6 +1,5 @@
 package service;
 
-import java.util.Random;
 import entity.Account;
 import entity.Currency;
 
@@ -14,9 +13,25 @@ public class OpenAccount extends Service{
     returns the account number as the result.
     */
 
+    private int cur_account_number = 0;
+
+
+    private int getAccountNumber(){
+        
+        do{
+            cur_account_number++;
+
+            if (cur_account_number == Integer.MAX_VALUE){
+                cur_account_number = 1;
+            }
+        }while (bank.checkAccountNumberExists(cur_account_number));
+        
+        return cur_account_number;
+    }
+
     public int openAccount(String name, String password, Currency currency, float balance){
-        Random rand = new Random();
-        int accountNumber = rand.nextInt(10000);
+
+        int accountNumber = getAccountNumber();
 
         Account account = new Account(accountNumber, name, password, currency, balance);
         bank.addAccount(account);
