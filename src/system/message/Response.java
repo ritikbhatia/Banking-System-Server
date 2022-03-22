@@ -4,7 +4,8 @@ public class Response {
 
     public enum Status {
         FAILURE,
-        SUCCESS
+        SUCCESS, 
+        ERROR
     }
 
     private Status status;

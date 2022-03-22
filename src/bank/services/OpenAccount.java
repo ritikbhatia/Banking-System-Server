@@ -2,6 +2,8 @@ package bank.services;
 
 import bank.entities.Account;
 import bank.entities.Currency;
+import bank.entities.OpType;
+import bank.entities.Transaction;
 import system.message.Response;
 import system.message.Response.Status;
 
@@ -34,12 +36,15 @@ public class OpenAccount extends Service{
         return cur_account_number;
     }
 
-    public Response openAccount(String name, String password, Currency currency, float balance){
+    public Response openAccount(String name, String password, Currency currency, double balance){
 
         int accountNumber = getAccountNumber();
 
         Account account = new Account(accountNumber, name, password, currency, balance);
         bank.addAccount(account);
+        
+        Transaction transaction = new Transaction(OpType.CREATE_ACCOUNT, currency, balance, "Account created.");
+        account.addTransaction(transaction);
         
         String mssg = "Account opened successfully with Account number " + accountNumber + " ."; 
         return new Response(Status.SUCCESS, mssg);

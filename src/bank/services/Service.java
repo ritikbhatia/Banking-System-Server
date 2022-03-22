@@ -1,8 +1,6 @@
 package bank.services;
 
-import bank.entities.Account;
-import bank.entities.Bank;
-import bank.entities.Transaction;
+import bank.entities.*;
 import system.message.Response;
 import system.message.Response.Status;
 public class Service{

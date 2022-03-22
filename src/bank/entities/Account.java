@@ -14,7 +14,7 @@ public class Account{
 
     public Account(){}
 
-    public Account(int accountNumber, String accountHolderName, String password, Currency currency, float accountBalance){
+    public Account(int accountNumber, String accountHolderName, String password, Currency currency, double accountBalance){
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
         this.password = password;

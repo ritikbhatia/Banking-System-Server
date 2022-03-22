@@ -1,4 +1,4 @@
-import bank.entities.Bank;
+import bank.entities.*;
 import bank.services.*;
 
 public class Main{
@@ -6,9 +6,10 @@ public class Main{
 
         Bank bank = new Bank();
         
-        bank.addService(new OpenAccount());
-        bank.addService(new CloseAccount());
-        bank.addService(new TransactMoney());
-        bank.addService(new TransferMoney());
+        bank.addService(OpType.CREATE_ACCOUNT,  new OpenAccount());
+        bank.addService(OpType.CLOSE_ACCOUNT, new CloseAccount());
+        bank.addService(OpType.DEPOSIT_MONEY, new DepositMoney());
+        bank.addService(OpType.WITHDRAW_MONEY, new WithdrawMoney());
+        bank.addService(OpType.TRANSFER_MONEY, new TransferMoney());
     }
 }

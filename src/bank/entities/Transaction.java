@@ -5,16 +5,16 @@ import java.sql.Timestamp;
 public class Transaction{
 
     private final Timestamp timestamp;
-    private String Operation;
-    private double amount;
+    private OpType operation;
     private Currency currency;
+    private double amount;
     private String information;
 
-    public Transaction(String operation, double amount, Currency currency, String information){
+    public Transaction(OpType operation, Currency currency, double amount,  String information){
         this.timestamp = new Timestamp(System.currentTimeMillis());
-        this.Operation = operation;
-        this.amount = amount;
+        this.operation = operation;
         this.currency = currency;
+        this.amount = amount;
         this.information = information;
     }
 
@@ -22,8 +22,8 @@ public class Transaction{
         return timestamp;
     }
 
-    public void setOperation(String operation) {
-        Operation = operation;
+    public void setOperation(OpType operation) {
+        this.operation = operation;
     }
 
     public void setAmount(double amount) {
@@ -38,8 +38,8 @@ public class Transaction{
         this.information = information;
     }
 
-    public String getOperation() {
-        return Operation;
+    public OpType getOperation() {
+        return operation;
     }
 }
 

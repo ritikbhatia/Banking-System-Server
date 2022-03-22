@@ -1,22 +1,28 @@
 package bank.entities;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 
+import system.message.Response;
+import bank.services.CloseAccount;
+import bank.services.OpenAccount;
 import bank.services.Service;
+import bank.services.DepositMoney;
+import bank.services.TransferMoney;
+import bank.services.WithdrawMoney;
 
 public class Bank{
     
     private HashMap<Integer, Account> accounts;
-    private ArrayList<Service> services;
+    private HashMap<OpType, Service> services;
 
     public Bank(){
         accounts = new HashMap<Integer, Account>();
-        services = new ArrayList<Service>();
+        services = new HashMap<>();
     }
 
-    public void addService(Service service){
-        services.add(service);
+    public void addService(OpType operation, Service service){
+        services.put(operation, service);
         service.setBank(this);
     }
 
@@ -35,5 +41,40 @@ public class Bank{
     public boolean checkAccountNumberExists(int accountNumber){
         return accounts.containsKey(accountNumber);
     }
+
+    public Response serve(OpType op, Object ... params){
+
+        switch(op){
+            case CREATE_ACCOUNT:{
+                OpenAccount service = (OpenAccount)this.services.get(op);
+                return service.openAccount((String)params[0], (String)params[1], (Currency)params[2], (Double)params[3]);
+            }
+
+            case CLOSE_ACCOUNT:{
+                CloseAccount service = (CloseAccount)this.services.get(op);
+                return service.closeAccount((Integer)params[0], (String)params[1], (String)params[2]);
+            }
+            
+            case DEPOSIT_MONEY:{
+                DepositMoney service = (DepositMoney)this.services.get(op);
+                return service.depositMoney((Integer)params[0], (String)params[1], (String)params[2], (Currency)params[2], (Double)params[3]);
+            }
+
+            case WITHDRAW_MONEY:{
+                WithdrawMoney service = (WithdrawMoney)this.services.get(op);
+                return service.withdrawMoney((Integer)params[0], (String)params[1], (String)params[2], (Currency)params[2], (Double)params[3]);
+            }
+
+            case TRANSFER_MONEY:{
+                TransferMoney service = (TransferMoney)this.services.get(op);
+                return service.transferMoney((Integer)params[0], (Integer)params[0], (String)params[1], (String)params[2], (Currency)params[3], (Double)params[4]);
+            }
+
+            default:
+                return new Response (Response.Status.ERROR, "Invalid operation");
+        }
+    
+    }
+
 
 }
