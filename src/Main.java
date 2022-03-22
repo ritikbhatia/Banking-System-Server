@@ -6,5 +6,9 @@ public class Main{
 
         Bank bank = new Bank();
         
+        bank.addService(new OpenAccount());
+        bank.addService(new CloseAccount());
+        bank.addService(new TransactMoney());
+        bank.addService(new TransferMoney());
     }
 }

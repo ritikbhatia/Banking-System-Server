@@ -12,10 +12,10 @@ public class CloseAccount extends Service {
 
     public Response closeAccount(int accountNumber, String accountHolderName, String password) {
 
-        Response response = checkAccountDetails(accountNumber, accountHolderName, password);
+        Response checkAccountResponse = checkAccountDetails(accountNumber, accountHolderName, password);
        
-        if(response.getStatus() == Status.FAILURE){
-           return response;
+        if(checkAccountResponse.getStatus() == Status.FAILURE){
+           return checkAccountResponse;
         }
 
         Account bankAccount = bank.getAccount(accountNumber);

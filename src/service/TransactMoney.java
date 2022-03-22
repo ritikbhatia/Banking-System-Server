@@ -9,10 +9,10 @@ public class TransactMoney extends Service{
 
     public Response depositMoney(int accountNumber, String accountHolderName, String password, Currency currency, double amount){
         
-        Response response = checkAccountDetails(accountNumber, accountHolderName, password);
+        Response checkAccountResponse = checkAccountDetails(accountNumber, accountHolderName, password);
        
-        if(response.getStatus() == Status.FAILURE){
-           return response;
+        if(checkAccountResponse.getStatus() == Status.FAILURE){
+           return checkAccountResponse;
         }
 
         Account bankAccount = bank.getAccount(accountNumber);
@@ -31,10 +31,10 @@ public class TransactMoney extends Service{
     
     public Response withdrawMoney(int accountNumber, String accountHolderName, String password, Currency currency, double amount){
         
-        Response response = checkAccountDetails(accountNumber, accountHolderName, password);
+        Response checkResponse = checkAccountDetails(accountNumber, accountHolderName, password);
        
-        if(response.getStatus() == Status.FAILURE){
-           return response;
+        if(checkResponse.getStatus() == Status.FAILURE){
+           return checkResponse;
         }
 
         Account bankAccount = bank.getAccount(accountNumber);
