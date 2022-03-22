@@ -1,7 +1,9 @@
 package service;
 
 import entity.Bank;
-
+import entity.Account;
+import utils.Response;
+import utils.Response.Status;
 public class Service{
     protected Bank bank;
 
@@ -19,4 +21,25 @@ public class Service{
         this.bank = bank;
     }
 
+    public Response checkAccountDetails(int accountNumber, String accountHolderName, String password){
+        
+        if(!bank.checkAccountNumberExists(accountNumber)){
+            String mssg = "Account number " + accountNumber + " does not exist.";
+            return new Response(Status.FAILURE, mssg);
+        } 
+
+        Account bankAccount = bank.getAccount(accountNumber);
+        
+        if (!bankAccount.getAccountHolderName().equals(accountHolderName)){
+            String mssg = "Account holder name does not match.";
+            return new Response(Status.FAILURE, mssg);
+        } 
+
+        else if (!bankAccount.getPassword().equals(password)){
+            String mssg = "Password does not match.";
+            return new Response(Status.FAILURE, mssg);
+        } 
+
+        else return new Response(Status.SUCCESS, "Account details are coorect.");
+    }
 }
