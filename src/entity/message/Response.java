@@ -1,11 +1,10 @@
-package utils;
+package entity.message;
 
 public class Response {
 
     public enum Status{
         SUCCESS,
-        FAILURE 
-        
+        FAILURE     
     }
 
     private Status status; 
