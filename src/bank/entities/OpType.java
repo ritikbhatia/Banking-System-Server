@@ -1,20 +1,19 @@
 package bank.entities;
 
 public enum OpType {
-    CREATE_ACCOUNT(0), 
-    CLOSE_ACCOUNT(1), 
+    CREATE_ACCOUNT(0),
+    CLOSE_ACCOUNT(1),
     DEPOSIT_MONEY(2),
     WITHDRAW_MONEY(3),
     TRANSFER_MONEY(4),
     TRANSACTION_HISTORY(5),
     MONITOR_UPDATES(6);
 
-  
     // declaring private variable for getting values
     private int opCode;
-  
+
     // getter method
-    public int getCode(){
+    public int getCode() {
         return this.opCode;
     }
 
@@ -28,7 +27,7 @@ public enum OpType {
     }
 
     // enum constructor - cannot be public or protected
-    private OpType(int opCode){
+    private OpType(int opCode) {
         this.opCode = opCode;
     }
 }

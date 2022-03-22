@@ -2,10 +2,13 @@ package system.message;
 
 public class Request {
     private int id;
-    private int type;
+    private int opType;
     private Object[] arguments;
 
-    public Request() {
+    public Request(int id, int opType, Object[] arguments) {
+        this.id = id;
+        this.opType = opType;
+        this.arguments = arguments;
     }
 
     public int getId() {
@@ -13,7 +16,7 @@ public class Request {
     }
 
     public int getType() {
-        return type;
+        return opType;
     }
 
     public Object[] getArguments() {

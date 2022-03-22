@@ -9,5 +9,5 @@ public class MonitorUpdates extends Service {
     public Response monitorUpdates() {
         return new Response(Status.SUCCESS, "Monitoring updates");
     }
-    
+
 }
