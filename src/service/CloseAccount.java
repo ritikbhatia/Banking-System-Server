@@ -10,10 +10,7 @@ public class CloseAccount extends Service {
         super();
     }
 
-    public Response closeAccount(Account account) {
-        int accountNumber = account.getAccountNumber();
-        String accountHolderName = account.getAccountHolderName();
-        String password = account.getPassword();
+    public Response closeAccount(int accountNumber, String accountHolderName, String password) {
 
         if(!bank.checkAccountNumberExists(accountNumber)){
             String mssg = "Account number " + accountNumber + " does not exist.";
@@ -33,10 +30,9 @@ public class CloseAccount extends Service {
         } 
 
         else {
-            bank.removeAccount(account);
+            bank.removeAccount(bankAccount);
             String mssg = "Account number " + accountNumber + " closed successfully.";
             return new Response(Status.SUCCESS, mssg);
         }
-    
     }
 }
