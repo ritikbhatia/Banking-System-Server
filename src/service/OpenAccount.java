@@ -2,6 +2,8 @@ package service;
 
 import entity.Account;
 import entity.Currency;
+import utils.Response;
+import utils.Response.Status;
 
 public class OpenAccount extends Service{
     /*
@@ -10,11 +12,14 @@ public class OpenAccount extends Service{
         - password 
         - currency type 
         - initial account balance. 
-    returns the account number as the result.
+    returns response wih the account number.
     */
 
     private int cur_account_number = 0;
 
+    public OpenAccount() {
+        super();
+    }
 
     private int getAccountNumber(){
         
@@ -29,13 +34,14 @@ public class OpenAccount extends Service{
         return cur_account_number;
     }
 
-    public int openAccount(String name, String password, Currency currency, float balance){
+    public Response openAccount(String name, String password, Currency currency, float balance){
 
         int accountNumber = getAccountNumber();
 
         Account account = new Account(accountNumber, name, password, currency, balance);
         bank.addAccount(account);
-        
-        return account.getAccountNumber();
+    
+        String mssg = "Account opened successfully with Account number " + accountNumber + " ."; 
+        return new Response(Status.SUCCESS, mssg);
     }
 }
