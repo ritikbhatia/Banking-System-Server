@@ -2,19 +2,19 @@ package entity.message;
 
 public class Response {
 
-    public enum Status{
-        SUCCESS,
-        FAILURE     
+    public enum Status {
+        FAILURE,
+        SUCCESS
     }
 
-    private Status status; 
+    private Status status;
     private String message;
-    
-    public Response(Status status, String message){
+
+    public Response(Status status, String message) {
         this.status = status;
         this.message = message;
     }
-    
+
     public Status getStatus() {
         return status;
     }
