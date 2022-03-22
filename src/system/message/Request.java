@@ -3,6 +3,7 @@ package system.message;
 public class Request {
     private int id;
     private int type;
+    private Object[] arguments;
 
     public Request() {
     }
@@ -13,5 +14,9 @@ public class Request {
 
     public int getType() {
         return type;
+    }
+
+    public Object[] getArguments() {
+        return arguments;
     }
 }

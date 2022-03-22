@@ -1,10 +1,9 @@
 package handlers;
 
-import java.io.IOException;
 import java.net.*;
 import java.util.*;
 
-import bank.entities.OpType;
+import bank.entities.*;
 import system.*;
 import system.message.*;
 
@@ -13,12 +12,14 @@ public class BankHandler implements Runnable {
     private static HashMap<Integer, Response> responsesSent;
     private boolean at_most_once;
     private Server server;
+    private Bank bank;
 
-    public BankHandler(int port, boolean at_most_once) {
+    public BankHandler(int port, boolean at_most_once, Bank bank) {
         try {
             socketConn = new DatagramSocket(port);
             socketConn.setSoTimeout(6000);
             this.at_most_once = at_most_once;
+            this.bank = bank;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,6 +32,7 @@ public class BankHandler implements Runnable {
 
         Request clientRequest = MessageHandler.unmarshal(packetData);
         OpType operation = OpType.createFromType(clientRequest.getType());
+        Object[] arguments = clientRequest.getArguments();
 
         Response reply;
         if (at_most_once) {
@@ -41,8 +43,8 @@ public class BankHandler implements Runnable {
             }
         }
 
-        // TODO: invoke method and design reply message here
-        reply = invokeService(operation);
+        // send request to the bank for execution
+        reply = bank.serve(operation, arguments);
 
         if (at_most_once) {
             responsesSent.put(clientRequest.getId(), reply);
@@ -50,10 +52,6 @@ public class BankHandler implements Runnable {
 
         send(clientIP, clientPort, MessageHandler.marshal(reply));
         informSubscribers(reply);
-    }
-
-    private Response invokeService(OpType operation) {
-        return new Response();
     }
 
     private void send(InetAddress clientIP, int clientPort, byte[] msg) {
