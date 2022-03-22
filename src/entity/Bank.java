@@ -27,8 +27,12 @@ public class Bank{
         accounts.remove(account.getAccountNumber());
     }
 
-    public void getAccount(int accountNumber){
-        accounts.get(accountNumber);
+    public Account getAccount(int accountNumber){
+        return accounts.get(accountNumber);
+    }
+
+    public boolean checkAccountNumberExists(int accountNumber){
+        return accounts.containsKey(accountNumber);
     }
 
 }
