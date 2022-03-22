@@ -7,7 +7,9 @@ import system.message.Response;
 import bank.services.CloseAccount;
 import bank.services.OpenAccount;
 import bank.services.Service;
+import bank.services.TransactionHistory;
 import bank.services.DepositMoney;
+import bank.services.MonitorUpdates;
 import bank.services.TransferMoney;
 import bank.services.WithdrawMoney;
 
@@ -68,6 +70,16 @@ public class Bank{
             case TRANSFER_MONEY:{
                 TransferMoney service = (TransferMoney)this.services.get(op);
                 return service.transferMoney((Integer)params[0], (Integer)params[0], (String)params[1], (String)params[2], (Currency)params[3], (Double)params[4]);
+            }
+            
+            case TRANSACTION_HISTORY:{
+                TransactionHistory service = (TransactionHistory)this.services.get(op);
+                return service.viewHistory();//(Integer)params[0], (Integer)params[0], (String)params[1], (String)params[2], (Currency)params[3], (Double)params[4]);
+            }
+
+            case MONITOR_UPDATES:{
+                MonitorUpdates service = (MonitorUpdates)this.services.get(op);
+                return service.monitorUpdates();//(Integer)params[0], (Integer)params[0], (String)params[1], (String)params[2], (Currency)params[3], (Double)params[4]);
             }
 
             default:

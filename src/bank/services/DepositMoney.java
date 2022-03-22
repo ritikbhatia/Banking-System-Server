@@ -1,7 +1,6 @@
 package bank.services;
 
-import bank.entities.Account;
-import bank.entities.Currency;
+import bank.entities.*;
 import system.message.Response;
 import system.message.Response.Status;
 
@@ -24,6 +23,10 @@ public class DepositMoney extends Service{
         
         else{
             bankAccount.setBalance(bankAccount.getBalance() + amount);
+
+            Transaction transaction = new Transaction(OpType.DEPOSIT_MONEY, currency, amount, "Total Balance: " + bankAccount.getBalance());
+            bankAccount.addTransaction(transaction);
+
             String mssg = currency.toString() + " " + String.valueOf(amount) + " deposited into account successfully.";
             return new Response(Status.SUCCESS, mssg);
         }

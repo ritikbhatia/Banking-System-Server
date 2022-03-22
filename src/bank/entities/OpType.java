@@ -6,7 +6,8 @@ public enum OpType {
     DEPOSIT_MONEY(2),
     WITHDRAW_MONEY(3),
     TRANSFER_MONEY(4),
-    TRANSACTION_HISTORY(5);
+    TRANSACTION_HISTORY(5),
+    MONITOR_UPDATES(6);
 
   
     // declaring private variable for getting values
