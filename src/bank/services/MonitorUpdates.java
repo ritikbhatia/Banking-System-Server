@@ -1,6 +1,5 @@
 package bank.services;
 
-import bank.entities.*;
 import system.message.Response;
 import system.message.Response.Status;
 

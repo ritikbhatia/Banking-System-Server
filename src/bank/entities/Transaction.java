@@ -41,5 +41,5 @@ public class Transaction {
     public OpType getOperation() {
         return operation;
     }
-    
+
 }
