@@ -1,8 +1,9 @@
-package entity;
+package bank.entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import service.Service;
+
+import bank.services.Service;
 
 public class Bank{
     

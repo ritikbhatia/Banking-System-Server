@@ -1,4 +1,4 @@
-package entity;
+package bank.entities;
 
 import java.util.HashMap;
 import java.sql.Timestamp;

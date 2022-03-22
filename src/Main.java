@@ -1,5 +1,5 @@
-import entity.Bank;
-import service.*;
+import bank.entities.Bank;
+import bank.services.*;
 
 public class Main{
     public static void main(String[] args){

@@ -1,4 +1,4 @@
-package entity;
+package bank.entities;
 
 public enum OpType {
     CREATE_ACCOUNT(0), 

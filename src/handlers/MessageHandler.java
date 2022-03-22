@@ -1,6 +1,6 @@
 package handlers;
 
-import entity.message.*;
+import system.message.*;
 
 public class MessageHandler {
 

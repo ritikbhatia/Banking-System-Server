@@ -1,7 +1,6 @@
-package entity;
+package bank.entities;
 
 import java.sql.Timestamp;
-import entity.Currency;
 
 public class Transaction{
 

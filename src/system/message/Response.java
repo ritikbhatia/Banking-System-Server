@@ -1,4 +1,4 @@
-package entity.message;
+package system.message;
 
 public class Response {
 

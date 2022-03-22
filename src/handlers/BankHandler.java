@@ -3,8 +3,10 @@ package handlers;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
-import entity.*;
-import entity.message.*;
+
+import bank.entities.OpType;
+import system.*;
+import system.message.*;
 
 public class BankHandler implements Runnable {
     DatagramSocket socketConn;

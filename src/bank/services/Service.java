@@ -1,10 +1,10 @@
-package service;
+package bank.services;
 
-import entity.Bank;
-import entity.Account;
-import entity.Transaction;
-import entity.message.Response;
-import entity.message.Response.Status;
+import bank.entities.Account;
+import bank.entities.Bank;
+import bank.entities.Transaction;
+import system.message.Response;
+import system.message.Response.Status;
 public class Service{
     protected Bank bank;
 

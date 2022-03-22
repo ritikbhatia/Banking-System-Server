@@ -1,8 +1,8 @@
-package service;
+package bank.services;
 
-import entity.Account;
-import entity.message.Response;
-import entity.message.Response.Status;
+import bank.entities.Account;
+import system.message.Response;
+import system.message.Response.Status;
 
 public class CloseAccount extends Service {
 

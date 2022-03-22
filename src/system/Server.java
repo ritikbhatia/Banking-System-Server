@@ -1,7 +1,8 @@
-package entity;
+package system;
 
-import entity.*;
 import java.util.*;
+
+import system.*;
 
 public class Server {
     private List<Subscriber> subscribers;

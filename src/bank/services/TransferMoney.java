@@ -1,9 +1,9 @@
-package service;
+package bank.services;
 
-import entity.Account;
-import entity.Currency;
-import entity.message.Response;
-import entity.message.Response.Status;
+import bank.entities.Account;
+import bank.entities.Currency;
+import system.message.Response;
+import system.message.Response.Status;
 
 public class TransferMoney extends Service{
 
