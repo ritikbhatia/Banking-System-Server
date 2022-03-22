@@ -11,7 +11,6 @@ public class BankHandler implements Runnable {
     DatagramSocket socketConn;
     private static HashMap<Integer, Response> responsesSent;
     private boolean at_most_once;
-    private Server server;
     private Bank bank;
 
     public BankHandler(int port, boolean at_most_once, Bank bank) {
@@ -68,7 +67,7 @@ public class BankHandler implements Runnable {
     }
 
     private void informSubscribers(Response resp) {
-        List<Subscriber> subscribers = server.getSubscribers();
+        List<Subscriber> subscribers = bank.getSubscribers();
         for (Subscriber sub : subscribers) {
             send(sub.getIP(), sub.getPort(), MessageHandler.marshal(resp));
         }

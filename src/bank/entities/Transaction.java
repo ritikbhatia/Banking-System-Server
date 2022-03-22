@@ -2,7 +2,7 @@ package bank.entities;
 
 import java.sql.Timestamp;
 
-public class Transaction{
+public class Transaction {
 
     private final Timestamp timestamp;
     private OpType operation;
@@ -10,7 +10,7 @@ public class Transaction{
     private double amount;
     private String information;
 
-    public Transaction(OpType operation, Currency currency, double amount,  String information){
+    public Transaction(OpType operation, Currency currency, double amount, String information) {
         this.timestamp = new Timestamp(System.currentTimeMillis());
         this.operation = operation;
         this.currency = currency;
@@ -43,4 +43,3 @@ public class Transaction{
     }
     
 }
-
