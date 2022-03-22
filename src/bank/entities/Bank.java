@@ -1,7 +1,8 @@
 package bank.entities;
 
-import java.util.HashMap;
+import java.util.*;
 
+import system.*;
 import system.message.Response;
 import bank.services.CloseAccount;
 import bank.services.OpenAccount;
@@ -16,6 +17,7 @@ public class Bank {
 
     private HashMap<Integer, Account> accounts;
     private HashMap<OpType, Service> services;
+    private List<Subscriber> subscribers;
 
     public Bank() {
         accounts = new HashMap<Integer, Account>();
@@ -33,6 +35,10 @@ public class Bank {
 
     public void removeAccount(Account account) {
         accounts.remove(account.getAccountNumber());
+    }
+
+    public List<Subscriber> getSubscribers() {
+        return subscribers;
     }
 
     public Account getAccount(int accountNumber) {
