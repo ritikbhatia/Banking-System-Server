@@ -2,8 +2,8 @@ package service;
 
 import entity.Account;
 import entity.Currency;
-import utils.Response;
-import utils.Response.Status;
+import entity.message.Response;
+import entity.message.Response.Status;
 
 public class OpenAccount extends Service{
     /*
@@ -40,7 +40,7 @@ public class OpenAccount extends Service{
 
         Account account = new Account(accountNumber, name, password, currency, balance);
         bank.addAccount(account);
-    
+        
         String mssg = "Account opened successfully with Account number " + accountNumber + " ."; 
         return new Response(Status.SUCCESS, mssg);
     }

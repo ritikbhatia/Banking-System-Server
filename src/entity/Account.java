@@ -1,11 +1,16 @@
 package entity;
 
+import java.util.HashMap;
+import java.sql.Timestamp;
+
 public class Account{
     private int accountNumber;
     private String accountHolderName;
     private String password;
     private Currency currency; 
     private double balance;
+
+    private HashMap<Timestamp, Transaction> transactionHistory;
 
     public Account(){}
 
@@ -55,6 +60,14 @@ public class Account{
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public HashMap<Timestamp, Transaction> getTranactionHistory(){
+        return transactionHistory;
+    }
+
+    public void addTransaction(Transaction transaction){
+        transactionHistory.put(transaction.getTimestamp(), transaction);
     }
 }
 

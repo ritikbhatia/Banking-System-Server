@@ -28,7 +28,7 @@ public class BankHandler implements Runnable {
         InetAddress clientIP = clientPacket.getAddress();
 
         Request clientRequest = MessageHandler.unmarshal(packetData);
-        OpType operation = OpType.createOpType(clientRequest.getType());
+        OpType operation = OpType.createFromType(clientRequest.getType());
 
         Response reply;
         if (at_most_once) {
@@ -48,6 +48,10 @@ public class BankHandler implements Runnable {
 
         send(clientIP, clientPort, MessageHandler.marshal(reply));
         informSubscribers(reply);
+    }
+
+    private Response invokeService(OpType operation) {
+        return new Response();
     }
 
     private void send(InetAddress clientIP, int clientPort, byte[] msg) {

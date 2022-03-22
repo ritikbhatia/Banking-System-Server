@@ -2,8 +2,9 @@ package service;
 
 import entity.Bank;
 import entity.Account;
-import utils.Response;
-import utils.Response.Status;
+import entity.Transaction;
+import entity.message.Response;
+import entity.message.Response.Status;
 public class Service{
     protected Bank bank;
 
@@ -41,5 +42,9 @@ public class Service{
         } 
 
         else return new Response(Status.SUCCESS, "Account details are coorect.");
+    }
+
+    protected void updateTransactionHistroy(Account account, Transaction transaction){
+        account.addTransaction(transaction);
     }
 }

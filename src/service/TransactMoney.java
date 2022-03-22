@@ -2,8 +2,8 @@ package service;
 
 import entity.Account;
 import entity.Currency;
-import utils.Response;
-import utils.Response.Status;
+import entity.message.Response;
+import entity.message.Response.Status;
 
 public class TransactMoney extends Service{
 
