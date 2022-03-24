@@ -30,9 +30,20 @@ public class ServerMessageHandler {
         return new Response(statusValues[statusType], message);
     }
 
-    // TODO: implement marshalling
     public static byte[] marshal(Response resp) {
-        return new byte[1024];
+        int statusType = resp.getStatus().ordinal();
+        String messageString = resp.getMessage();
+        int messageLen = messageString.length();
+
+        int contentLen = Integer.BYTES + messageLen;
+        ByteBuffer marshalledMesage = ByteBuffer.allocate(contentLen);
+
+        marshalledMesage
+                .putInt(statusType)
+                .putInt(messageLen)
+                .put(messageString.getBytes());
+
+        return marshalledMesage.array();
     }
 
     /**

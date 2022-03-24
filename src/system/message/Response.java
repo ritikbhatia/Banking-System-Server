@@ -11,9 +11,6 @@ public class Response {
     private Status status;
     private String message;
 
-    public Response() {
-    }
-
     public Response(Status status, String message) {
         this.status = status;
         this.message = message;
