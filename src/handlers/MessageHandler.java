@@ -12,7 +12,7 @@ public class MessageHandler {
     public static final byte UPCOMING_INT = 0x02;
     public static final byte UPCOMING_FLOAT = 0x03;
 
-    public static Request unmarshal(byte[] packetData) {
+    public static Request unmarshalRequest(byte[] packetData) {
         int index = 0;
         ByteBuffer extractor = ByteBuffer.wrap(packetData);
 
@@ -49,15 +49,18 @@ public class MessageHandler {
 
         return new Request(requestId, opType, arguments);
     }
-
     // TODO: implement marshalling
-    public static byte[] marshal(Response resp) {
+
+    public static byte[] marshalRequest(Request resp) {
         return new byte[1024];
     }
 
-    /**
-     * 
-     * do we also need separate marshalling for message from client and
-     * unmarshalling of message on client side?
-     */
+    public static byte[] marshalResponse(Response resp) {
+        return new byte[1024];
+    }
+
+    
+    public static Response unmarshalResponse(byte[] packetData) {
+        return new Response(Response.Status.SUCCESS," ");
+    }
 }
