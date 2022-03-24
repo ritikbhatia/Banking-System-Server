@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 
 import system.message.*;
 
-public class MessageHandler {
+public class ServerMessageHandler {
 
     public static final byte UPCOMING_STRING = 0x01;
     public static final byte UPCOMING_INT = 0x02;
