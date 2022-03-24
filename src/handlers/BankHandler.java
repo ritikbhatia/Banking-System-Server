@@ -29,7 +29,7 @@ public class BankHandler implements Runnable {
         int clientPort = clientPacket.getPort();
         InetAddress clientIP = clientPacket.getAddress();
 
-        Request clientRequest = ServerMessageHandler.unmarshal(packetData);
+        Request clientRequest = ClientMessageHandler.unmarshal(packetData);
         OpType operation = OpType.createFromType(clientRequest.getType());
         Object[] arguments = clientRequest.getArguments();
 

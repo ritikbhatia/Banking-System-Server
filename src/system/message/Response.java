@@ -4,14 +4,15 @@ public class Response {
 
     public enum Status {
         FAILURE,
-        SUCCESS, 
+        SUCCESS,
         ERROR
     }
 
     private Status status;
     private String message;
 
-    public Response() {}
+    public Response() {
+    }
 
     public Response(Status status, String message) {
         this.status = status;
