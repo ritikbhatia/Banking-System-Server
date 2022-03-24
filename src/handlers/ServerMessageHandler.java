@@ -9,9 +9,8 @@ import system.message.*;
 
 public class ServerMessageHandler {
 
-    public static final byte UPCOMING_STRING = 0x01;
-    public static final byte UPCOMING_INT = 0x02;
-    public static final byte UPCOMING_FLOAT = 0x03;
+    // making class member as Enum.values() is expensive
+    private static Status[] statusValues = Status.values();
 
     public static Response unmarshal(byte[] packetData) {
         int index = 0;
@@ -28,7 +27,7 @@ public class ServerMessageHandler {
         // retrieve the message string
         String message = new String(Arrays.copyOfRange(packetData, index, index + messageLen), StandardCharsets.UTF_16);
 
-        return new Response(Status.values()[statusType], message);
+        return new Response(statusValues[statusType], message);
     }
 
     // TODO: implement marshalling
