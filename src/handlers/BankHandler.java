@@ -29,7 +29,7 @@ public class BankHandler implements Runnable {
         int clientPort = clientPacket.getPort();
         InetAddress clientIP = clientPacket.getAddress();
 
-        Request clientRequest = MessageHandler.unmarshal(packetData);
+        Request clientRequest = ServerMessageHandler.unmarshal(packetData);
         OpType operation = OpType.createFromType(clientRequest.getType());
         Object[] arguments = clientRequest.getArguments();
 
@@ -37,7 +37,7 @@ public class BankHandler implements Runnable {
         if (at_most_once) {
             reply = responsesSent.get(clientRequest.getId());
             if (reply != null) {
-                send(clientIP, clientPort, MessageHandler.marshal(reply));
+                send(clientIP, clientPort, ServerMessageHandler.marshal(reply));
                 return;
             }
         }
@@ -49,7 +49,7 @@ public class BankHandler implements Runnable {
             responsesSent.put(clientRequest.getId(), reply);
         }
 
-        send(clientIP, clientPort, MessageHandler.marshal(reply));
+        send(clientIP, clientPort, ServerMessageHandler.marshal(reply));
         informSubscribers(reply);
     }
 
@@ -69,7 +69,7 @@ public class BankHandler implements Runnable {
     private void informSubscribers(Response resp) {
         List<Subscriber> subscribers = bank.getSubscribers();
         for (Subscriber sub : subscribers) {
-            send(sub.getIP(), sub.getPort(), MessageHandler.marshal(resp));
+            send(sub.getIP(), sub.getPort(), ServerMessageHandler.marshal(resp));
         }
     }
 
