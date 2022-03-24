@@ -9,6 +9,7 @@ public class Account{
     private String password;
     private Currency currency; 
     private double balance;
+    public static final int DEFAULT_ACCOUNT_NUMBER = -99;
 
     private HashMap<Timestamp, Transaction> transactionHistory;
 
