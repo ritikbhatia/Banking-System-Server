@@ -2,9 +2,6 @@ package bank.services;
 
 import system.message.Response;
 import system.message.Response.Status;
-import system.Subscriber;
-// import java.net.InetAddress;
-
 public class MonitorUpdates extends Service {
 
     public Response monitorUpdates(int accountNumber, String accountHolderName, String password) {

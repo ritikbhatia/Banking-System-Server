@@ -5,11 +5,14 @@ import java.net.*;
 
 import bank.entities.Account;
 import bank.entities.Currency;
-import client.ClientInterface;
 import system.message.*;
 public class ClientMain {
+
     static InputStreamReader read = new InputStreamReader(System.in);
     static BufferedReader in = new BufferedReader(read);
+
+    private static boolean SIMULATE = false;
+    private static double CLIENT_LOSS_RATE = 0.0;
 
     public static void options() {
         System.out.println("Enter your choice!");
@@ -125,7 +128,7 @@ public class ClientMain {
     public static void main(String args[]) throws IOException {
 
         int server_port = 1234; // Change this to change the server port number
-        ClientInterface clientInterface = new ClientInterface(server_port);
+        ClientInterface clientInterface = new ClientInterface(server_port, SIMULATE, CLIENT_LOSS_RATE);
         clientInterface.set_server_ip(InetAddress.getLocalHost()); // Change this to change the server IP Address
 
         System.out.println("Starting bank client...");
@@ -156,7 +159,7 @@ public class ClientMain {
             Account account;
             Response response;
             switch (option) {
-                
+
                 case 1: // CREATE A NEW ACCOUNT
                     System.out.println("Creating a new account.");
                     account = getinputDetails(true, true, true, true, false);
@@ -246,6 +249,7 @@ public class ClientMain {
                     printResponse(response);
                     break;
 
+                //TODO: Need monitoring length 
                 case 7: // MONITOR UPDATES
                     System.out.println("Monitoring Updates.");
                     account = getinputDetails(true, true, true, true, false);

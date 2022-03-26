@@ -14,12 +14,18 @@ public class BankHandler implements Runnable {
     private boolean at_most_once;
     private Bank bank;
 
-    public BankHandler(int port, boolean at_most_once, Bank bank) {
+    private boolean simulate = false;
+    private double serverLossRate = 0.0;
+
+    public BankHandler(int port, boolean at_most_once, Bank bank, boolean simulate, double lossRate) {
         try {
             socketConn = new DatagramSocket(port);
             socketConn.setSoTimeout(6000);
             this.at_most_once = at_most_once;
             this.bank = bank;
+            this.simulate = simulate;
+            this.serverLossRate = lossRate;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +68,13 @@ public class BankHandler implements Runnable {
         informSubscribers(reply);
     }
 
+    // TODO: Where to put the simulate flag? (inside the loop?)
     private void send(InetAddress clientIP, int clientPort, byte[] msg) {
+        if (simulate && (Math.random() < serverLossRate)) {
+            System.out.println("Simulating server loss");
+            return;
+        }
+        
         for (int i = 0; i < 3; i++) {
             try {
                 DatagramPacket replyPacket = new DatagramPacket(msg, msg.length, clientIP, clientPort);

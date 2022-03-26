@@ -15,11 +15,17 @@ public class ClientInterface {
     int server_port;
     static int request_id;
 
-    ClientInterface(int port) {
+    private boolean simulate;
+    private double clientLossRate;
+
+    ClientInterface(int port, boolean simulate, double clientLossRate) {
         try {
             ds = new DatagramSocket();
             server_port = port;
             request_id = 0;
+            this.simulate = simulate;
+            this.clientLossRate = clientLossRate;
+
         } catch (Exception e) {
             System.out.println("SOCKET EXCEPTION RAISED!!" + e);
         }
@@ -87,7 +93,14 @@ public class ClientInterface {
         return response;
     }
 
+    // TODO: Where to put the simulate flag? (inside the loop?)
     void sendRequest(InetAddress address, int port, byte[] requestBytes) {
+        
+        if(simulate && Math.random() < clientLossRate) {
+            System.out.println("Simulating client loss");
+            return;
+        }
+
         int retry = 0;
         while (retry < 3) {
             try {

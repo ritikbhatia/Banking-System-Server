@@ -6,6 +6,8 @@ public class Main {
 
     private static int PORT = 8080;
     private static boolean AT_MOST_ONCE_FLAG = true;
+    private static boolean SIMULATE = false;
+    private static float SERVER_LOSS_RATE = 0;
 
     public static void main(String[] args) {
         try {
@@ -20,10 +22,10 @@ public class Main {
             bank.addService(OpType.MONITOR_UPDATES, new MonitorUpdates());
 
             // starting bank handler
-            BankHandler bankHandler = new BankHandler(PORT, AT_MOST_ONCE_FLAG, bank);
+            BankHandler bankHandler = new BankHandler(PORT, AT_MOST_ONCE_FLAG, bank, SIMULATE, SERVER_LOSS_RATE);
             System.out.println("Starting bank server...");
             bankHandler.run();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
