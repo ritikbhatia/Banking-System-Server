@@ -2,9 +2,8 @@ package client;
 
 import java.io.*;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+
+import java.net.*;
 
 import bank.entities.Account;
 import bank.entities.Currency;

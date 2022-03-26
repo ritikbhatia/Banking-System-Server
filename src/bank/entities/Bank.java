@@ -2,16 +2,9 @@ package bank.entities;
 
 import java.util.*;
 
-import system.*;
 import system.message.Response;
-import bank.services.CloseAccount;
-import bank.services.OpenAccount;
-import bank.services.Service;
-import bank.services.TransactionHistory;
-import bank.services.DepositMoney;
-import bank.services.MonitorUpdates;
-import bank.services.TransferMoney;
-import bank.services.WithdrawMoney;
+import bank.services.*;
+import system.Subscriber;
 
 public class Bank {
 
@@ -39,6 +32,9 @@ public class Bank {
 
     public List<Subscriber> getSubscribers() {
         return subscribers;
+    }
+    public void addSubscriber(Subscriber subscriber) {
+        subscribers.add(subscriber);
     }
 
     public Account getAccount(int accountNumber) {
@@ -85,11 +81,11 @@ public class Bank {
                 TransactionHistory service = (TransactionHistory) this.services.get(op);
                 return service.viewHistory((Integer) params[0], (String) params[1], (String) params[2]);
             }
-
+            
+            //TODO: Get subscriber arguments
             case MONITOR_UPDATES: {
                 MonitorUpdates service = (MonitorUpdates) this.services.get(op);
-                return service.monitorUpdates();// (Integer)params[0], (Integer)params[0], (String)params[1],
-                                                // (String)params[2], (Currency)params[3], (Double)params[4]);
+                return service.monitorUpdates((Subscriber)params[0]);
             }
 
             default:

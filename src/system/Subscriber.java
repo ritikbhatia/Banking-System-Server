@@ -32,4 +32,12 @@ public class Subscriber {
     public int getMonitoringRequestId() {
         return monitorRequestId;
     }
+
+    public long getRegistrationTime() {
+        return registrationTime;
+    }
+
+    public int getMonitoringInterval() {
+        return monitoringInterval;
+    }
 }
