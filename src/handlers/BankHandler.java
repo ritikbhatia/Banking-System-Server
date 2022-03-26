@@ -6,6 +6,7 @@ import java.util.*;
 import bank.entities.*;
 import system.*;
 import system.message.*;
+import system.message.Response.Status;
 
 public class BankHandler implements Runnable {
     DatagramSocket socketConn;
@@ -34,6 +35,7 @@ public class BankHandler implements Runnable {
         Object[] arguments = clientRequest.getArguments();
 
         Response reply;
+
         if (at_most_once) {
             reply = responsesSent.get(clientRequest.getId());
             if (reply != null) {
@@ -44,6 +46,13 @@ public class BankHandler implements Runnable {
 
         // send request to the bank for execution
         reply = bank.serve(operation, arguments);
+
+        // TODO: What is montioringRequestID?  
+        // TODO: Where to get monitoringInterval?
+        if (operation.equals(OpType.MONITOR_UPDATES) && (reply.getStatus().equals(Status.SUCCESS))){ 
+            Subscriber subscriber = new Subscriber(clientIP, clientPort, 0, 10);
+            bank.addSubscriber(subscriber);
+        }
 
         if (at_most_once) {
             responsesSent.put(clientRequest.getId(), reply);

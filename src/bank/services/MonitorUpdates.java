@@ -7,11 +7,14 @@ import system.Subscriber;
 
 public class MonitorUpdates extends Service {
 
-    //TODO: Get the arguments for creating a subscriber 
-    public Response monitorUpdates(Subscriber subscriber) {
-        // Subscriber subscriber = new Subscriber(ip, port, monitorRequestId, monitoringInterval);
-        bank.addSubscriber(subscriber);
-        String mssg = "Monitoring started for client IP " + subscriber.getMonitoringRequestId() + " until " + (subscriber.getRegistrationTime() + subscriber.getMonitoringInterval() * 1e9);
+    public Response monitorUpdates(int accountNumber, String accountHolderName, String password) {
+        Response checkAccountResponse = checkAccountDetails(accountNumber, accountHolderName, password);
+       
+        if(checkAccountResponse.getStatus() == Status.FAILURE){
+           return checkAccountResponse;
+        }
+
+        String mssg = "Monitoring started for client " + accountHolderName;
         return new Response(Status.SUCCESS, mssg);
     }
 

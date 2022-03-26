@@ -23,6 +23,7 @@ public class Main {
             BankHandler bankHandler = new BankHandler(PORT, AT_MOST_ONCE_FLAG, bank);
             System.out.println("Starting bank server...");
             bankHandler.run();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -82,10 +82,10 @@ public class Bank {
                 return service.viewHistory((Integer) params[0], (String) params[1], (String) params[2]);
             }
             
-            //TODO: Get subscriber arguments
+            //TODO: Is this montor updates OK?
             case MONITOR_UPDATES: {
                 MonitorUpdates service = (MonitorUpdates) this.services.get(op);
-                return service.monitorUpdates((Subscriber)params[0]);
+                return service.monitorUpdates((Integer) params[0], (String) params[1], (String) params[2]);
             }
 
             default:
