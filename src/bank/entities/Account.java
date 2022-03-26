@@ -1,6 +1,6 @@
 package bank.entities;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.sql.Timestamp;
 
 public class Account{
@@ -11,7 +11,7 @@ public class Account{
     private double balance;
     public static final int DEFAULT_ACCOUNT_NUMBER = -99;
 
-    private HashMap<Timestamp, Transaction> transactionHistory;
+    private TreeMap<Timestamp, Transaction> transactionHistory;
 
     public Account(){}
 
@@ -63,7 +63,7 @@ public class Account{
         this.balance = balance;
     }
 
-    public HashMap<Timestamp, Transaction> getTranactionHistory(){
+    public TreeMap<Timestamp, Transaction> getTranactionHistory(){
         return transactionHistory;
     }
 

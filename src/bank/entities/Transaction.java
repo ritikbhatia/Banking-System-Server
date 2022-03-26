@@ -21,25 +21,40 @@ public class Transaction {
     public Timestamp getTimestamp() {
         return timestamp;
     }
+    
+    public OpType getOperation() {
+        return operation;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    
+    public String getInformation() {
+        return information;
+    }
 
     public void setOperation(OpType operation) {
         this.operation = operation;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+    
     public void setInformation(String information) {
         this.information = information;
     }
 
-    public OpType getOperation() {
-        return operation;
-    }
+
 
 }

@@ -83,8 +83,7 @@ public class Bank {
 
             case TRANSACTION_HISTORY: {
                 TransactionHistory service = (TransactionHistory) this.services.get(op);
-                return service.viewHistory();// (Integer)params[0], (Integer)params[0], (String)params[1],
-                                             // (String)params[2], (Currency)params[3], (Double)params[4]);
+                return service.viewHistory((Integer) params[0], (String) params[1], (String) params[2]);
             }
 
             case MONITOR_UPDATES: {
