@@ -1,16 +1,12 @@
 package client;
 
 import java.io.*;
-
-
 import java.net.*;
 
 import bank.entities.Account;
 import bank.entities.Currency;
 import client.ClientInterface;
 import system.message.*;
-
-
 public class ClientMain {
     static InputStreamReader read = new InputStreamReader(System.in);
     static BufferedReader in = new BufferedReader(read);
@@ -46,6 +42,7 @@ public class ClientMain {
             System.out.print("Enter the account holder's name: ");
             accountHolderName = in.readLine();
         }
+        
         if (ipassword == true) {
             while (true) {
                 try {
@@ -62,6 +59,7 @@ public class ClientMain {
                 break;
             }
         }
+
         if (icurrency == true) {
             int length = 0;
             for (Currency cur : Currency.values()) {
@@ -119,8 +117,8 @@ public class ClientMain {
         Account account = new Account(accountNumber, accountHolderName, password, currency, accountBalance);
         return (account);
     }
-    static void printResponse(Response response)
-    {
+
+    static void printResponse(Response response){
         System.out.println("This is the responseeeee");
         System.out.println(response.getMessage());
     }
@@ -158,19 +156,21 @@ public class ClientMain {
             Account account;
             Response response;
             switch (option) {
-                case 1:
-                    // CREATE A NEW ACCOUNT
+                
+                case 1: // CREATE A NEW ACCOUNT
                     System.out.println("Creating a new account.");
                     account = getinputDetails(true, true, true, true, false);
                     response = clientInterface.openAccount(account);
                     printResponse(response);
                     break;
-                case 2:
+                    
+                case 2: // CLOSE ACCOUNT
                     System.out.println("Closing the account.");
                     account = getinputDetails(true, true, false, false, true);
                     response = clientInterface.closeAccount(account);
                     break;
-                case 3:
+                
+                case 3: // DEPOSIT MONEY
                     System.out.println("Depositing Money.");
                     account = getinputDetails(true, true, true, false, true);
                     while (true) {
@@ -192,7 +192,8 @@ public class ClientMain {
                     printResponse(response);
 
                     break;
-                case 4:
+
+                case 4: // WITHDRAW MONEY
                     System.out.println("Withdrawing money.");
                     account = getinputDetails(true, true, true, false, true);
                     while (true) {
@@ -212,7 +213,8 @@ public class ClientMain {
                     response = clientInterface.withdrawMoney(account,amount);
                     printResponse(response);
                     break;
-                case 5:
+
+                case 5: // TRANSFER MONEY 
                     System.out.println("Transferring money");
                     System.out.println("Transferring from:");
                     account = getinputDetails(true, true, true, true, false);
@@ -236,18 +238,21 @@ public class ClientMain {
                     response = clientInterface.transferMoney(account,account_to,amount);
                     printResponse(response);
                     break;
-                case 6:
+
+                case 6: // VIEW TRANSACTION HISTORY 
                     System.out.println("Viewing transaction history.");
                     account = getinputDetails(true, true, true, false, true);
                     response = clientInterface.transactionHistory(account);
                     printResponse(response);
                     break;
-                case 7:
+
+                case 7: // MONITOR UPDATES
                     System.out.println("Monitoring Updates.");
                     account = getinputDetails(true, true, true, true, false);
                     response = clientInterface.monitorUpdates(account);
                     printResponse(response);
                     break;
+
                 default:
             }
 
