@@ -65,7 +65,7 @@ public class Bank {
             case DEPOSIT_MONEY: {
                 DepositMoney service = (DepositMoney) this.services.get(op);
                 return service.depositMoney((String) params[0], (String) params[1],
-                        (Integer) params[3], (Double) params[4], (Integer) params[5]);
+                        (Integer) params[2], (Double) params[3], (Integer) params[4]);
             }
 
             case WITHDRAW_MONEY: {
