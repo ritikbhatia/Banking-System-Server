@@ -119,8 +119,8 @@ public class ClientMain {
 
     public static void main(String args[]) throws IOException {
 
-        int server_port = 8080; // Change this to change the server port number
-        ClientInterface clientInterface = new ClientInterface(server_port, SIMULATE, CLIENT_LOSS_RATE);
+        int serverPort = 8080; // Change this to change the server port number
+        ClientInterface clientInterface = new ClientInterface(serverPort, SIMULATE, CLIENT_LOSS_RATE);
         clientInterface.setServerIP(InetAddress.getByName("192.168.0.135")); // Change this to change the server IP Address
 
         System.out.println("Starting bank client...");
@@ -280,8 +280,7 @@ public class ClientMain {
                     //response = clientInterface.transactionHistory(contentObject);
                     printResponse(response);
                     break;
-
-                // TODO: Need monitoring length
+                
                 case 7: // MONITOR UPDATES
                     System.out.println("Monitoring Updates.");
                     int interval;
