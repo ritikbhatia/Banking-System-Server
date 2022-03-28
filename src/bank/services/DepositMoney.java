@@ -25,10 +25,10 @@ public class DepositMoney extends Service{
         else{
             bankAccount.setBalance(bankAccount.getBalance() + amount);
 
-            Transaction transaction = new Transaction(OpType.DEPOSIT_MONEY, currency, amount, "Total Balance: " + bankAccount.getBalance());
+            Transaction transaction = new Transaction(OpType.DEPOSIT_MONEY, currency, amount, bankAccount.getBalance(), "Total Balance: " + bankAccount.getBalance());
             bankAccount.addTransaction(transaction);
 
-            String mssg = currency.toString() + " " + String.valueOf(amount) + " deposited into account successfully.";
+            String mssg = currency.toString() + " " + String.valueOf(amount) + " deposited into account successfully. \n New Balance is: " + bankAccount.getBalance();
             return new Response(Status.SUCCESS, mssg);
         }
     }

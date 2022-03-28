@@ -8,13 +8,15 @@ public class Transaction {
     private OpType operation;
     private Currency currency;
     private double amount;
+    private double balance;
     private String information;
 
-    public Transaction(OpType operation, Currency currency, double amount, String information) {
+    public Transaction(OpType operation, Currency currency, double amount, double balance, String information) {
         this.timestamp = new Timestamp(System.currentTimeMillis());
         this.operation = operation;
         this.currency = currency;
         this.amount = amount;
+        this.balance = balance;
         this.information = information;
     }
 
@@ -53,6 +55,14 @@ public class Transaction {
     
     public void setInformation(String information) {
         this.information = information;
+    }
+
+    public double getBalance(){
+        return this.balance;
+    }
+
+    public void setBalance(double balance){
+        this.balance = balance;
     }
 
 

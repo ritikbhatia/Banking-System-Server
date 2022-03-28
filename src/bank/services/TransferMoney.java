@@ -40,9 +40,13 @@ public class TransferMoney extends Service{
             Account payeeAccount = bank.getAccount(payeeAccountNumber);
             payeeAccount.setBalance(payeeAccount.getBalance() + amount);
 
-            Transaction transaction = new Transaction(OpType.TRANSFER_MONEY, currency, amount, "Money Transffered to " + payeeAccount.getAccountHolderName());
+            Transaction transaction = new Transaction(OpType.TRANSFER_MONEY, currency, amount, bankAccount.getBalance(), "Money Transferred to " + payeeAccount.getAccountHolderName());
             bankAccount.addTransaction(transaction);
             
+            Transaction receiverTransaction = new Transaction(OpType.TRANSFER_MONEY, currency, amount, payeeAccount.getBalance(), "Money Recieved from " + bankAccount.getAccountHolderName());
+            payeeAccount.addTransaction(receiverTransaction);
+            
+
             String mssg = currency.toString() + " " + String.valueOf(amount) + " transferred from account " + accountNumber + " to account " + payeeAccountNumber + " successfully.";
             return new Response(Status.SUCCESS, mssg);
         }

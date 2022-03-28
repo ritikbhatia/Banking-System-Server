@@ -30,7 +30,7 @@ public class WithdrawMoney extends Service {
         else{
             bankAccount.setBalance(bankAccount.getBalance() - amount);
 
-            Transaction transaction = new Transaction(OpType.WITHDRAW_MONEY, currency, amount, "Total Balance: " + bankAccount.getBalance());
+            Transaction transaction = new Transaction(OpType.WITHDRAW_MONEY, currency, amount, bankAccount.getBalance(), "Total Balance: " + bankAccount.getBalance());
             bankAccount.addTransaction(transaction);
             
             String mssg = currency.toString() + " " + String.valueOf(amount) + " withdrawn from account successfully.";

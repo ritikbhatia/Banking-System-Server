@@ -10,7 +10,7 @@ public class TransactionHistory extends Service {
 
     private String generateTransactionStatement(TreeMap<Timestamp, Transaction> transactions) {
         StringBuilder transactionStatement = new StringBuilder();
-        transactionStatement.append("Time Stamp \t Operation \t Currency \t Amount \t Information \n");
+        transactionStatement.append("Time Stamp \t\t Operation \t Currency \t Amount \t Information \n");
         for (Timestamp timestamp : transactions.keySet()) {
             Transaction transaction = transactions.get(timestamp);
             transactionStatement.append(transaction.getTimestamp()).append("\t").append(transaction.getOperation()).append("\t").append(transaction.getCurrency()).append("\t").append(transaction.getAmount()).append("\t").append(transaction.getInformation()).append("\n");

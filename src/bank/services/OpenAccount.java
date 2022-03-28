@@ -44,7 +44,7 @@ public class OpenAccount extends Service{
         Account account = new Account(accountNumber, name, password, currency, balance);
         bank.addAccount(account);
         
-        Transaction transaction = new Transaction(OpType.CREATE_ACCOUNT, currency, balance, "Account Creation");
+        Transaction transaction = new Transaction(OpType.CREATE_ACCOUNT, currency, balance, balance, "Account Creation");
         account.addTransaction(transaction);
 
         String mssg = "Account opened successfully with Account number " + accountNumber + " ."; 
