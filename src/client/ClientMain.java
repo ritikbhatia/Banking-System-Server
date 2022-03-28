@@ -3,7 +3,6 @@ package client;
 import java.io.*;
 import java.net.*;
 import bank.entities.OpType;
-import bank.entities.Account;
 import bank.entities.Currency;
 import system.message.*;
 
