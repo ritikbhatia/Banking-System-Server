@@ -36,94 +36,93 @@ public class ClientInterface {
         server_ip = ip;
     }
 
-    private Object[] getAccountDetails(Account account) {
-        Object[] accountDetails = new Object[4];
-        accountDetails[0] = account.getAccountHolderName();
-        accountDetails[1] = account.getPassword();
-        accountDetails[2] = account.getCurrency().getId();
-        accountDetails[3] = account.getBalance();
-        return accountDetails;
-    }
+    // private Object[] getAccountDetails(Account account) {
+    //     Object[] accountDetails = new Object[4];
+    //     accountDetails[0] = account.getAccountHolderName();
+    //     accountDetails[1] = account.getPassword();
+    //     accountDetails[2] = account.getCurrency().getId();
+    //     accountDetails[3] = account.getBalance();
+    //     return accountDetails;
+    // }
 
-    private Object[] getCombinedAccountAndAmount(Account accountFrom, Account accountTo, int amount) {
-        Object[] combined = new Object[9];
-        Object[] accountFromDetails = getAccountDetails(accountFrom);
-        Object[] accountToDetails = getAccountDetails(accountTo);
-        for (int i = 0; i < 4; i++) {
-            combined[i] = accountFromDetails[i];
-        }
+    // private Object[] getCombinedAccountAndAmount(Account accountFrom, Account accountTo, int amount) {
+    //     Object[] combined = new Object[9];
+    //     Object[] accountFromDetails = getAccountDetails(accountFrom);
+    //     Object[] accountToDetails = getAccountDetails(accountTo);
+    //     for (int i = 0; i < 4; i++) {
+    //         combined[i] = accountFromDetails[i];
+    //     }
 
-        for (int i = 0; i < 4; i++) {
-            combined[i + 4] = accountToDetails[i];
-        }
+    //     for (int i = 0; i < 4; i++) {
+    //         combined[i + 4] = accountToDetails[i];
+    //     }
 
-        combined[8] = amount;
-        return combined;
-    }
+    //     combined[8] = amount;
+    //     return combined;
+    // }
 
-    private Object[] getAccountAndAmount(Account account, int amount) {
-        Object[] accountDetails = getAccountDetails(account);
-        Object[] accountAndAmount = new Object[5];
-        for (int i = 0; i < 4; i++) {
-            accountAndAmount[i] = accountDetails[i];
-        }
-        accountAndAmount[4] = amount;
-        return accountAndAmount;
-    }
+    // private Object[] getAccountAndAmount(Account account, int amount) {
+    //     Object[] accountDetails = getAccountDetails(account);
+    //     Object[] accountAndAmount = new Object[5];
+    //     for (int i = 0; i < 4; i++) {
+    //         accountAndAmount[i] = accountDetails[i];
+    //     }
+    //     accountAndAmount[4] = amount;
+    //     return accountAndAmount;
+    // }
 
-    public Response openAccount(Account account) {
+    public Response openAccount(Object[] contentObjects) {
         Request request = new Request(request_id, OpType.CREATE_ACCOUNT.getCode(),
-                getAccountDetails(account));
+                contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();// return reply.getContent();
         return response;
     }
 
-    public Response closeAccount(Account account) {
-        Request request = new Request(request_id, OpType.CLOSE_ACCOUNT.getCode(), getAccountDetails(account));
+    public Response closeAccount(Object[] contentObjects) {
+        Request request = new Request(request_id, OpType.CLOSE_ACCOUNT.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
         return response;
     }
 
-    public Response depositMoney(Account account, int amount) {
-        Request request = new Request(request_id, OpType.DEPOSIT_MONEY.getCode(), getAccountAndAmount(account, amount));
+    public Response depositMoney(Object[] contentObjects) {
+        Request request = new Request(request_id, OpType.DEPOSIT_MONEY.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
         return response;
     }
 
-    public Response withdrawMoney(Account account, int amount) {
-        Request request = new Request(request_id, OpType.WITHDRAW_MONEY.getCode(),
-                getAccountAndAmount(account, amount));
+    public Response withdrawMoney(Object[] contentObjects) {
+        Request request = new Request(request_id, OpType.WITHDRAW_MONEY.getCode(),contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
         return response;
     }
 
-    public Response transferMoney(Account accountFrom, Account accountTo, int amount) {
+    public Response transferMoney(Object[] contentObjects) {
         Request request = new Request(request_id, OpType.TRANSFER_MONEY.getCode(),
-                getCombinedAccountAndAmount(accountFrom, accountTo, amount));
+        contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
         return response;
     }
 
-    public Response transactionHistory(Account account) {
-        Request request = new Request(request_id, OpType.TRANSACTION_HISTORY.getCode(), getAccountDetails(account));
+    public Response transactionHistory(Object[] contentObjects) {
+        Request request = new Request(request_id, OpType.TRANSACTION_HISTORY.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
         return response;
     }
 
-    public Response monitorUpdates(Account account) {
-        Request request = new Request(request_id, OpType.MONITOR_UPDATES.getCode(), getAccountDetails(account));
+    public Response monitorUpdates(Object[] contentObjects) {
+        Request request = new Request(request_id, OpType.MONITOR_UPDATES.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();

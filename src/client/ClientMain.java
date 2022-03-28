@@ -33,35 +33,33 @@ public class ClientMain {
         System.out.println();
     }
 
-    public static Account getinputDetails(boolean iaccountHolderName, boolean ipassword, boolean icurrency,
-            boolean iaccountBalance, boolean iaccountNumber)
-            throws IOException {
-        String accountHolderName = "";
-        String password = "";
-        Currency currency = Currency.DEFAULT_CURRENCY;
-        double accountBalance = 0;
-        int accountNumber = Account.DEFAULT_ACCOUNT_NUMBER;
 
-        if (iaccountHolderName == true) {
+    public static String getName() throws IOException
+    {
             System.out.print("Enter the account holder's name: ");
-            accountHolderName = in.readLine();
-        }
+            String accountHolderName = in.readLine();
+            return(accountHolderName);
+    }
 
-        if (ipassword == true) {
-            while (true) {
-                try {
-                    System.out.print("Enter the password: ");
-                    password = in.readLine();
-                } catch (Exception e) {
+    public static String getPassword() throws IOException{
+        String password;
+        while (true) {
+                System.out.print("Enter the password: ");
+                password = in.readLine();
+                if(password.length()<1)
+                {
                     System.out.println("Invalid Input!");
                     continue;
                 }
                 break;
             }
-        }
+            return(password);
+    }
 
-        if (icurrency == true) {
-            int length = 0;
+    public static Currency getCurrency() throws IOException
+    {
+        Currency currency;
+        int length = 0;
             for (Currency cur : Currency.values()) {
                 System.out.println(String.format("%d. %s", cur.getId(), cur.name()));
                 length++;
@@ -81,41 +79,42 @@ public class ClientMain {
                     continue;
                 }
             }
+        return(currency);
+    }
 
-        }
-
-        if (iaccountBalance == true) {
-            while (true) {
-                try {
-                    System.out.print("Enter the balance amount: ");
-                    accountBalance = Double.parseDouble(in.readLine());
-                    if (accountBalance < 0) {
-                        System.out.println("Invalid input. The balance amount cannot be negative!");
-                        continue;
-                    }
-                } catch (Exception e) {
-                    System.out.println("Invalid Input!");
+    public static double getAccountBalance() throws IOException
+    {
+        double accountBalance;
+        while (true) {
+            try {
+                System.out.print("Enter the balance amount: ");
+                accountBalance = Double.parseDouble(in.readLine());
+                if (accountBalance < 0) {
+                    System.out.println("Invalid input. The balance amount cannot be negative!");
                     continue;
                 }
-                break;
+            } catch (Exception e) {
+                System.out.println("Invalid Input!");
+                continue;
             }
+            break;
         }
+        return(accountBalance);
+    }
 
-        if (iaccountNumber == true) {
-            while (true) {
-                try {
-                    System.out.print("Enter the bank account number: ");
-                    accountNumber = Integer.parseInt(in.readLine());
-                } catch (Exception e) {
-                    System.out.println("Invalid Input!");
-                    continue;
-                }
-                break;
+    public static int getAccountNumber() throws IOException{
+        int accountNumber;
+        while (true) {
+            try {
+                System.out.print("Enter the bank account number: ");
+                accountNumber = Integer.parseInt(in.readLine());
+            } catch (Exception e) {
+                System.out.println("Invalid Input!");
+                continue;
             }
+            break;
         }
-
-        Account account = new Account(accountNumber, accountHolderName, password, currency, accountBalance);
-        return (account);
+        return(accountNumber);
     }
 
     static void printResponse(Response response) {
@@ -155,26 +154,44 @@ public class ClientMain {
             System.out.println();
             linebreaker(45);
             int amount;
-            Account account;
+            String accountHolderName;
+            String password;
+            Currency currency;
+            double accountBalance;
+            int accountNumber;
+            Object[] contentObject;
             Response response;
             switch (option) {
 
                 case 1: // CREATE A NEW ACCOUNT
                     System.out.println("Creating a new account.");
-                    account = getinputDetails(true, true, true, true, false);
-                    response = clientInterface.openAccount(account);
+                    //account = getinputDetails(true, true, true, true, false);
+                    accountHolderName = getName();
+                    password = getPassword();
+                    currency = getCurrency();
+                    accountBalance = getAccountBalance();
+                    contentObject = new Object[]{accountHolderName, password, currency, accountBalance}; 
+                    response = clientInterface.openAccount(contentObject);
                     printResponse(response);
                     break;
 
                 case 2: // CLOSE ACCOUNT
                     System.out.println("Closing the account.");
-                    account = getinputDetails(true, true, false, false, true);
-                    response = clientInterface.closeAccount(account);
+                    //account = getinputDetails(true, true, false, false, true);
+                    accountHolderName = getName();
+                    password = getPassword();
+                    accountNumber = getAccountNumber();
+                    contentObject = new Object[]{accountHolderName, password, accountNumber};
+                    response = clientInterface.closeAccount(contentObject);
                     break;
 
                 case 3: // DEPOSIT MONEY
                     System.out.println("Depositing Money.");
-                    account = getinputDetails(true, true, true, false, true);
+                    //account = getinputDetails(true, true, true, false, true);
+                    accountHolderName = getName();
+                    password = getPassword();
+                    currency = getCurrency();
+                    accountNumber = getAccountNumber();
                     while (true) {
                         try {
                             System.out.println("Enter the amount to be deposited");
@@ -189,15 +206,18 @@ public class ClientMain {
                         }
                         break;
                     }
-
-                    response = clientInterface.depositMoney(account, amount);
+                    contentObject = new Object[]{accountHolderName, password, currency, accountNumber, amount};
+                    response = clientInterface.depositMoney(contentObject);
                     printResponse(response);
-
                     break;
 
                 case 4: // WITHDRAW MONEY
                     System.out.println("Withdrawing money.");
-                    account = getinputDetails(true, true, true, false, true);
+                    //account = getinputDetails(true, true, true, false, true);
+                    accountHolderName = getName();
+                    password = getPassword();
+                    currency = getCurrency();
+                    accountNumber = getAccountNumber();
                     while (true) {
                         try {
                             System.out.println("Enter the amount to be withdrawn");
@@ -212,16 +232,22 @@ public class ClientMain {
                         }
                         break;
                     }
-                    response = clientInterface.withdrawMoney(account, amount);
+                    contentObject = new Object[]{accountHolderName, password, currency, accountNumber, amount};
+                    response = clientInterface.withdrawMoney(contentObject);
                     printResponse(response);
                     break;
 
                 case 5: // TRANSFER MONEY
                     System.out.println("Transferring money");
                     System.out.println("Transferring from:");
-                    account = getinputDetails(true, true, true, true, false);
+                    //account = getinputDetails(true, true, true, true, false);
+                    accountHolderName = getName();
+                    password = getPassword();
+                    currency = getCurrency();
+                    accountNumber = getAccountNumber();
                     System.out.println("Transferring to:");
-                    Account account_to = getinputDetails(false, false, false, false, true);
+                    int accountNumberTo = getAccountNumber();
+                    //Account account_to = getinputDetails(false, false, false, false, true);
                     while (true) {
                         try {
                             System.out.println("Enter the amount to transferred");
@@ -236,23 +262,42 @@ public class ClientMain {
                         }
                         break;
                     }
-
-                    response = clientInterface.transferMoney(account, account_to, amount);
+                    contentObject = new Object[]{accountHolderName, password, currency, accountNumber,accountNumberTo, amount};
+                    response = clientInterface.transferMoney(contentObject);
                     printResponse(response);
                     break;
 
                 case 6: // VIEW TRANSACTION HISTORY
                     System.out.println("Viewing transaction history.");
-                    account = getinputDetails(true, true, true, false, true);
-                    response = clientInterface.transactionHistory(account);
+
+                    //account = getinputDetails(true, true, true, false, true);
+                    accountHolderName = getName();
+                    password = getPassword();
+                    accountNumber = getAccountNumber();
+                    contentObject = new Object[]{accountHolderName, password, accountNumber};
+                    response = clientInterface.transactionHistory(contentObject);
                     printResponse(response);
                     break;
 
                 // TODO: Need monitoring length
                 case 7: // MONITOR UPDATES
                     System.out.println("Monitoring Updates.");
-                    account = getinputDetails(true, true, true, true, false);
-                    response = clientInterface.monitorUpdates(account);
+                    int interval;
+                    while(true)
+                    {
+                        System.out.println("Enter the interval");
+                        try{
+                            interval = Integer.parseInt(in.readLine());
+                        }
+                        catch(Exception e)
+                        {
+                            System.out.println("Invalid Input!");
+                            continue;
+                        }
+                        break;
+                    }
+                    contentObject = new Object[]{interval};
+                    response = clientInterface.monitorUpdates(contentObject);
                     printResponse(response);
                     break;
 
