@@ -9,10 +9,11 @@ public class TransferMoney extends Service{
         super();
     }
 
-    public Response transferMoney(int accountNumber, int payeeAccountNumber, String accountHolderName, String password, Currency currency, double amount){
+    public Response transferMoney(int accountNumber, int payeeAccountNumber, String accountHolderName, String password, int currencyCode, double amount){
 
         Response checkAccountResponse = checkAccountDetails(accountNumber, accountHolderName, password);
-       
+        Currency currency = Currency.fromId(currencyCode);
+
         if(checkAccountResponse.getStatus() == Status.FAILURE){
            return checkAccountResponse;
         }

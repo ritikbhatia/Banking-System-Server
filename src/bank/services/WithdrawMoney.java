@@ -6,10 +6,11 @@ import system.message.Response.Status;
 
 public class WithdrawMoney extends Service {
 
-    public Response withdrawMoney(int accountNumber, String accountHolderName, String password, Currency currency, double amount){
+    public Response withdrawMoney(int accountNumber, String accountHolderName, String password, int currencyCode, double amount){
         
         Response checkResponse = checkAccountDetails(accountNumber, accountHolderName, password);
-       
+        Currency currency = Currency.fromId(currencyCode);
+
         if(checkResponse.getStatus() == Status.FAILURE){
            return checkResponse;
         }

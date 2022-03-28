@@ -36,10 +36,11 @@ public class OpenAccount extends Service{
         return cur_account_number;
     }
 
-    public Response openAccount(String name, String password, Currency currency, double balance){
+    public Response openAccount(String name, String password, int currencyCode, double balance){
 
         int accountNumber = getAccountNumber();
-
+        Currency currency = Currency.fromId(currencyCode);
+        
         Account account = new Account(accountNumber, name, password, currency, balance);
         bank.addAccount(account);
         
