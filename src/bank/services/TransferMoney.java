@@ -9,7 +9,7 @@ public class TransferMoney extends Service{
         super();
     }
 
-    public Response transferMoney(int accountNumber, int payeeAccountNumber, String accountHolderName, String password, int currencyCode, double amount){
+    public Response transferMoney(String accountHolderName, String password, int currencyCode,  int accountNumber, int payeeAccountNumber, double amount){
 
         Response checkAccountResponse = checkAccountDetails(accountNumber, accountHolderName, password);
         Currency currency = Currency.fromId(currencyCode);

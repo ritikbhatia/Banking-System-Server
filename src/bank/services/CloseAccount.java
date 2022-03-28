@@ -11,7 +11,7 @@ public class CloseAccount extends Service {
         super();
     }
 
-    public Response closeAccount(int accountNumber, String accountHolderName, String password) {
+    public Response closeAccount(String accountHolderName, String password, int accountNumber) {
 
         Response checkAccountResponse = checkAccountDetails(accountNumber, accountHolderName, password);
        
