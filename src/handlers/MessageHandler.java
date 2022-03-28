@@ -3,6 +3,9 @@ package handlers;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import bank.entities.Currency;
+
 import java.nio.charset.StandardCharsets;
 import system.message.Response.Status;
 
@@ -25,7 +28,10 @@ public class MessageHandler {
         int argumentContentLength = Integer.BYTES;
         ArrayList<byte[]> argumentContent = new ArrayList<>();
 
-        // TODO: also need to handle instanceof type Currency etc.
+        // in the below marshalling, currency is handled as an integer, specifying the
+        // currency type
+        // required processing will need to be done at the server's end when serving the
+        // request
         for (Object obj : req.getArguments()) {
             if (obj instanceof String) {
                 byte[] strArg = ((String) obj).getBytes(StandardCharsets.UTF_16);
@@ -35,7 +41,7 @@ public class MessageHandler {
                         .put(strArg)
                         .array());
                 argumentContentLength += Byte.BYTES + Float.BYTES + strArg.length;
-            } else if (obj instanceof Integer) {
+            } else if (obj instanceof Integer || obj instanceof Currency) {
                 argumentContent.add(ByteBuffer.allocate(Byte.BYTES + Integer.BYTES)
                         .put(UPCOMING_INT)
                         .putInt((int) obj)

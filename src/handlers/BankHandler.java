@@ -39,6 +39,7 @@ public class BankHandler implements Runnable {
         Request clientRequest = MessageHandler.unmarshalClientRequest(packetData);
         OpType operation = OpType.createFromType(clientRequest.getType());
         Object[] arguments = clientRequest.getArguments();
+        System.out.println(Arrays.toString(arguments));
 
         Response reply;
 

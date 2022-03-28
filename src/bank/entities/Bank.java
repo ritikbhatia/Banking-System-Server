@@ -33,6 +33,7 @@ public class Bank {
     public List<Subscriber> getSubscribers() {
         return subscribers;
     }
+
     public void addSubscriber(Subscriber subscriber) {
         subscribers.add(subscriber);
     }
@@ -81,8 +82,8 @@ public class Bank {
                 TransactionHistory service = (TransactionHistory) this.services.get(op);
                 return service.viewHistory((Integer) params[0], (String) params[1], (String) params[2]);
             }
-            
-            //TODO: Is this montor updates OK?
+
+            // TODO: Is this montor updates OK?
             case MONITOR_UPDATES: {
                 MonitorUpdates service = (MonitorUpdates) this.services.get(op);
                 return service.monitorUpdates((Integer) params[0], (String) params[1], (String) params[2]);

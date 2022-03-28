@@ -36,17 +36,46 @@ public class ClientInterface {
         server_ip = ip;
     }
 
-    public Response openAccount(Account account) {
-        // Object[] accountDetails = new Object[5];
-        // accountDetails[0] = account.getAccountNumber();
-        // accountDetails[1] = account.getAccountHolderName();
-        // accountDetails[2] = account.getPassword();
-        // accountDetails[3] = account.getCurrency();
-        // accountDetails[4] = account.getBalance();
+    private Object[] getAccountDetails(Account account) {
+        Object[] accountDetails = new Object[5];
+        accountDetails[0] = account.getAccountNumber();
+        accountDetails[1] = account.getAccountHolderName();
+        accountDetails[2] = account.getPassword();
+        accountDetails[3] = account.getCurrency().getId();
+        accountDetails[4] = account.getBalance();
 
-        // Request request = new Request(request_id, OpType.CREATE_ACCOUNT.getCode(),
-        // accountDetails);
-        Request request = new Request(request_id, OpType.CREATE_ACCOUNT.getCode(), new Object[] { account });
+        return accountDetails;
+    }
+
+    private Object[] getCombinedAccountAndAmount(Account accountFrom, Account accountTo, int amount) {
+        Object[] combined = new Object[11];
+        Object[] accountFromDetails = getAccountDetails(accountFrom);
+        Object[] accountToDetails = getAccountDetails(accountTo);
+        for (int i = 0; i < 5; i++) {
+            combined[i] = accountFromDetails[i];
+        }
+
+        for (int i = 0; i < 5; i++) {
+            combined[i + 5] = accountToDetails[i];
+        }
+
+        combined[11] = amount;
+        return combined;
+    }
+
+    private Object[] getAccountAndAmount(Account account, int amount) {
+        Object[] accountDetails = getAccountDetails(account);
+        Object[] accountAndAmount = new Object[6];
+        for (int i = 0; i < 5; i++) {
+            accountAndAmount[i] = accountDetails[i];
+        }
+        accountAndAmount[5] = amount;
+        return accountAndAmount;
+    }
+
+    public Response openAccount(Account account) {
+        Request request = new Request(request_id, OpType.CREATE_ACCOUNT.getCode(),
+                getAccountDetails(account));
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();// return reply.getContent();
@@ -54,7 +83,7 @@ public class ClientInterface {
     }
 
     public Response closeAccount(Account account) {
-        Request request = new Request(request_id, OpType.CLOSE_ACCOUNT.getCode(), new Object[] { account });
+        Request request = new Request(request_id, OpType.CLOSE_ACCOUNT.getCode(), getAccountDetails(account));
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
@@ -62,7 +91,7 @@ public class ClientInterface {
     }
 
     public Response depositMoney(Account account, int amount) {
-        Request request = new Request(request_id, OpType.DEPOSIT_MONEY.getCode(), new Object[] { account, amount });
+        Request request = new Request(request_id, OpType.DEPOSIT_MONEY.getCode(), getAccountAndAmount(account, amount));
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
@@ -70,7 +99,8 @@ public class ClientInterface {
     }
 
     public Response withdrawMoney(Account account, int amount) {
-        Request request = new Request(request_id, OpType.WITHDRAW_MONEY.getCode(), new Object[] { account, amount });
+        Request request = new Request(request_id, OpType.WITHDRAW_MONEY.getCode(),
+                getAccountAndAmount(account, amount));
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
@@ -79,7 +109,7 @@ public class ClientInterface {
 
     public Response transferMoney(Account accountFrom, Account accountTo, int amount) {
         Request request = new Request(request_id, OpType.TRANSFER_MONEY.getCode(),
-                new Object[] { accountFrom, accountTo, amount });
+                getCombinedAccountAndAmount(accountFrom, accountTo, amount));
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
@@ -87,7 +117,7 @@ public class ClientInterface {
     }
 
     public Response transactionHistory(Account account) {
-        Request request = new Request(request_id, OpType.TRANSACTION_HISTORY.getCode(), new Object[] { account });
+        Request request = new Request(request_id, OpType.TRANSACTION_HISTORY.getCode(), getAccountDetails(account));
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
@@ -95,7 +125,7 @@ public class ClientInterface {
     }
 
     public Response monitorUpdates(Account account) {
-        Request request = new Request(request_id, OpType.MONITOR_UPDATES.getCode(), new Object[] { account });
+        Request request = new Request(request_id, OpType.MONITOR_UPDATES.getCode(), getAccountDetails(account));
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
         Response response = receiveResponse();
