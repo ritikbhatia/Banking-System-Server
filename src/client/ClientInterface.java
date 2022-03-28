@@ -3,7 +3,6 @@ package client;
 import java.net.*;
 import java.io.*;
 import java.lang.Exception;
-import bank.entities.Account;
 import bank.entities.OpType;
 import handlers.MessageHandler;
 import system.message.*;
@@ -22,6 +21,7 @@ public class ClientInterface {
     public ClientInterface(int port, boolean simulate, double clientLossRate) {
         try {
             ds = new DatagramSocket();
+            ds.setSoTimeout(10000);
             serverPort = port;
             requestID = 0;
             this.simulate = simulate;
@@ -39,11 +39,21 @@ public class ClientInterface {
 
     public Response startService(Object[] contentObjects, int OpType)
     {
+        Response response = null;
         Request request = new Request(requestID, OpType,
                 contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(serverIP, serverPort, content);
-        Response response = receiveResponse();// return reply.getContent();
+        int retry = 2;
+        for(int i = 1;i<=retry;i++)
+        {
+            sendRequest(serverIP, serverPort, content);
+            response = receiveResponse();// return reply.getContent();
+            if(response == null)
+                continue;
+            break;
+        }
+
+        requestID++;
         return response;
     }
 
@@ -114,7 +124,6 @@ public class ClientInterface {
 
     // TODO: Where to put the simulate flag? (inside the loop?)
     public void sendRequest(InetAddress address, int port, byte[] requestBytes) {
-        ++requestID;
 
         if (simulate && Math.random() < clientLossRate) {
             System.out.println("Simulating client loss");
@@ -138,11 +147,14 @@ public class ClientInterface {
     public Response receiveResponse() {
         byte[] responseBytes = new byte[10240];
         DatagramPacket packet = new DatagramPacket(responseBytes, responseBytes.length);
+        
         while (true) {
             try {
                 ds.receive(packet);
                 break;
-            } catch (SocketTimeoutException e) {
+            } 
+            catch (SocketTimeoutException e) {
+                return(null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
