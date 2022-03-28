@@ -132,6 +132,7 @@ public class ClientInterface {
 
     // TODO: Where to put the simulate flag? (inside the loop?)
     public void sendRequest(InetAddress address, int port, byte[] requestBytes) {
+        ++request_id;
 
         if (simulate && Math.random() < clientLossRate) {
             System.out.println("Simulating client loss");
@@ -165,7 +166,6 @@ public class ClientInterface {
             }
         }
         byte[] msg = packet.getData();
-        System.out.println(msg.toString());
         Response response = MessageHandler.unmarshalServerResponse(msg);
         return response;
     }

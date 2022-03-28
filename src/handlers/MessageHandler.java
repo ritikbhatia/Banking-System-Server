@@ -109,8 +109,6 @@ public class MessageHandler {
     public static byte[] marshalServerResponse(Response resp) {
         int statusType = resp.getStatus().ordinal();
         String messageString = resp.getMessage();
-
-        int messageLen = messageString.length();
         byte[] messageStringBytes = messageString.getBytes(StandardCharsets.UTF_16);
 
         int contentLen = 2 * Integer.BYTES + messageStringBytes.length;
@@ -118,7 +116,7 @@ public class MessageHandler {
 
         marshalledServerResponse
                 .putInt(statusType)
-                .putInt(messageLen)
+                .putInt(messageStringBytes.length)
                 .put(messageStringBytes);
 
         return marshalledServerResponse.array();
