@@ -18,7 +18,7 @@ public class ClientInterface {
     private boolean simulate;
     private double clientLossRate;
 
-    ClientInterface(int port, boolean simulate, double clientLossRate) {
+    public ClientInterface(int port, boolean simulate, double clientLossRate) {
         try {
             ds = new DatagramSocket();
             server_port = port;
@@ -32,11 +32,20 @@ public class ClientInterface {
 
     }
 
-    void set_server_ip(InetAddress ip) {
+    public void set_server_ip(InetAddress ip) {
         server_ip = ip;
     }
 
-    Response openAccount(Account account) {
+    public Response openAccount(Account account) {
+        // Object[] accountDetails = new Object[5];
+        // accountDetails[0] = account.getAccountNumber();
+        // accountDetails[1] = account.getAccountHolderName();
+        // accountDetails[2] = account.getPassword();
+        // accountDetails[3] = account.getCurrency();
+        // accountDetails[4] = account.getBalance();
+
+        // Request request = new Request(request_id, OpType.CREATE_ACCOUNT.getCode(),
+        // accountDetails);
         Request request = new Request(request_id, OpType.CREATE_ACCOUNT.getCode(), new Object[] { account });
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
@@ -44,7 +53,7 @@ public class ClientInterface {
         return response;
     }
 
-    Response closeAccount(Account account) {
+    public Response closeAccount(Account account) {
         Request request = new Request(request_id, OpType.CLOSE_ACCOUNT.getCode(), new Object[] { account });
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
@@ -52,7 +61,7 @@ public class ClientInterface {
         return response;
     }
 
-    Response depositMoney(Account account, int amount) {
+    public Response depositMoney(Account account, int amount) {
         Request request = new Request(request_id, OpType.DEPOSIT_MONEY.getCode(), new Object[] { account, amount });
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
@@ -60,7 +69,7 @@ public class ClientInterface {
         return response;
     }
 
-    Response withdrawMoney(Account account, int amount) {
+    public Response withdrawMoney(Account account, int amount) {
         Request request = new Request(request_id, OpType.WITHDRAW_MONEY.getCode(), new Object[] { account, amount });
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
@@ -68,7 +77,7 @@ public class ClientInterface {
         return response;
     }
 
-    Response transferMoney(Account accountFrom, Account accountTo, int amount) {
+    public Response transferMoney(Account accountFrom, Account accountTo, int amount) {
         Request request = new Request(request_id, OpType.TRANSFER_MONEY.getCode(),
                 new Object[] { accountFrom, accountTo, amount });
         byte[] content = MessageHandler.marshalClientRequest(request);
@@ -77,7 +86,7 @@ public class ClientInterface {
         return response;
     }
 
-    Response transactionHistory(Account account) {
+    public Response transactionHistory(Account account) {
         Request request = new Request(request_id, OpType.TRANSACTION_HISTORY.getCode(), new Object[] { account });
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
@@ -85,7 +94,7 @@ public class ClientInterface {
         return response;
     }
 
-    Response monitorUpdates(Account account) {
+    public Response monitorUpdates(Account account) {
         Request request = new Request(request_id, OpType.MONITOR_UPDATES.getCode(), new Object[] { account });
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(server_ip, server_port, content);
@@ -94,9 +103,9 @@ public class ClientInterface {
     }
 
     // TODO: Where to put the simulate flag? (inside the loop?)
-    void sendRequest(InetAddress address, int port, byte[] requestBytes) {
-        
-        if(simulate && Math.random() < clientLossRate) {
+    public void sendRequest(InetAddress address, int port, byte[] requestBytes) {
+
+        if (simulate && Math.random() < clientLossRate) {
             System.out.println("Simulating client loss");
             return;
         }
@@ -115,7 +124,7 @@ public class ClientInterface {
         }
     }
 
-    Response receiveResponse() {
+    public Response receiveResponse() {
         byte[] responseBytes = new byte[1024];
         DatagramPacket packet = new DatagramPacket(responseBytes, responseBytes.length);
         while (true) {

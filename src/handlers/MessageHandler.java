@@ -25,6 +25,7 @@ public class MessageHandler {
         int argumentContentLength = Integer.BYTES;
         ArrayList<byte[]> argumentContent = new ArrayList<>();
 
+        // TODO: also need to handle instanceof type Currency etc.
         for (Object obj : req.getArguments()) {
             if (obj instanceof String) {
                 byte[] strArg = ((String) obj).getBytes(StandardCharsets.UTF_16);

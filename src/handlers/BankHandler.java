@@ -10,7 +10,7 @@ import system.message.Response.Status;
 
 public class BankHandler implements Runnable {
     DatagramSocket socketConn;
-    private static HashMap<Integer, Response> responsesSent;
+    private static HashMap<Integer, Response> responsesSent = new HashMap<Integer, Response>();
     private boolean at_most_once;
     private Bank bank;
 
@@ -20,7 +20,7 @@ public class BankHandler implements Runnable {
     public BankHandler(int port, boolean at_most_once, Bank bank, boolean simulate, double lossRate) {
         try {
             socketConn = new DatagramSocket(port);
-            socketConn.setSoTimeout(6000);
+            socketConn.setSoTimeout(60000);
             this.at_most_once = at_most_once;
             this.bank = bank;
             this.simulate = simulate;
@@ -53,9 +53,9 @@ public class BankHandler implements Runnable {
         // send request to the bank for execution
         reply = bank.serve(operation, arguments);
 
-        // TODO: What is montioringRequestID?  
+        // TODO: What is montioringRequestID?
         // TODO: Where to get monitoringInterval?
-        if (operation.equals(OpType.MONITOR_UPDATES) && (reply.getStatus().equals(Status.SUCCESS))){ 
+        if (operation.equals(OpType.MONITOR_UPDATES) && (reply.getStatus().equals(Status.SUCCESS))) {
             Subscriber subscriber = new Subscriber(clientIP, clientPort, 0, 10);
             bank.addSubscriber(subscriber);
         }
@@ -74,7 +74,7 @@ public class BankHandler implements Runnable {
             System.out.println("Simulating server loss");
             return;
         }
-        
+
         for (int i = 0; i < 3; i++) {
             try {
                 DatagramPacket replyPacket = new DatagramPacket(msg, msg.length, clientIP, clientPort);

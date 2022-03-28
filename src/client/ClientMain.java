@@ -6,6 +6,8 @@ import java.net.*;
 import bank.entities.Account;
 import bank.entities.Currency;
 import system.message.*;
+import client.ClientInterface;
+
 public class ClientMain {
 
     static InputStreamReader read = new InputStreamReader(System.in);
@@ -45,7 +47,7 @@ public class ClientMain {
             System.out.print("Enter the account holder's name: ");
             accountHolderName = in.readLine();
         }
-        
+
         if (ipassword == true) {
             while (true) {
                 try {
@@ -121,13 +123,14 @@ public class ClientMain {
         return (account);
     }
 
-    static void printResponse(Response response){
+    static void printResponse(Response response) {
         System.out.println("This is the responseeeee");
         System.out.println(response.getMessage());
     }
+
     public static void main(String args[]) throws IOException {
 
-        int server_port = 1234; // Change this to change the server port number
+        int server_port = 8080; // Change this to change the server port number
         ClientInterface clientInterface = new ClientInterface(server_port, SIMULATE, CLIENT_LOSS_RATE);
         clientInterface.set_server_ip(InetAddress.getLocalHost()); // Change this to change the server IP Address
 
@@ -166,13 +169,13 @@ public class ClientMain {
                     response = clientInterface.openAccount(account);
                     printResponse(response);
                     break;
-                    
+
                 case 2: // CLOSE ACCOUNT
                     System.out.println("Closing the account.");
                     account = getinputDetails(true, true, false, false, true);
                     response = clientInterface.closeAccount(account);
                     break;
-                
+
                 case 3: // DEPOSIT MONEY
                     System.out.println("Depositing Money.");
                     account = getinputDetails(true, true, true, false, true);
@@ -191,7 +194,7 @@ public class ClientMain {
                         break;
                     }
 
-                    response = clientInterface.depositMoney(account,amount);
+                    response = clientInterface.depositMoney(account, amount);
                     printResponse(response);
 
                     break;
@@ -213,11 +216,11 @@ public class ClientMain {
                         }
                         break;
                     }
-                    response = clientInterface.withdrawMoney(account,amount);
+                    response = clientInterface.withdrawMoney(account, amount);
                     printResponse(response);
                     break;
 
-                case 5: // TRANSFER MONEY 
+                case 5: // TRANSFER MONEY
                     System.out.println("Transferring money");
                     System.out.println("Transferring from:");
                     account = getinputDetails(true, true, true, true, false);
@@ -238,18 +241,18 @@ public class ClientMain {
                         break;
                     }
 
-                    response = clientInterface.transferMoney(account,account_to,amount);
+                    response = clientInterface.transferMoney(account, account_to, amount);
                     printResponse(response);
                     break;
 
-                case 6: // VIEW TRANSACTION HISTORY 
+                case 6: // VIEW TRANSACTION HISTORY
                     System.out.println("Viewing transaction history.");
                     account = getinputDetails(true, true, true, false, true);
                     response = clientInterface.transactionHistory(account);
                     printResponse(response);
                     break;
 
-                //TODO: Need monitoring length 
+                // TODO: Need monitoring length
                 case 7: // MONITOR UPDATES
                     System.out.println("Monitoring Updates.");
                     account = getinputDetails(true, true, true, true, false);
