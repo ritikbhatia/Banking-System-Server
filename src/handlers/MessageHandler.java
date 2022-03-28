@@ -15,7 +15,7 @@ public class MessageHandler {
 
     public static final byte UPCOMING_STRING = 0x01;
     public static final byte UPCOMING_INT = 0x02;
-    public static final byte UPCOMING_FLOAT = 0x03;
+    public static final byte UPCOMING_DOUBLE = 0x03;
 
     // making class member as Enum.values() is expensive
     private static Status[] statusValues = Status.values();
@@ -40,19 +40,19 @@ public class MessageHandler {
                         .putInt(strArg.length)
                         .put(strArg)
                         .array());
-                argumentContentLength += Byte.BYTES + Float.BYTES + strArg.length;
+                argumentContentLength += Byte.BYTES + Double.BYTES + strArg.length;
             } else if (obj instanceof Integer || obj instanceof Currency) {
                 argumentContent.add(ByteBuffer.allocate(Byte.BYTES + Integer.BYTES)
                         .put(UPCOMING_INT)
                         .putInt((int) obj)
                         .array());
                 argumentContentLength += Byte.BYTES + Integer.BYTES;
-            } else if (obj instanceof Float) {
-                argumentContent.add(ByteBuffer.allocate(Byte.BYTES + Float.BYTES)
-                        .put(UPCOMING_FLOAT)
-                        .putFloat((float) obj)
+            } else if (obj instanceof Double) {
+                argumentContent.add(ByteBuffer.allocate(Byte.BYTES + Double.BYTES)
+                        .put(UPCOMING_DOUBLE)
+                        .putDouble((double) obj)
                         .array());
-                argumentContentLength += Byte.BYTES + Float.BYTES;
+                argumentContentLength += Byte.BYTES + Double.BYTES;
             }
         }
 
@@ -97,9 +97,9 @@ public class MessageHandler {
             } else if (upcomingType == UPCOMING_INT) {
                 arguments[i] = extractor.getInt(index);
                 index += Integer.BYTES;
-            } else if (upcomingType == UPCOMING_FLOAT) {
-                arguments[i] = extractor.getFloat(index);
-                index += Float.BYTES;
+            } else if (upcomingType == UPCOMING_DOUBLE) {
+                arguments[i] = extractor.getDouble(index);
+                index += Double.BYTES;
             }
         }
 
@@ -109,15 +109,17 @@ public class MessageHandler {
     public static byte[] marshalServerResponse(Response resp) {
         int statusType = resp.getStatus().ordinal();
         String messageString = resp.getMessage();
-        int messageLen = messageString.length();
 
-        int contentLen = Integer.BYTES + messageLen;
+        int messageLen = messageString.length();
+        byte[] messageStringBytes = messageString.getBytes(StandardCharsets.UTF_16);
+
+        int contentLen = 2 * Integer.BYTES + messageStringBytes.length;
         ByteBuffer marshalledServerResponse = ByteBuffer.allocate(contentLen);
 
         marshalledServerResponse
                 .putInt(statusType)
                 .putInt(messageLen)
-                .put(messageString.getBytes());
+                .put(messageStringBytes);
 
         return marshalledServerResponse.array();
     }

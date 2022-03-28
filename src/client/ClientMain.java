@@ -6,7 +6,6 @@ import java.net.*;
 import bank.entities.Account;
 import bank.entities.Currency;
 import system.message.*;
-import client.ClientInterface;
 
 public class ClientMain {
 
@@ -53,10 +52,6 @@ public class ClientMain {
                 try {
                     System.out.print("Enter the password: ");
                     password = in.readLine();
-                    if (password.length() < 10) {
-                        System.out.println("Error: Please enter a password of length atleast 10 characters!");
-                        continue;
-                    }
                 } catch (Exception e) {
                     System.out.println("Invalid Input!");
                     continue;
@@ -124,8 +119,9 @@ public class ClientMain {
     }
 
     static void printResponse(Response response) {
-        System.out.println("This is the responseeeee");
+        System.out.println();
         System.out.println(response.getMessage());
+        System.out.println();
     }
 
     public static void main(String args[]) throws IOException {

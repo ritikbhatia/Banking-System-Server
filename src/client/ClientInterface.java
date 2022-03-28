@@ -37,39 +37,37 @@ public class ClientInterface {
     }
 
     private Object[] getAccountDetails(Account account) {
-        Object[] accountDetails = new Object[5];
-        accountDetails[0] = account.getAccountNumber();
-        accountDetails[1] = account.getAccountHolderName();
-        accountDetails[2] = account.getPassword();
-        accountDetails[3] = account.getCurrency().getId();
-        accountDetails[4] = account.getBalance();
-
+        Object[] accountDetails = new Object[4];
+        accountDetails[0] = account.getAccountHolderName();
+        accountDetails[1] = account.getPassword();
+        accountDetails[2] = account.getCurrency().getId();
+        accountDetails[3] = account.getBalance();
         return accountDetails;
     }
 
     private Object[] getCombinedAccountAndAmount(Account accountFrom, Account accountTo, int amount) {
-        Object[] combined = new Object[11];
+        Object[] combined = new Object[9];
         Object[] accountFromDetails = getAccountDetails(accountFrom);
         Object[] accountToDetails = getAccountDetails(accountTo);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             combined[i] = accountFromDetails[i];
         }
 
-        for (int i = 0; i < 5; i++) {
-            combined[i + 5] = accountToDetails[i];
+        for (int i = 0; i < 4; i++) {
+            combined[i + 4] = accountToDetails[i];
         }
 
-        combined[11] = amount;
+        combined[8] = amount;
         return combined;
     }
 
     private Object[] getAccountAndAmount(Account account, int amount) {
         Object[] accountDetails = getAccountDetails(account);
-        Object[] accountAndAmount = new Object[6];
-        for (int i = 0; i < 5; i++) {
+        Object[] accountAndAmount = new Object[5];
+        for (int i = 0; i < 4; i++) {
             accountAndAmount[i] = accountDetails[i];
         }
-        accountAndAmount[5] = amount;
+        accountAndAmount[4] = amount;
         return accountAndAmount;
     }
 
@@ -155,7 +153,7 @@ public class ClientInterface {
     }
 
     public Response receiveResponse() {
-        byte[] responseBytes = new byte[1024];
+        byte[] responseBytes = new byte[10240];
         DatagramPacket packet = new DatagramPacket(responseBytes, responseBytes.length);
         while (true) {
             try {
@@ -167,6 +165,7 @@ public class ClientInterface {
             }
         }
         byte[] msg = packet.getData();
+        System.out.println(msg.toString());
         Response response = MessageHandler.unmarshalServerResponse(msg);
         return response;
     }

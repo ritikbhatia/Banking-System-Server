@@ -15,6 +15,7 @@ public class Bank {
     public Bank() {
         accounts = new HashMap<Integer, Account>();
         services = new HashMap<>();
+        subscribers = new ArrayList<Subscriber>();
     }
 
     public void addService(OpType operation, Service service) {
@@ -51,7 +52,7 @@ public class Bank {
         switch (op) {
             case CREATE_ACCOUNT: {
                 OpenAccount service = (OpenAccount) this.services.get(op);
-                return service.openAccount((String) params[0], (String) params[1], (int) params[2],
+                return service.openAccount((String) params[0], (String) params[1], (Integer) params[2],
                         (Double) params[3]);
             }
 
@@ -63,19 +64,19 @@ public class Bank {
             case DEPOSIT_MONEY: {
                 DepositMoney service = (DepositMoney) this.services.get(op);
                 return service.depositMoney((Integer) params[0], (String) params[1], (String) params[2],
-                        (int) params[2], (Double) params[3]);
+                        (Integer) params[2], (Double) params[3]);
             }
 
             case WITHDRAW_MONEY: {
                 WithdrawMoney service = (WithdrawMoney) this.services.get(op);
                 return service.withdrawMoney((Integer) params[0], (String) params[1], (String) params[2],
-                        (int) params[2], (Double) params[3]);
+                        (Integer) params[2], (Double) params[3]);
             }
 
             case TRANSFER_MONEY: {
                 TransferMoney service = (TransferMoney) this.services.get(op);
                 return service.transferMoney((Integer) params[0], (Integer) params[0], (String) params[1],
-                        (String) params[2], (int) params[3], (Double) params[4]);
+                        (String) params[2], (Integer) params[3], (Double) params[4]);
             }
 
             case TRANSACTION_HISTORY: {

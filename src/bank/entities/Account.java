@@ -3,24 +3,24 @@ package bank.entities;
 import java.util.TreeMap;
 import java.sql.Timestamp;
 
-public class Account{
+public class Account {
     private int accountNumber;
     private String accountHolderName;
     private String password;
-    private Currency currency; 
+    private Currency currency;
     private double balance;
     public static final int DEFAULT_ACCOUNT_NUMBER = -99;
 
     private TreeMap<Timestamp, Transaction> transactionHistory;
 
-    public Account(){}
-
-    public Account(int accountNumber, String accountHolderName, String password, Currency currency, double accountBalance){
+    public Account(int accountNumber, String accountHolderName, String password, Currency currency,
+            double accountBalance) {
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
         this.password = password;
         this.currency = currency;
         this.balance = accountBalance;
+        transactionHistory = new TreeMap<Timestamp, Transaction>();
     }
 
     public int getAccountNumber() {
@@ -63,14 +63,11 @@ public class Account{
         this.balance = balance;
     }
 
-    public TreeMap<Timestamp, Transaction> getTranactionHistory(){
+    public TreeMap<Timestamp, Transaction> getTranactionHistory() {
         return transactionHistory;
     }
 
-    public void addTransaction(Transaction transaction){
+    public void addTransaction(Transaction transaction) {
         transactionHistory.put(transaction.getTimestamp(), transaction);
     }
 }
-
-
-

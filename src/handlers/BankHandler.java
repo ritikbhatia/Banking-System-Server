@@ -39,7 +39,6 @@ public class BankHandler implements Runnable {
         Request clientRequest = MessageHandler.unmarshalClientRequest(packetData);
         OpType operation = OpType.createFromType(clientRequest.getType());
         Object[] arguments = clientRequest.getArguments();
-        System.out.println(Arrays.toString(arguments));
 
         Response reply;
 
@@ -97,7 +96,7 @@ public class BankHandler implements Runnable {
 
     @Override
     public void run() {
-        byte[] clientData = new byte[1024];
+        byte[] clientData = new byte[10240];
         while (true) {
             try {
                 DatagramPacket clientDataPacket = new DatagramPacket(clientData, clientData.length);
