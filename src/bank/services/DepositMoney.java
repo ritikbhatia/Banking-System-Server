@@ -6,7 +6,7 @@ import system.message.Response.Status;
 
 public class DepositMoney extends Service{
 
-    public Response depositMoney(int accountNumber, String accountHolderName, String password, int currencyCode, double amount){
+    public Response depositMoney(String accountHolderName, String password, int currencyCode, double amount, int accountNumber){
         
         Response checkAccountResponse = checkAccountDetails(accountNumber, accountHolderName, password);
         Currency currency = Currency.fromId(currencyCode);

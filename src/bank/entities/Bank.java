@@ -9,7 +9,8 @@ import system.Subscriber;
 public class Bank {
 
     private HashMap<Integer, Account> accounts;
-    private HashMap<OpType, Service> services;
+    private HashMap<OpType, Service> 
+    services;
     private List<Subscriber> subscribers;
 
     public Bank() {
@@ -58,30 +59,30 @@ public class Bank {
 
             case CLOSE_ACCOUNT: {
                 CloseAccount service = (CloseAccount) this.services.get(op);
-                return service.closeAccount((Integer) params[0], (String) params[1], (String) params[2]);
+                return service.closeAccount((String) params[0], (String) params[1], (Integer) params[2]);
             }
 
             case DEPOSIT_MONEY: {
                 DepositMoney service = (DepositMoney) this.services.get(op);
-                return service.depositMoney((Integer) params[0], (String) params[1], (String) params[2],
-                        (Integer) params[2], (Double) params[3]);
+                return service.depositMoney((String) params[0], (String) params[1],
+                        (Integer) params[3], (Double) params[4], (Integer) params[5]);
             }
 
             case WITHDRAW_MONEY: {
                 WithdrawMoney service = (WithdrawMoney) this.services.get(op);
-                return service.withdrawMoney((Integer) params[0], (String) params[1], (String) params[2],
-                        (Integer) params[2], (Double) params[3]);
+                return service.withdrawMoney((String) params[0], (String) params[1],
+                        (Integer) params[2], (Double) params[3], (Integer) params[4]);
             }
 
             case TRANSFER_MONEY: {
                 TransferMoney service = (TransferMoney) this.services.get(op);
-                return service.transferMoney((Integer) params[0], (Integer) params[0], (String) params[1],
-                        (String) params[2], (Integer) params[3], (Double) params[4]);
+                return service.transferMoney((String) params[0], (String) params[1],
+                        (Integer) params[2], (Integer) params[3], (Integer) params[4], (Integer) params[5]);
             }
 
             case TRANSACTION_HISTORY: {
                 TransactionHistory service = (TransactionHistory) this.services.get(op);
-                return service.viewHistory((Integer) params[0], (String) params[1], (String) params[2]);
+                return service.viewHistory((String) params[0], (String) params[1], (Integer) params[2]);
             }
 
             // TODO: Is this montor updates OK?

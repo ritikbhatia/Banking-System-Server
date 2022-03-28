@@ -18,7 +18,7 @@ public class TransactionHistory extends Service {
         return transactionStatement.toString();
     }
 
-    public Response viewHistory(int accountNumber, String accountHolderName, String password) {
+    public Response viewHistory(String accountHolderName, String password, int accountNumber) {
 
         Response checkAccountResponse = checkAccountDetails(accountNumber, accountHolderName, password);
        
