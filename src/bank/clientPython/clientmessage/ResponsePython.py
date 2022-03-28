@@ -6,4 +6,5 @@ class Response:
          self.message = message
     
     def __repr__(self) -> str:
-        pass
+        print(self.message)
+        
