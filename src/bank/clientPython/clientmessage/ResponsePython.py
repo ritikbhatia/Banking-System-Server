@@ -1,4 +1,4 @@
-from bankClient.EnumPython import Status
+from clientBank.EnumPython import Status
 
 class Response:
     def __init__(self, status, message) -> None:

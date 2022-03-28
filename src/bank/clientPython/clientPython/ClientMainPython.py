@@ -2,12 +2,12 @@ from os import sep
 import socket
 
 from click import pass_context
-from bank.Enum import Currency
-from bank.Account import Account
-from clientPython.client.ClientInterface import ClientInterface
-class ClientMain:
+from clientBank.EnumPython import Currency
+from clientBank.AccountPython import Account
+from clientPython.ClientInterfacePython import ClientInterface
 
-    def getInputDetails(iaccountHolderName,  ipassword,  icurrency, iaccountBalance,  iaccountNumber) -> Account:
+
+def getInputDetails(iaccountHolderName,  ipassword,  icurrency, iaccountBalance,  iaccountNumber) -> Account:
         accountHolderName = ''
         password = ''
         currency = ''
@@ -50,7 +50,7 @@ class ClientMain:
         if iaccountBalance == True:
             while True:
                 try:
-                    accountBalance = int(input("Enter the balance amount: "))
+                    accountBalance = float(input("Enter the balance amount: "))
                     if accountBalance < 0:
                         print("Invalid input. The balance amount cannot be negative!")
                         continue
@@ -72,21 +72,21 @@ class ClientMain:
         return account
 
    
-    def createNewAccountMain(self, clientInterface):
+def createNewAccountMain(self, clientInterface):
         print("Creating a new account.")
         account = self.getInputDetails(True,True,True,True,False) 
         response = clientInterface.openAccount(self, account)
         print(response)
 
 
-    def closeAccountMain(self,clientInterface):
+def closeAccountMain(self,clientInterface):
         print("Closing the account.")
         account = self.getInputDetails(True,True,True,False,True) 
         response = clientInterface.closeAccount(self, account)
         print(response)
 
 
-    def depositMoneyMain(self,clientInterface):
+def depositMoneyMain(self,clientInterface):
         print("Depositing Money.")
         account = self.getInputDetails(True,True,True,False,True) 
         amount = 0
@@ -104,7 +104,7 @@ class ClientMain:
         print(response)
 
 
-    def withdrawMoneyMain(self,clientInterface):
+def withdrawMoneyMain(self,clientInterface):
         print("Withdrawing money.")
         account = self.getInputDetails(True,True,True,True,False) 
         amount = 0
@@ -122,7 +122,7 @@ class ClientMain:
         print(response)
 
 
-    def transferMoneyMain(self,clientInterface):
+def transferMoneyMain(self,clientInterface):
         print("Transferring money")
         print("Transferring from:")
         account = self.getInputDetails(True,True,False,False,True) 
@@ -142,21 +142,21 @@ class ClientMain:
         response = clientInterface.transferMoney(self, account, account_to, amount)
         print(response)
 
-    def viewTransactionHistoryMain(self,clientInterface):
+def viewTransactionHistoryMain(self,clientInterface):
         print("Viewing transaction history.")
         account = self.getInputDetails(True,True,True,False,True) 
         response = clientInterface.transactionHistory(account)
         print(response)
 
 
-    def monitorUpdatesMain(self,clientInterface):
+def monitorUpdatesMain(self,clientInterface):
         print("Monitoring Updates.")
         account = self.getInputDetails(True,True,True,True,False) 
         response = clientInterface.monitorUpdates(account)
         #### NEED TO DOOOO
 
 
-    def printOptions():
+def printOptions():
         print("Enter your choice!")
         print("1. Open Account")
         print("2. Close Existing Account")
@@ -167,33 +167,33 @@ class ClientMain:
         print("7. Monitor Updates")
         print("8. Exit!")
 
-    def lineBreak(length):
+def lineBreak(length):
         for i in range(length):
             print('-',end='')
     
 
-    serverPort = 1234
-    # INITIALIZE THE LISTENER
-    print('Starting bank client...')
-    clientInterface = ClientInterface()
+serverPort = 1234
+# INITIALIZE THE LISTENER
+print('Starting bank client...')
+clientInterface = ClientInterface()
+while True:
+    printOptions()
+    option = None
     while True:
-        printOptions()
-        option = None
-        while True:
-            try:
-                option=input()
-            except:
-                print('Invalid Input. Please enter again!')
-                continue
-            if option>0 and option<= 8:
-                break
-            
-        if option == 8:
-            print('The program has ended!')
+        try:
+            option=input()
+        except:
+            print('Invalid Input. Please enter again!')
+            continue
+        if option>0 and option<= 8:
             break
-        print()
-        lineBreak(25)
-        options = {
+            
+    if option == 8:
+        print('The program has ended!')
+        break
+    print()
+    lineBreak(25)
+    options = {
             1:'createNewAccountMain',
             2:'closeAccountMain',
             3:'depositMoneyMain',
@@ -201,4 +201,4 @@ class ClientMain:
             5:'transferMoneyMain',
             6:'viewTransactionHistoryMain',
             7:'monitorUpdatesMain'}
-        options[option](clientInterface)
+    options[option](clientInterface)

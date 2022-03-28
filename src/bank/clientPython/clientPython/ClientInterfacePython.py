@@ -1,6 +1,6 @@
 import socket
-from clientmessage.RequestPython import *
-from bankClient.EnumPython import OpType
+from clientMessage.RequestPython import *
+from clientBank.EnumPython import OpType
 import ClientMessageHandlerPython
 class ClientInterface:
     def __init__(self, port,serverIP) -> None:
