@@ -9,8 +9,7 @@ import system.Subscriber;
 public class Bank {
 
     private HashMap<Integer, Account> accounts;
-    private HashMap<OpType, Service> 
-    services;
+    private HashMap<OpType, Service> services;
     private List<Subscriber> subscribers;
 
     public Bank() {
@@ -77,7 +76,7 @@ public class Bank {
             case TRANSFER_MONEY: {
                 TransferMoney service = (TransferMoney) this.services.get(op);
                 return service.transferMoney((String) params[0], (String) params[1],
-                        (Integer) params[2], (Integer) params[3], (Integer) params[4], (Integer) params[5]);
+                        (Integer) params[2], (Integer) params[3], (Integer) params[4], (Double) params[5]);
             }
 
             case TRANSACTION_HISTORY: {

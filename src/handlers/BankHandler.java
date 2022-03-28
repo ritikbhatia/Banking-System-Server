@@ -20,7 +20,7 @@ public class BankHandler implements Runnable {
     public BankHandler(int port, boolean at_most_once, Bank bank, boolean simulate, double lossRate) {
         try {
             socketConn = new DatagramSocket(port);
-            socketConn.setSoTimeout(60000);
+            socketConn.setSoTimeout(60000000);
             this.at_most_once = at_most_once;
             this.bank = bank;
             this.simulate = simulate;
