@@ -153,7 +153,7 @@ public class ClientMain {
             }
             System.out.println();
             linebreaker(45);
-            int amount;
+            double amount;
             String accountHolderName;
             String password;
             Currency currency;
@@ -195,7 +195,7 @@ public class ClientMain {
                     while (true) {
                         try {
                             System.out.println("Enter the amount to be deposited");
-                            amount = Integer.parseInt(in.readLine());
+                            amount = Double.parseDouble(in.readLine());
                             if (amount <= 0) {
                                 System.out.println("Invalid amount!");
                                 continue;
@@ -221,7 +221,7 @@ public class ClientMain {
                     while (true) {
                         try {
                             System.out.println("Enter the amount to be withdrawn");
-                            amount = Integer.parseInt(in.readLine());
+                            amount = Double.parseDouble(in.readLine());
                             if (amount <= 0) {
                                 System.out.println("Invalid amount!");
                                 continue;
@@ -251,7 +251,7 @@ public class ClientMain {
                     while (true) {
                         try {
                             System.out.println("Enter the amount to transferred");
-                            amount = Integer.parseInt(in.readLine());
+                            amount = Double.parseDouble(in.readLine());
                             if (amount <= 0) {
                                 System.out.println("Invalid amount!");
                                 continue;
