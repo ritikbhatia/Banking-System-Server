@@ -7,13 +7,14 @@ import bank.entities.Account;
 import bank.entities.OpType;
 import handlers.MessageHandler;
 import system.message.*;
+import system.message.Response.Status;
 
 public class ClientInterface {
 
     DatagramSocket ds;
-    InetAddress server_ip;
-    int server_port;
-    static int request_id;
+    InetAddress serverIP;
+    int serverPort;
+    static int requestID;
 
     private boolean simulate;
     private double clientLossRate;
@@ -21,8 +22,8 @@ public class ClientInterface {
     public ClientInterface(int port, boolean simulate, double clientLossRate) {
         try {
             ds = new DatagramSocket();
-            server_port = port;
-            request_id = 0;
+            serverPort = port;
+            requestID = 0;
             this.simulate = simulate;
             this.clientLossRate = clientLossRate;
 
@@ -32,8 +33,8 @@ public class ClientInterface {
 
     }
 
-    public void set_server_ip(InetAddress ip) {
-        server_ip = ip;
+    public void setServerIP(InetAddress ip) {
+        serverIP = ip;
     }
 
     // private Object[] getAccountDetails(Account account) {
@@ -72,66 +73,73 @@ public class ClientInterface {
     // }
 
     public Response openAccount(Object[] contentObjects) {
-        Request request = new Request(request_id, OpType.CREATE_ACCOUNT.getCode(),
+        Request request = new Request(requestID, OpType.CREATE_ACCOUNT.getCode(),
                 contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(server_ip, server_port, content);
+        sendRequest(serverIP, serverPort, content);
         Response response = receiveResponse();// return reply.getContent();
         return response;
     }
 
     public Response closeAccount(Object[] contentObjects) {
-        Request request = new Request(request_id, OpType.CLOSE_ACCOUNT.getCode(), contentObjects);
+        Request request = new Request(requestID, OpType.CLOSE_ACCOUNT.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(server_ip, server_port, content);
+        sendRequest(serverIP, serverPort, content);
         Response response = receiveResponse();
         return response;
     }
 
     public Response depositMoney(Object[] contentObjects) {
-        Request request = new Request(request_id, OpType.DEPOSIT_MONEY.getCode(), contentObjects);
+        Request request = new Request(requestID, OpType.DEPOSIT_MONEY.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(server_ip, server_port, content);
+        sendRequest(serverIP, serverPort, content);
         Response response = receiveResponse();
         return response;
     }
 
     public Response withdrawMoney(Object[] contentObjects) {
-        Request request = new Request(request_id, OpType.WITHDRAW_MONEY.getCode(),contentObjects);
+        Request request = new Request(requestID, OpType.WITHDRAW_MONEY.getCode(),contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(server_ip, server_port, content);
+        sendRequest(serverIP, serverPort, content);
         Response response = receiveResponse();
         return response;
     }
 
     public Response transferMoney(Object[] contentObjects) {
-        Request request = new Request(request_id, OpType.TRANSFER_MONEY.getCode(),
+        Request request = new Request(requestID, OpType.TRANSFER_MONEY.getCode(),
         contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(server_ip, server_port, content);
+        sendRequest(serverIP, serverPort, content);
         Response response = receiveResponse();
         return response;
     }
 
     public Response transactionHistory(Object[] contentObjects) {
-        Request request = new Request(request_id, OpType.TRANSACTION_HISTORY.getCode(), contentObjects);
+        Request request = new Request(requestID, OpType.TRANSACTION_HISTORY.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(server_ip, server_port, content);
+        sendRequest(serverIP, serverPort, content);
         Response response = receiveResponse();
         return response;
+
     }
 
     public Response monitorUpdates(Object[] contentObjects) {
-        Request request = new Request(request_id, OpType.MONITOR_UPDATES.getCode(), contentObjects);
+        Request request = new Request(requestID, OpType.MONITOR_UPDATES.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(server_ip, server_port, content);
-        Response response = receiveResponse();
-        return response;
+        sendRequest(serverIP, serverPort, content);
+        int interval = (int) contentObjects[0];
+        long ellapsed = System.nanoTime();
+        while((System.nanoTime()-ellapsed)/1e9<=interval)
+        {
+            Response response = receiveResponse();
+            return response;
     }
+    return(new Response(Status.SUCCESS,"Successful"));
+}
 
     // TODO: Where to put the simulate flag? (inside the loop?)
     public void sendRequest(InetAddress address, int port, byte[] requestBytes) {
-        ++request_id;
+        ++requestID;
 
         if (simulate && Math.random() < clientLossRate) {
             System.out.println("Simulating client loss");
