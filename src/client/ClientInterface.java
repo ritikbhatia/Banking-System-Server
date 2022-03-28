@@ -37,43 +37,9 @@ public class ClientInterface {
         serverIP = ip;
     }
 
-    // private Object[] getAccountDetails(Account account) {
-    //     Object[] accountDetails = new Object[4];
-    //     accountDetails[0] = account.getAccountHolderName();
-    //     accountDetails[1] = account.getPassword();
-    //     accountDetails[2] = account.getCurrency().getId();
-    //     accountDetails[3] = account.getBalance();
-    //     return accountDetails;
-    // }
-
-    // private Object[] getCombinedAccountAndAmount(Account accountFrom, Account accountTo, int amount) {
-    //     Object[] combined = new Object[9];
-    //     Object[] accountFromDetails = getAccountDetails(accountFrom);
-    //     Object[] accountToDetails = getAccountDetails(accountTo);
-    //     for (int i = 0; i < 4; i++) {
-    //         combined[i] = accountFromDetails[i];
-    //     }
-
-    //     for (int i = 0; i < 4; i++) {
-    //         combined[i + 4] = accountToDetails[i];
-    //     }
-
-    //     combined[8] = amount;
-    //     return combined;
-    // }
-
-    // private Object[] getAccountAndAmount(Account account, int amount) {
-    //     Object[] accountDetails = getAccountDetails(account);
-    //     Object[] accountAndAmount = new Object[5];
-    //     for (int i = 0; i < 4; i++) {
-    //         accountAndAmount[i] = accountDetails[i];
-    //     }
-    //     accountAndAmount[4] = amount;
-    //     return accountAndAmount;
-    // }
-
-    public Response openAccount(Object[] contentObjects) {
-        Request request = new Request(requestID, OpType.CREATE_ACCOUNT.getCode(),
+    public Response startService(Object[] contentObjects, int OpType)
+    {
+        Request request = new Request(requestID, OpType,
                 contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(serverIP, serverPort, content);
@@ -81,47 +47,56 @@ public class ClientInterface {
         return response;
     }
 
-    public Response closeAccount(Object[] contentObjects) {
-        Request request = new Request(requestID, OpType.CLOSE_ACCOUNT.getCode(), contentObjects);
-        byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(serverIP, serverPort, content);
-        Response response = receiveResponse();
-        return response;
-    }
+    // public Response openAccount(Object[] contentObjects) {
+    //     Request request = new Request(requestID, OpType.CREATE_ACCOUNT.getCode(),
+    //             contentObjects);
+    //     byte[] content = MessageHandler.marshalClientRequest(request);
+    //     sendRequest(serverIP, serverPort, content);
+    //     Response response = receiveResponse();// return reply.getContent();
+    //     return response;
+    // }
 
-    public Response depositMoney(Object[] contentObjects) {
-        Request request = new Request(requestID, OpType.DEPOSIT_MONEY.getCode(), contentObjects);
-        byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(serverIP, serverPort, content);
-        Response response = receiveResponse();
-        return response;
-    }
+    // public Response closeAccount(Object[] contentObjects) {
+    //     Request request = new Request(requestID, OpType.CLOSE_ACCOUNT.getCode(), contentObjects);
+    //     byte[] content = MessageHandler.marshalClientRequest(request);
+    //     sendRequest(serverIP, serverPort, content);
+    //     Response response = receiveResponse();
+    //     return response;
+    // }
 
-    public Response withdrawMoney(Object[] contentObjects) {
-        Request request = new Request(requestID, OpType.WITHDRAW_MONEY.getCode(),contentObjects);
-        byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(serverIP, serverPort, content);
-        Response response = receiveResponse();
-        return response;
-    }
+    // public Response depositMoney(Object[] contentObjects) {
+    //     Request request = new Request(requestID, OpType.DEPOSIT_MONEY.getCode(), contentObjects);
+    //     byte[] content = MessageHandler.marshalClientRequest(request);
+    //     sendRequest(serverIP, serverPort, content);
+    //     Response response = receiveResponse();
+    //     return response;
+    // }
 
-    public Response transferMoney(Object[] contentObjects) {
-        Request request = new Request(requestID, OpType.TRANSFER_MONEY.getCode(),
-        contentObjects);
-        byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(serverIP, serverPort, content);
-        Response response = receiveResponse();
-        return response;
-    }
+    // public Response withdrawMoney(Object[] contentObjects) {
+    //     Request request = new Request(requestID, OpType.WITHDRAW_MONEY.getCode(),contentObjects);
+    //     byte[] content = MessageHandler.marshalClientRequest(request);
+    //     sendRequest(serverIP, serverPort, content);
+    //     Response response = receiveResponse();
+    //     return response;
+    // }
 
-    public Response transactionHistory(Object[] contentObjects) {
-        Request request = new Request(requestID, OpType.TRANSACTION_HISTORY.getCode(), contentObjects);
-        byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(serverIP, serverPort, content);
-        Response response = receiveResponse();
-        return response;
+    // public Response transferMoney(Object[] contentObjects) {
+    //     Request request = new Request(requestID, OpType.TRANSFER_MONEY.getCode(),
+    //     contentObjects);
+    //     byte[] content = MessageHandler.marshalClientRequest(request);
+    //     sendRequest(serverIP, serverPort, content);
+    //     Response response = receiveResponse();
+    //     return response;
+    // }
 
-    }
+    // public Response transactionHistory(Object[] contentObjects) {
+    //     Request request = new Request(requestID, OpType.TRANSACTION_HISTORY.getCode(), contentObjects);
+    //     byte[] content = MessageHandler.marshalClientRequest(request);
+    //     sendRequest(serverIP, serverPort, content);
+    //     Response response = receiveResponse();
+    //     return response;
+
+    // }
 
     public Response monitorUpdates(Object[] contentObjects) {
         Request request = new Request(requestID, OpType.MONITOR_UPDATES.getCode(), contentObjects);
@@ -177,19 +152,4 @@ public class ClientInterface {
         return response;
     }
 
-    // DatagramSocket ds = new DatagramSocket();
-    // InetAddress ip = InetAddress.getLocalHost();
-    // String message = "Random Crap";
-    // byte buf[] = null;
-    // buf = message.getBytes();
-    // DatagramPacket DpSend = new DatagramPacket(buf, buf.length, ip, 1234);
-    // ds.send(DpSend);
-
-    // // loop while user not enters "bye"
-    // while (true) {
-    // String inp = in.readLine();
-    // if (message.equals("bye"))
-    // break;
-    // }
-    // ds.close();
 }

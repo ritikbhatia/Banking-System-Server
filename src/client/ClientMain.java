@@ -2,7 +2,7 @@ package client;
 
 import java.io.*;
 import java.net.*;
-
+import bank.entities.OpType;
 import bank.entities.Account;
 import bank.entities.Currency;
 import system.message.*;
@@ -166,7 +166,8 @@ public class ClientMain {
                     currency = getCurrency();
                     accountBalance = getAccountBalance();
                     contentObject = new Object[] { accountHolderName, password, currency, accountBalance };
-                    response = clientInterface.openAccount(contentObject);
+                    response = clientInterface.startService(contentObject, OpType.CREATE_ACCOUNT.getCode());
+                    //response = clientInterface.openAccount(contentObject);
                     printResponse(response);
                     break;
 
@@ -177,7 +178,8 @@ public class ClientMain {
                     password = getPassword();
                     accountNumber = getAccountNumber();
                     contentObject = new Object[] { accountHolderName, password, accountNumber };
-                    response = clientInterface.closeAccount(contentObject);
+                    response = clientInterface.startService(contentObject, OpType.CLOSE_ACCOUNT.getCode());
+                    //response = clientInterface.closeAccount(contentObject);
                     break;
 
                 case 3: // DEPOSIT MONEY
@@ -202,7 +204,8 @@ public class ClientMain {
                         break;
                     }
                     contentObject = new Object[] { accountHolderName, password, currency, amount, accountNumber };
-                    response = clientInterface.depositMoney(contentObject);
+                    response = clientInterface.startService(contentObject, OpType.DEPOSIT_MONEY.getCode());
+                    //response = clientInterface.depositMoney(contentObject);
                     printResponse(response);
                     break;
 
@@ -228,7 +231,8 @@ public class ClientMain {
                         break;
                     }
                     contentObject = new Object[] { accountHolderName, password, currency, accountNumber, amount };
-                    response = clientInterface.withdrawMoney(contentObject);
+                    response = clientInterface.startService(contentObject, OpType.WITHDRAW_MONEY.getCode());
+                    //response = clientInterface.withdrawMoney(contentObject);
                     printResponse(response);
                     break;
 
@@ -259,7 +263,9 @@ public class ClientMain {
                     }
                     contentObject = new Object[] { accountHolderName, password, currency, accountNumber,
                             accountNumberTo, amount };
-                    response = clientInterface.transferMoney(contentObject);
+                    
+                    response = clientInterface.startService(contentObject, OpType.TRANSFER_MONEY.getCode());
+                    // response = clientInterface.transferMoney(contentObject);
                     printResponse(response);
                     break;
 
@@ -271,7 +277,8 @@ public class ClientMain {
                     password = getPassword();
                     accountNumber = getAccountNumber();
                     contentObject = new Object[] { accountHolderName, password, accountNumber };
-                    response = clientInterface.transactionHistory(contentObject);
+                    response = clientInterface.startService(contentObject, OpType.TRANSACTION_HISTORY.getCode());
+                    //response = clientInterface.transactionHistory(contentObject);
                     printResponse(response);
                     break;
 
