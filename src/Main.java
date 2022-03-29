@@ -4,7 +4,7 @@ import handlers.BankHandler;
 
 public class Main {
 
-    private static int PORT = 8080;
+    private static int PORT = 6789;
     private static boolean AT_MOST_ONCE_FLAG = true;
     private static boolean SIMULATE = false;
     private static float SERVER_LOSS_RATE = 0;

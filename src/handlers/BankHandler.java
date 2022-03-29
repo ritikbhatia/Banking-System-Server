@@ -38,6 +38,10 @@ public class BankHandler implements Runnable {
 
         Request clientRequest = MessageHandler.unmarshalClientRequest(packetData);
         OpType operation = OpType.createFromType(clientRequest.getType());
+
+        if (simulate && (operation == OpType.WITHDRAW_MONEY || operation == OpType.CREATE_ACCOUNT))
+            return;
+
         Object[] arguments = clientRequest.getArguments();
 
         Response reply;
