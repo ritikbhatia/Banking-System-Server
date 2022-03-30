@@ -23,7 +23,7 @@ public class Transaction {
     public Timestamp getTimestamp() {
         return timestamp;
     }
-    
+
     public OpType getOperation() {
         return operation;
     }
@@ -36,7 +36,6 @@ public class Transaction {
         return amount;
     }
 
-    
     public String getInformation() {
         return information;
     }
@@ -52,19 +51,17 @@ public class Transaction {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-    
+
     public void setInformation(String information) {
         this.information = information;
     }
 
-    public double getBalance(){
+    public double getBalance() {
         return this.balance;
     }
 
-    public void setBalance(double balance){
+    public void setBalance(double balance) {
         this.balance = balance;
     }
-
-
 
 }
