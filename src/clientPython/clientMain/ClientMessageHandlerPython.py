@@ -1,3 +1,5 @@
+from sys import byteorder
+from numpy import byte
 from clientMessage.RequestPython import Request
 from clientMessage.ResponsePython import Response
 from clientBank.EnumPython import Status
@@ -15,28 +17,53 @@ class ClientMessageHandler:
 
     def marshal(self, request) -> bytearray:
 
-        UPCOMING_STRING = b'0x01'
-        UPCOMING_INT = b'0x02'
-        UPCOMING_FLOAT = b'0x03'
+        UPCOMING_STRING = b'\x01'
+        UPCOMING_INT = b'\x02'
+        UPCOMING_FLOAT = b'\x03'
 
         requestID = request.id
         opType = request.opType
         mcontent = b''
+        index = len(request.arguments)
         for content in request.arguments:
+            print("This is the content being added")
+            print(content)
             if isinstance(content, str):
+                content = content.rstrip('\x00')
                 mcontent += UPCOMING_STRING
-                mcontent += len(bytes(content, 'UTF-16')).to_bytes(2, 'big')
+                print("Added String header")
+                print(mcontent)
+                #mcontent += len(bytes(content, 'UTF-16')).to_bytes(length=4, byteorder='big')
+                mcontent += bytes(bytearray(struct.pack("!I",
+                                  len(bytes(content, 'UTF-16')))))
+                print("Added String length")
+                print(mcontent)
                 mcontent += bytes(content, 'UTF-16')
+                print("Added String")
+                print(mcontent)
             elif isinstance(content, int):
                 mcontent += UPCOMING_INT
-                mcontent += content.to_bytes(2, 'big')
+                print(mcontent)
+                print("Added INT header")
+                # mcontent += content.to_bytes(length=4, byteorder='big')
+                mcontent += bytes(bytearray(struct.pack("!I", content)))
+                print(mcontent)
+                print("Added int")
             elif isinstance(content, float):
                 mcontent += UPCOMING_FLOAT
-                mcontent += self.float_to_bytes(content)
+                print(mcontent)
+                print("Added float header")
+                mcontent += bytes(bytearray(struct.pack("!f", content)))
+                print(mcontent)
+                print("Added float")
 
-        mcontent = requestID.to_bytes(
-            2, 'big') + opType.to_bytes(2, 'big') + mcontent
-        return(mcontent)
+        # mcontent = requestID.to_bytes(length=4, byteorder='big') + opType.to_bytes(length=4, byteorder = 'big') + mcontent
+        mcontent = bytes(bytearray(struct.pack("!I", requestID))) + \
+            bytes(bytearray(struct.pack("!I", opType))) + \
+            bytes(bytearray(struct.pack("!I", index))) + mcontent
+        print("Added Headers")
+        print(mcontent)
+        return bytearray(mcontent)
 
     def unmarshal(self, packetData) -> Response:
         SIZE_INT = 4

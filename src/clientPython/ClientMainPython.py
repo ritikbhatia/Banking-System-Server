@@ -111,7 +111,6 @@ def depositMoneyMain(clientInterface):
         self, content, OpType.DEPOSIT_MONEY.value)
     #response = clientInterface.depositMoney(self, account)
     print(response)
-    
 
 
 def withdrawMoneyMain(clientInterface):
@@ -200,11 +199,17 @@ def lineBreak(length):
         print('-', end='')
 
 
-serverPort = 6789
-serverIp = socket.gethostbyname('RITIK-DELL-XPS')
-# INITIALIZE THE LISTENER
+serverPort = 6789  # Modify this value to change Server port
+# serverIp = socket.gethostbyname('RITIK-DELL-XPS') # Modify this to change Server IP
+# serverIp = '10.27.255.240'
+serverIp = '192.168.0.130'
+simulate = False
+clientLossRate = 0.0
+# INITIALIZE THE LISTENER11
+
 print('Starting bank client...')
-clientInterface = ClientInterface(serverPort, serverIp)
+clientInterface = ClientInterface(
+    serverPort, serverIp, simulate, clientLossRate)
 while True:
     printOptions()
     option = None
@@ -223,6 +228,7 @@ while True:
         break
     print()
     lineBreak(25)
+
     options = {
         1: createNewAccountMain,
         2: closeAccountMain,
@@ -230,6 +236,7 @@ while True:
         4: withdrawMoneyMain,
         5: transferMoneyMain,
         6: viewTransactionHistoryMain,
-        7: monitorUpdatesMain}
+        7: monitorUpdatesMain
+    }
 
     options[option](clientInterface)
