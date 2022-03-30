@@ -1,7 +1,3 @@
-import sys
-from xml.etree.ElementTree import TreeBuilder
-
-from pyparsing import null_debug_action
 import socket
 import time
 from clientMessage.RequestPython import *
