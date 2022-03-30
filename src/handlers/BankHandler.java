@@ -13,6 +13,7 @@ public class BankHandler implements Runnable {
     private static HashMap<String, Response> responsesSent = new HashMap<String, Response>();
     private boolean at_most_once;
     private Bank bank;
+    private boolean allowThroughSimulate;
 
     private boolean simulate = false;
     private double serverLossRate = 0.0;
@@ -25,8 +26,11 @@ public class BankHandler implements Runnable {
             this.bank = bank;
             this.simulate = simulate;
             this.serverLossRate = lossRate;
+            this.allowThroughSimulate = false;
+
             linebreaker(45);
             System.out.println("Server details:");
+            System.out.println("Server IP: " + InetAddress.getLocalHost().getHostAddress());
             System.out.println("Server Port: " + Integer.valueOf(port));
             System.out.println("At-most-once: " + Boolean.valueOf(at_most_once));
             System.out.println("Simulating packet loss: " + Boolean.valueOf(simulate));
@@ -49,9 +53,6 @@ public class BankHandler implements Runnable {
         System.out.println("Client request of type " + operation.name() + " received.");
         System.out.println();
 
-        if (simulate && (operation == OpType.WITHDRAW_MONEY || operation == OpType.CREATE_ACCOUNT))
-            return;
-
         Object[] arguments = clientRequest.getArguments();
 
         Response reply;
@@ -72,10 +73,8 @@ public class BankHandler implements Runnable {
         System.out.println("Server status: " + reply.getMessage());
         System.out.println();
 
-        // TODO: What is montioringRequestID?
-        // TODO: Where to get monitoringInterval?
         if (operation.equals(OpType.MONITOR_UPDATES) && (reply.getStatus().equals(Status.SUCCESS))) {
-            Subscriber subscriber = new Subscriber(clientIP, clientPort, 0, 10);
+            Subscriber subscriber = new Subscriber(clientIP, clientPort, 0, (Integer) arguments[0]);
             bank.addSubscriber(subscriber);
             System.out.println("Subscriber with IP: " + clientIP.getHostAddress() + " and Port: "
                     + Integer.valueOf(clientPort) + " successfully registered!");
@@ -84,6 +83,14 @@ public class BankHandler implements Runnable {
 
         if (at_most_once) {
             responsesSent.put(Integer.valueOf(clientRequest.getId()) + clientIP.getHostAddress(), reply);
+        }
+
+        if (operation == OpType.WITHDRAW_MONEY || operation == OpType.CREATE_ACCOUNT) {
+            if (simulate && !allowThroughSimulate) {
+                flipAllowFlag();
+                return;
+            }
+            flipAllowFlag();
         }
 
         send(clientIP, clientPort, MessageHandler.marshalServerResponse(reply));
@@ -141,6 +148,10 @@ public class BankHandler implements Runnable {
         for (int i = 0; i < length; i++)
             System.out.print('-');
         System.out.println();
+    }
+
+    private void flipAllowFlag() {
+        allowThroughSimulate = !allowThroughSimulate;
     }
 
     @Override
