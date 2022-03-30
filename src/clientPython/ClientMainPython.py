@@ -4,7 +4,6 @@ import socket
 from numpy import float64
 from clientMain.ClientInterfacePython import ClientInterface
 from clientBank.EnumPython import Currency
-from clientBank.AccountPython import AccountPython
 from clientBank.EnumPython import OpType
 
 

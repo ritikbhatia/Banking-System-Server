@@ -3,5 +3,3 @@ class Request():
         self.id = id
         self.opType = opType
         self.arguments = arguments
-        
-    
