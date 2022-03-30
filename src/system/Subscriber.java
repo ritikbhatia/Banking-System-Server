@@ -17,7 +17,7 @@ public class Subscriber {
         this.registrationTime = System.nanoTime();
     }
 
-    public boolean checkMonitoringValidity() {
+    public boolean withinMonitoringInterval() {
         return (System.nanoTime() - registrationTime) / 1e9 <= monitoringInterval;
     }
 

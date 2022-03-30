@@ -25,6 +25,12 @@ public class BankHandler implements Runnable {
             this.bank = bank;
             this.simulate = simulate;
             this.serverLossRate = lossRate;
+            linebreaker(45);
+            System.out.println("Server details:");
+            System.out.println("Server Port: " + Integer.valueOf(port));
+            System.out.println("At-most-once: " + Boolean.valueOf(at_most_once));
+            System.out.println("Simulating packet loss: " + Boolean.valueOf(simulate));
+            linebreaker(45);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,6 +45,10 @@ public class BankHandler implements Runnable {
         Request clientRequest = MessageHandler.unmarshalClientRequest(packetData);
         OpType operation = OpType.createFromType(clientRequest.getType());
 
+        System.out.println();
+        System.out.println("Client request of type " + Integer.valueOf(operation.getCode()) + " received.");
+        System.out.println();
+
         if (simulate && (operation == OpType.WITHDRAW_MONEY || operation == OpType.CREATE_ACCOUNT))
             return;
 
@@ -49,6 +59,9 @@ public class BankHandler implements Runnable {
         if (at_most_once) {
             reply = responsesSent.get(clientRequest.getId());
             if (reply != null) {
+                System.out.println("Duplicate request id detected...");
+                System.out.println("Replying with cached response as per at-most-once protocol");
+                System.out.println();
                 send(clientIP, clientPort, MessageHandler.marshalServerResponse(reply));
                 return;
             }
@@ -56,12 +69,19 @@ public class BankHandler implements Runnable {
 
         // send request to the bank for execution
         reply = bank.serve(operation, arguments);
+        if (reply != null) {
+            System.out.println("Server status: " + reply.getMessage());
+            System.out.println();
+        }
 
         // TODO: What is montioringRequestID?
         // TODO: Where to get monitoringInterval?
         if (operation.equals(OpType.MONITOR_UPDATES) && (reply.getStatus().equals(Status.SUCCESS))) {
             Subscriber subscriber = new Subscriber(clientIP, clientPort, 0, 10);
             bank.addSubscriber(subscriber);
+            System.out.println("Subscriber with IP: " + clientIP.getHostAddress() + " and Port: "
+                    + Integer.valueOf(clientPort) + " successfully registered!");
+            System.out.println();
         }
 
         if (at_most_once) {
@@ -86,16 +106,35 @@ public class BankHandler implements Runnable {
                 break;
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Retrying sending message to client");
+                System.out.println("Socket Exception! Retrying sending message to client...");
             }
         }
     }
 
     private void informSubscribers(Response resp) {
+        linebreaker(45);
+        System.out.println("Informing subscribers...");
+        System.out.println();
         List<Subscriber> subscribers = bank.getSubscribers();
-        for (Subscriber sub : subscribers) {
-            send(sub.getIP(), sub.getPort(), MessageHandler.marshalServerResponse(resp));
+        if (subscribers.size() > 0) {
+            for (Subscriber sub : subscribers) {
+                if (sub.withinMonitoringInterval()) {
+                    send(sub.getIP(), sub.getPort(), MessageHandler.marshalServerResponse(resp));
+                    System.out.println("Informed subscriber with IP: " + sub.getIP().getHostAddress() + " sucessfully");
+                }
+            }
+        } else {
+            System.out.println("No subscribers to inform!");
         }
+        linebreaker(45);
+        linebreaker(45);
+    }
+
+    // helper function for pretty printing on the terminal
+    private void linebreaker(int length) {
+        for (int i = 0; i < length; i++)
+            System.out.print('-');
+        System.out.println();
     }
 
     @Override

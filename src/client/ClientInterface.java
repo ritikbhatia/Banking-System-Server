@@ -13,7 +13,7 @@ public class ClientInterface {
     DatagramSocket ds;
     InetAddress serverIP;
     int serverPort;
-    static int requestID;
+    static int requestId;
 
     private boolean simulate;
     private double clientLossRate;
@@ -23,7 +23,7 @@ public class ClientInterface {
             ds = new DatagramSocket();
             ds.setSoTimeout(10000);
             serverPort = port;
-            requestID = 0;
+            requestId = 0;
             this.simulate = simulate;
             this.clientLossRate = clientLossRate;
 
@@ -37,90 +37,91 @@ public class ClientInterface {
         serverIP = ip;
     }
 
-    public Response startService(Object[] contentObjects, int OpType)
-    {
+    public Response startService(Object[] contentObjects, int OpType) {
         Response response = null;
-        Request request = new Request(requestID, OpType,
+        Request request = new Request(requestId, OpType,
                 contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         int retry = 2;
-        for(int i = 1;i<=retry;i++)
-        {
+        for (int i = 1; i <= retry; i++) {
             sendRequest(serverIP, serverPort, content);
             response = receiveResponse();// return reply.getContent();
-            if(response == null)
+            if (response == null)
                 continue;
             break;
         }
 
-        requestID++;
+        requestId++;
         return response;
     }
 
     // public Response openAccount(Object[] contentObjects) {
-    //     Request request = new Request(requestID, OpType.CREATE_ACCOUNT.getCode(),
-    //             contentObjects);
-    //     byte[] content = MessageHandler.marshalClientRequest(request);
-    //     sendRequest(serverIP, serverPort, content);
-    //     Response response = receiveResponse();// return reply.getContent();
-    //     return response;
+    // Request request = new Request(requestId, OpType.CREATE_ACCOUNT.getCode(),
+    // contentObjects);
+    // byte[] content = MessageHandler.marshalClientRequest(request);
+    // sendRequest(serverIP, serverPort, content);
+    // Response response = receiveResponse();// return reply.getContent();
+    // return response;
     // }
 
     // public Response closeAccount(Object[] contentObjects) {
-    //     Request request = new Request(requestID, OpType.CLOSE_ACCOUNT.getCode(), contentObjects);
-    //     byte[] content = MessageHandler.marshalClientRequest(request);
-    //     sendRequest(serverIP, serverPort, content);
-    //     Response response = receiveResponse();
-    //     return response;
+    // Request request = new Request(requestId, OpType.CLOSE_ACCOUNT.getCode(),
+    // contentObjects);
+    // byte[] content = MessageHandler.marshalClientRequest(request);
+    // sendRequest(serverIP, serverPort, content);
+    // Response response = receiveResponse();
+    // return response;
     // }
 
     // public Response depositMoney(Object[] contentObjects) {
-    //     Request request = new Request(requestID, OpType.DEPOSIT_MONEY.getCode(), contentObjects);
-    //     byte[] content = MessageHandler.marshalClientRequest(request);
-    //     sendRequest(serverIP, serverPort, content);
-    //     Response response = receiveResponse();
-    //     return response;
+    // Request request = new Request(requestId, OpType.DEPOSIT_MONEY.getCode(),
+    // contentObjects);
+    // byte[] content = MessageHandler.marshalClientRequest(request);
+    // sendRequest(serverIP, serverPort, content);
+    // Response response = receiveResponse();
+    // return response;
     // }
 
     // public Response withdrawMoney(Object[] contentObjects) {
-    //     Request request = new Request(requestID, OpType.WITHDRAW_MONEY.getCode(),contentObjects);
-    //     byte[] content = MessageHandler.marshalClientRequest(request);
-    //     sendRequest(serverIP, serverPort, content);
-    //     Response response = receiveResponse();
-    //     return response;
+    // Request request = new Request(requestId,
+    // OpType.WITHDRAW_MONEY.getCode(),contentObjects);
+    // byte[] content = MessageHandler.marshalClientRequest(request);
+    // sendRequest(serverIP, serverPort, content);
+    // Response response = receiveResponse();
+    // return response;
     // }
 
     // public Response transferMoney(Object[] contentObjects) {
-    //     Request request = new Request(requestID, OpType.TRANSFER_MONEY.getCode(),
-    //     contentObjects);
-    //     byte[] content = MessageHandler.marshalClientRequest(request);
-    //     sendRequest(serverIP, serverPort, content);
-    //     Response response = receiveResponse();
-    //     return response;
+    // Request request = new Request(requestId, OpType.TRANSFER_MONEY.getCode(),
+    // contentObjects);
+    // byte[] content = MessageHandler.marshalClientRequest(request);
+    // sendRequest(serverIP, serverPort, content);
+    // Response response = receiveResponse();
+    // return response;
     // }
 
     // public Response transactionHistory(Object[] contentObjects) {
-    //     Request request = new Request(requestID, OpType.TRANSACTION_HISTORY.getCode(), contentObjects);
-    //     byte[] content = MessageHandler.marshalClientRequest(request);
-    //     sendRequest(serverIP, serverPort, content);
-    //     Response response = receiveResponse();
-    //     return response;
+    // Request request = new Request(requestId,
+    // OpType.TRANSACTION_HISTORY.getCode(), contentObjects);
+    // byte[] content = MessageHandler.marshalClientRequest(request);
+    // sendRequest(serverIP, serverPort, content);
+    // Response response = receiveResponse();
+    // return response;
 
     // }
 
     public Response monitorUpdates(Object[] contentObjects) {
-        Request request = new Request(requestID, OpType.MONITOR_UPDATES.getCode(), contentObjects);
+        Request request = new Request(requestId, OpType.MONITOR_UPDATES.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(serverIP, serverPort, content);
         int interval = (int) contentObjects[0];
         long ellapsed = System.nanoTime();
-        while((System.nanoTime()-ellapsed)/1e9<=interval)
-        {
+        while ((System.nanoTime() - ellapsed) / 1e9 <= interval) {
             Response response = receiveResponse();
             return response;
+        }
+        return (new Response(Status.SUCCESS, "Successful"));
     }
-    return(new Response(Status.SUCCESS,"Successful"));
-}
 
     // TODO: Where to put the simulate flag? (inside the loop?)
     public void sendRequest(InetAddress address, int port, byte[] requestBytes) {
@@ -147,14 +148,13 @@ public class ClientInterface {
     public Response receiveResponse() {
         byte[] responseBytes = new byte[10240];
         DatagramPacket packet = new DatagramPacket(responseBytes, responseBytes.length);
-        
+
         while (true) {
             try {
                 ds.receive(packet);
                 break;
-            } 
-            catch (SocketTimeoutException e) {
-                return(null);
+            } catch (SocketTimeoutException e) {
+                return (null);
             } catch (IOException e) {
                 e.printStackTrace();
             }

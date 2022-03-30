@@ -86,8 +86,10 @@ public class Bank {
 
             // TODO: Is this montor updates OK?
             case MONITOR_UPDATES: {
-                MonitorUpdates service = (MonitorUpdates) this.services.get(op);
-                return service.monitorUpdates((Integer) params[0], (String) params[1], (String) params[2]);
+                // MonitorUpdates service = (MonitorUpdates) this.services.get(op);
+                // return service.monitorUpdates((Integer) params[0], (String) params[1],
+                // (String) params[2]);
+                return null;
             }
 
             default:

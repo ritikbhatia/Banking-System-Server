@@ -22,8 +22,9 @@ public class Main {
             bank.addService(OpType.MONITOR_UPDATES, new MonitorUpdates());
 
             // starting bank handler
-            BankHandler bankHandler = new BankHandler(PORT, AT_MOST_ONCE_FLAG, bank, SIMULATE, SERVER_LOSS_RATE);
             System.out.println("Starting bank server...");
+            System.out.println();
+            BankHandler bankHandler = new BankHandler(PORT, AT_MOST_ONCE_FLAG, bank, SIMULATE, SERVER_LOSS_RATE);
             bankHandler.run();
 
         } catch (Exception e) {
