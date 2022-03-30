@@ -314,6 +314,7 @@ public class ClientMain {
                         }
                         break;
                     }
+                    System.out.println();
                     contentObject = new Object[] { interval };
                     response = clientInterface.monitorUpdates(contentObject);
                     printResponse(response);

@@ -39,6 +39,12 @@ public class Bank {
         subscribers.add(subscriber);
     }
 
+    public void purgeInvalidSubscribers(List<Subscriber> invalidSubscribers) {
+        for (Subscriber invalidSubscriber : invalidSubscribers) {
+            subscribers.remove(invalidSubscriber);
+        }
+    }
+
     public Account getAccount(int accountNumber) {
         return accounts.get(accountNumber);
     }
@@ -86,10 +92,8 @@ public class Bank {
 
             // TODO: Is this montor updates OK?
             case MONITOR_UPDATES: {
-                // MonitorUpdates service = (MonitorUpdates) this.services.get(op);
-                // return service.monitorUpdates((Integer) params[0], (String) params[1],
-                // (String) params[2]);
-                return null;
+                MonitorUpdates service = (MonitorUpdates) this.services.get(op);
+                return service.monitorUpdates((Integer) params[0]);
             }
 
             default:

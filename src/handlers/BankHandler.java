@@ -10,7 +10,7 @@ import system.message.Response.Status;
 
 public class BankHandler implements Runnable {
     DatagramSocket socketConn;
-    private static HashMap<Integer, Response> responsesSent = new HashMap<Integer, Response>();
+    private static HashMap<String, Response> responsesSent = new HashMap<String, Response>();
     private boolean at_most_once;
     private Bank bank;
 
@@ -57,7 +57,7 @@ public class BankHandler implements Runnable {
         Response reply;
 
         if (at_most_once) {
-            reply = responsesSent.get(clientRequest.getId());
+            reply = responsesSent.get(Integer.valueOf(clientRequest.getId()) + clientIP.getHostAddress());
             if (reply != null) {
                 System.out.println("Duplicate request id detected...");
                 System.out.println("Replying with cached response as per at-most-once protocol");
@@ -69,10 +69,8 @@ public class BankHandler implements Runnable {
 
         // send request to the bank for execution
         reply = bank.serve(operation, arguments);
-        if (reply != null) {
-            System.out.println("Server status: " + reply.getMessage());
-            System.out.println();
-        }
+        System.out.println("Server status: " + reply.getMessage());
+        System.out.println();
 
         // TODO: What is montioringRequestID?
         // TODO: Where to get monitoringInterval?
@@ -85,7 +83,7 @@ public class BankHandler implements Runnable {
         }
 
         if (at_most_once) {
-            responsesSent.put(clientRequest.getId(), reply);
+            responsesSent.put(Integer.valueOf(clientRequest.getId()) + clientIP.getHostAddress(), reply);
         }
 
         send(clientIP, clientPort, MessageHandler.marshalServerResponse(reply));
@@ -116,16 +114,24 @@ public class BankHandler implements Runnable {
         System.out.println("Informing subscribers...");
         System.out.println();
         List<Subscriber> subscribers = bank.getSubscribers();
-        if (subscribers.size() > 0) {
-            for (Subscriber sub : subscribers) {
-                if (sub.withinMonitoringInterval()) {
-                    send(sub.getIP(), sub.getPort(), MessageHandler.marshalServerResponse(resp));
-                    System.out.println("Informed subscriber with IP: " + sub.getIP().getHostAddress() + " sucessfully");
-                }
+        List<Subscriber> invalidSubscribers = new ArrayList<Subscriber>();
+
+        for (Subscriber sub : subscribers) {
+            if (sub.withinMonitoringInterval()) {
+                send(sub.getIP(), sub.getPort(), MessageHandler.marshalServerResponse(resp));
+                System.out.println("Informed subscriber with IP: " + sub.getIP().getHostAddress() + " sucessfully");
+            } else {
+                invalidSubscribers.add(sub);
             }
-        } else {
+        }
+
+        // remove subscribers whose monitoring interval has terminated
+        bank.purgeInvalidSubscribers(invalidSubscribers);
+
+        if (bank.getSubscribers().size() == 0) {
             System.out.println("No subscribers to inform!");
         }
+
         linebreaker(45);
         linebreaker(45);
     }

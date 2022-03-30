@@ -50,8 +50,7 @@ public class ClientInterface {
                 continue;
             break;
         }
-
-        requestId++;
+        ;
         return response;
     }
 
@@ -115,12 +114,15 @@ public class ClientInterface {
         byte[] content = MessageHandler.marshalClientRequest(request);
         sendRequest(serverIP, serverPort, content);
         int interval = (int) contentObjects[0];
-        long ellapsed = System.nanoTime();
-        while ((System.nanoTime() - ellapsed) / 1e9 <= interval) {
+        long elapsed = System.nanoTime();
+        while ((System.nanoTime() - elapsed) / 1e9 <= interval) {
             Response response = receiveResponse();
-            return response;
+            if (response != null) {
+                System.out.println("Update: " + response.getMessage());
+            }
         }
-        return (new Response(Status.SUCCESS, "Successful"));
+
+        return (new Response(Status.SUCCESS, "Monitoring period complete!"));
     }
 
     // TODO: Where to put the simulate flag? (inside the loop?)
@@ -161,6 +163,9 @@ public class ClientInterface {
         }
         byte[] msg = packet.getData();
         Response response = MessageHandler.unmarshalServerResponse(msg);
+
+        // increment request id after receiveing response from server
+        requestId++;
         return response;
     }
 
