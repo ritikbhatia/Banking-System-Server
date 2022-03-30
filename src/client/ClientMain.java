@@ -99,7 +99,6 @@ public class ClientMain {
         int serverPort = 6789; // Change this to change the server port number
         ClientInterface clientInterface = new ClientInterface(serverPort, SIMULATE, CLIENT_LOSS_RATE);
         clientInterface.setServerIp(InetAddress.getByName("10.27.255.240"));
-
         System.out.println("Starting bank client...");
         System.out.println();
 
@@ -217,7 +216,7 @@ public class ClientMain {
                         }
                         break;
                     }
-                    contentObject = new Object[] { accountHolderName, password, currency, amount, accountNumber};
+                    contentObject = new Object[] { accountHolderName, password, currency, amount, accountNumber };
                     response = clientInterface.startService(contentObject, OpType.WITHDRAW_MONEY.getCode());
                     // response = clientInterface.withdrawMoney(contentObject);
                     Utils.printResponse(response);
@@ -242,7 +241,7 @@ public class ClientMain {
                     // Account account_to = getinputDetails(false, false, false, false, true);
                     while (true) {
                         try {
-                            System.out.println("Enter the amount to transferred");
+                            System.out.print("Enter the amount to transferred: ");
                             amount = Double.parseDouble(in.readLine());
                             if (amount <= 0) {
                                 System.out.println("Invalid amount!");

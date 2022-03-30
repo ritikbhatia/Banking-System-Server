@@ -111,6 +111,7 @@ def depositMoneyMain(clientInterface):
         self, content, OpType.DEPOSIT_MONEY.value)
     #response = clientInterface.depositMoney(self, account)
     print(response)
+    
 
 
 def withdrawMoneyMain(clientInterface):
