@@ -36,7 +36,7 @@ class ClientMessageHandler:
                 mcontent += bytes(bytearray(struct.pack("!I", content)))
             elif isinstance(content, float):
                 mcontent += UPCOMING_FLOAT
-                mcontent += bytes(bytearray(struct.pack("!f", content)))
+                mcontent += bytes(bytearray(struct.pack("!d", content)))
 
         mcontent = bytes(bytearray(struct.pack("!I", requestID))) + \
             bytes(bytearray(struct.pack("!I", opType))) + \

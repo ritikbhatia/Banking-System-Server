@@ -15,9 +15,9 @@ class ClientInterface:
         try:
             self.ds = socket.socket(
                 family=socket.AF_INET, type=socket.SOCK_DGRAM)
-            self.ds.settimeout(60)
+            self.ds.settimeout(5)
             self.port = port
-            self.request_id = 0
+            self.requestID = 0
             self.serverIP = serverIP
             self.simulate = simulate
             self.clientLossRate = clientLossRate
@@ -25,7 +25,7 @@ class ClientInterface:
             pass
 
     def startService(self, icontent, opType):
-        request = Request(self.request_id, opType, icontent)
+        request = Request(self.requestID, opType, icontent)
         clientMessageHandler = ClientMessageHandler()
         content = clientMessageHandler.marshal(request)
         retryAttempts = 2
@@ -35,21 +35,24 @@ class ClientInterface:
             if response == None:
                 continue
             break
-
+        self.requestID += 1
         return response
 
     def monitorUpdates(self, interval, opType):
-        request = Request(self.request_id, opType, interval)
+        request = Request(self.requestID, opType, interval)
         clientMessageHandler = ClientMessageHandler()
         content = clientMessageHandler.marshal(request)
+        self.sendRequest(content)
         timeStart = time.time()
-        timeNow = time.time()
+        timeout = self.ds.gettimeout()
+        self.ds.settimeout(interval[0])
 
-        while timeNow-timeStart < interval:
-            response = self.receiveResponse()
-            print(response)
-
-        print("Monitoring Finished")  # EDIT LATER
+        while time.time()-timeStart < float(interval[0]):
+            response = self.receiveResponse(clientMessageHandler)
+            if response != None:
+                print(response)
+        self.requestID += 1
+        print("Monitoring Finished")
 
     def sendRequest(self, content):
         try:
@@ -61,11 +64,13 @@ class ClientInterface:
 
     def receiveResponse(self, clientMessageHandler):
         packet = b''
-        bufferSize = 1024
+        bufferSize = 10240
         while True:
             try:
                 packet = self.ds.recvfrom(bufferSize)
                 break
+            except socket.timeout:
+                return(None)
             except:
                 continue
         response = ClientMessageHandler.unmarshal(self, packetData=packet)

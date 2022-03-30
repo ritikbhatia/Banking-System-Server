@@ -1,5 +1,7 @@
 from os import sep
 import socket
+
+from numpy import float64
 from clientMain.ClientInterfacePython import ClientInterface
 from clientBank.EnumPython import Currency
 from clientBank.AccountPython import AccountPython
@@ -67,10 +69,12 @@ def getAccountNumber():
 
 def createNewAccountMain(clientInterface):
     print("Creating a new account.")
+    lineBreak(45)
     accountHolderName = getName()
     password = getPassword()
     currency = getCurrency()
     accountBalance = getAccountBalance()
+    print()
     content = [accountHolderName, password, currency, accountBalance]
     response = clientInterface.startService(
         content, OpType.CREATE_ACCOUNT.value)
@@ -79,18 +83,20 @@ def createNewAccountMain(clientInterface):
 
 def closeAccountMain(clientInterface):
     print("Closing the account.")
+    lineBreak(45)
     accountHolderName = getName()
     password = getPassword()
     accountNumber = getAccountNumber()
+    print()
     content = [accountHolderName, password, accountNumber]
     response = clientInterface.startService(
         content, OpType.CLOSE_ACCOUNT.value)
-    #response = clientInterface.closeAccount(self, account)
     print(response)
 
 
 def depositMoneyMain(clientInterface):
     print("Depositing Money.")
+    lineBreak(45)
     accountHolderName = getName()
     password = getPassword()
     currency = getCurrency()
@@ -98,7 +104,7 @@ def depositMoneyMain(clientInterface):
     amount = 0
     while True:
         try:
-            amount = int(input("Enter the amount to be deposited"))
+            amount = float64(input("Enter the amount to be deposited: "))
             if amount <= 0:
                 print("Invalid amount!")
                 continue
@@ -106,16 +112,16 @@ def depositMoneyMain(clientInterface):
             print("Invalid Input!")
             continue
         break
+    print()
     content = [accountHolderName, password, currency, amount, accountNumber]
     response = clientInterface.startService(
         content, OpType.DEPOSIT_MONEY.value)
-    #response = clientInterface.depositMoney(self, account)
     print(response)
 
 
 def withdrawMoneyMain(clientInterface):
     print("Withdrawing money.")
-    #account = self.getInputDetails(True,True,True,True,False)
+    lineBreak(45)
     accountHolderName = getName()
     password = getPassword()
     currency = getCurrency()
@@ -123,7 +129,7 @@ def withdrawMoneyMain(clientInterface):
     amount = 0
     while True:
         try:
-            amount = int(input("Enter the amount to be withdrawn"))
+            amount = float64(input("Enter the amount to be withdrawn: "))
             if amount <= 0:
                 print("Invalid amount!")
                 continue
@@ -131,26 +137,29 @@ def withdrawMoneyMain(clientInterface):
             print("Invalid Input!")
             continue
         break
-    content = [accountHolderName, password, currency, accountNumber, amount]
+    print()
+    content = [accountHolderName, password, currency, amount, accountNumber]
     response = clientInterface.startService(
         content, OpType.WITHDRAW_MONEY.value)
-    #response = clientInterface.withdrawMoney(self, account, amount)
     print(response)
 
 
 def transferMoneyMain(clientInterface):
     print("Transferring money")
+    lineBreak(45)
+    print()
     print("Transferring from:")
     accountHolderName = getName()
     password = getPassword()
     currency = getCurrency()
     accountNumber = getAccountNumber()
+    print()
     print("Transferring to:")
     accountNumberTo = getAccountNumber()
     amount = 0
     while True:
         try:
-            amount = int(input("Enter the amount to be transferred"))
+            amount = float64(input("Enter the amount to be transferred: "))
             if amount <= 0:
                 print("Invalid amount!")
                 continue
@@ -158,30 +167,47 @@ def transferMoneyMain(clientInterface):
             print("Invalid Input!")
             continue
         break
+    print()
     content = [accountHolderName, password, currency,
                accountNumber, accountNumberTo, amount]
     response = clientInterface.startService(
         content, OpType.TRANSFER_MONEY.value)
-    #response = clientInterface.transferMoney(self, account, account_to, amount)
     print(response)
 
 
 def viewTransactionHistoryMain(clientInterface):
     print("Viewing transaction history.")
-    account = getInputDetails(True, True, True, False, True)
-    response = clientInterface.transactionHistory(account)
+    lineBreak(45)
+
+    accountHolderName = getName()
+    password = getPassword()
+    accountNumber = getAccountNumber()
+    content = [accountHolderName, password, accountNumber]
+    response = clientInterface.startService(
+        content, OpType.TRANSACTION_HISTORY.value)
     print(response)
 
 
 def monitorUpdatesMain(clientInterface):
     print("Monitoring Updates.")
-    account = getInputDetails(True, True, True, True, False)
-    response = clientInterface.monitorUpdates(account)
-    # NEED TO DOOOO
+    lineBreak(45)
+    interval = 0
+    while True:
+        try:
+            interval = int(input("Enter the interval: "))
+        except:
+            print("Invalid Input!")
+            continue
+        break
+    content = [interval]
+    clientInterface.monitorUpdates(
+        content, OpType.MONITOR_UPDATES.value)
 
 
 def printOptions():
+    lineBreak(45)
     print("Enter your choice!")
+    lineBreak(45)
     print("1. Open Account")
     print("2. Close Existing Account")
     print("3. Deposit Money")
@@ -195,6 +221,7 @@ def printOptions():
 def lineBreak(length):
     for i in range(length):
         print('-', end='')
+    print()
 
 
 serverPort = 6789  # Modify this value to change Server port
@@ -208,6 +235,7 @@ print('Starting bank client...')
 clientInterface = ClientInterface(
     serverPort, serverIp, simulate, clientLossRate)
 while True:
+    print()
     printOptions()
     option = None
     while True:
@@ -221,11 +249,10 @@ while True:
 
     if option == 8:
         print('The program has ended!')
-        ClientInterface.ds.close()
+        # ClientInterface.ds.close()
         break
     print()
-    lineBreak(25)
-
+    lineBreak(45)
     options = {
         1: createNewAccountMain,
         2: closeAccountMain,
