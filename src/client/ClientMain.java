@@ -5,6 +5,7 @@ import java.net.*;
 import bank.entities.OpType;
 import bank.entities.Currency;
 import system.message.*;
+import client.utils.Utils;
 
 public class ClientMain {
 
@@ -13,24 +14,6 @@ public class ClientMain {
 
     private static boolean SIMULATE = false;
     private static double CLIENT_LOSS_RATE = 0.0;
-
-    public static void getOptions() {
-        System.out.println("Enter choice from the menu below:");
-        System.out.println("1. Open Account");
-        System.out.println("2. Close Existing Account");
-        System.out.println("3. Deposit Money");
-        System.out.println("4. Withdraw Money");
-        System.out.println("5. Transfer Money");
-        System.out.println("6. View Transaction History");
-        System.out.println("7. Monitor Updates");
-        System.out.println("8. Exit");
-    }
-
-    public static void linebreaker(int length) {
-        for (int i = 0; i < length; i++)
-            System.out.print('-');
-        System.out.println();
-    }
 
     public static String getName() throws IOException {
         System.out.print("Enter the account holder's name: ");
@@ -111,23 +94,17 @@ public class ClientMain {
         return (accountNumber);
     }
 
-    static void printResponse(Response response) {
-        System.out.println();
-        System.out.println(response.getMessage());
-        System.out.println();
-    }
-
     public static void main(String args[]) throws IOException {
 
         int serverPort = 6789; // Change this to change the server port number
         ClientInterface clientInterface = new ClientInterface(serverPort, SIMULATE, CLIENT_LOSS_RATE);
-        clientInterface.setServerIP(InetAddress.getByName("RITIK-DELL-XPS"));
+        clientInterface.setServerIp(InetAddress.getByName("RITIK-DELL-XPS"));
 
         System.out.println("Starting bank client...");
         System.out.println();
 
         while (true) {
-            getOptions();
+            Utils.getOptions();
             int option;
             while (true) {
                 try {
@@ -160,9 +137,9 @@ public class ClientMain {
             switch (option) {
 
                 case 1: // CREATE A NEW ACCOUNT
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     System.out.println("Creating a new account");
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     // account = getinputDetails(true, true, true, true, false);
                     accountHolderName = getName();
                     password = getPassword();
@@ -171,13 +148,13 @@ public class ClientMain {
                     contentObject = new Object[] { accountHolderName, password, currency, accountBalance };
                     response = clientInterface.startService(contentObject, OpType.CREATE_ACCOUNT.getCode());
                     // response = clientInterface.openAccount(contentObject);
-                    printResponse(response);
+                    Utils.printResponse(response);
                     break;
 
                 case 2: // CLOSE ACCOUNT
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     System.out.println("Closing the account");
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     // account = getinputDetails(true, true, false, false, true);
                     accountHolderName = getName();
                     password = getPassword();
@@ -188,9 +165,9 @@ public class ClientMain {
                     break;
 
                 case 3: // DEPOSIT MONEY
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     System.out.println("Depositing Money");
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     // account = getinputDetails(true, true, true, false, true);
                     accountHolderName = getName();
                     password = getPassword();
@@ -213,13 +190,13 @@ public class ClientMain {
                     contentObject = new Object[] { accountHolderName, password, currency, amount, accountNumber };
                     response = clientInterface.startService(contentObject, OpType.DEPOSIT_MONEY.getCode());
                     // response = clientInterface.depositMoney(contentObject);
-                    printResponse(response);
+                    Utils.printResponse(response);
                     break;
 
                 case 4: // WITHDRAW MONEY
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     System.out.println("Withdrawing money");
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     // account = getinputDetails(true, true, true, false, true);
                     accountHolderName = getName();
                     password = getPassword();
@@ -242,13 +219,13 @@ public class ClientMain {
                     contentObject = new Object[] { accountHolderName, password, currency, accountNumber, amount };
                     response = clientInterface.startService(contentObject, OpType.WITHDRAW_MONEY.getCode());
                     // response = clientInterface.withdrawMoney(contentObject);
-                    printResponse(response);
+                    Utils.printResponse(response);
                     break;
 
                 case 5: // TRANSFER MONEY
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     System.out.println("Transferring money");
-                    linebreaker(45);
+                    Utils.linebreaker(45);
 
                     System.out.println();
                     System.out.println("Transferring from:");
@@ -281,13 +258,13 @@ public class ClientMain {
 
                     response = clientInterface.startService(contentObject, OpType.TRANSFER_MONEY.getCode());
                     // response = clientInterface.transferMoney(contentObject);
-                    printResponse(response);
+                    Utils.printResponse(response);
                     break;
 
                 case 6: // VIEW TRANSACTION HISTORY
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     System.out.println("Viewing transaction history");
-                    linebreaker(45);
+                    Utils.linebreaker(45);
 
                     // account = getinputDetails(true, true, true, false, true);
                     accountHolderName = getName();
@@ -296,13 +273,13 @@ public class ClientMain {
                     contentObject = new Object[] { accountHolderName, password, accountNumber };
                     response = clientInterface.startService(contentObject, OpType.TRANSACTION_HISTORY.getCode());
                     // response = clientInterface.transactionHistory(contentObject);
-                    printResponse(response);
+                    Utils.printResponse(response);
                     break;
 
                 case 7: // MONITOR UPDATES
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     System.out.println("Monitoring Updates");
-                    linebreaker(45);
+                    Utils.linebreaker(45);
                     int interval;
                     while (true) {
                         System.out.print("Enter the interval: ");
@@ -317,7 +294,7 @@ public class ClientMain {
                     System.out.println();
                     contentObject = new Object[] { interval };
                     response = clientInterface.monitorUpdates(contentObject);
-                    printResponse(response);
+                    Utils.printResponse(response);
                     break;
 
                 default:

@@ -11,7 +11,7 @@ import system.message.Response.Status;
 public class ClientInterface {
 
     DatagramSocket ds;
-    InetAddress serverIP;
+    InetAddress serverIp;
     int serverPort;
     static int requestId;
 
@@ -33,8 +33,8 @@ public class ClientInterface {
 
     }
 
-    public void setServerIP(InetAddress ip) {
-        serverIP = ip;
+    public void setServerIp(InetAddress ip) {
+        serverIp = ip;
     }
 
     public Response startService(Object[] contentObjects, int OpType) {
@@ -44,7 +44,7 @@ public class ClientInterface {
         byte[] content = MessageHandler.marshalClientRequest(request);
         int retry = 2;
         for (int i = 1; i <= retry; i++) {
-            sendRequest(serverIP, serverPort, content);
+            sendRequest(serverIp, serverPort, content);
             response = receiveResponse();// return reply.getContent();
             if (response == null)
                 continue;
@@ -58,7 +58,7 @@ public class ClientInterface {
     // Request request = new Request(requestId, OpType.CREATE_ACCOUNT.getCode(),
     // contentObjects);
     // byte[] content = MessageHandler.marshalClientRequest(request);
-    // sendRequest(serverIP, serverPort, content);
+    // sendRequest(serverIp, serverPort, content);
     // Response response = receiveResponse();// return reply.getContent();
     // return response;
     // }
@@ -67,7 +67,7 @@ public class ClientInterface {
     // Request request = new Request(requestId, OpType.CLOSE_ACCOUNT.getCode(),
     // contentObjects);
     // byte[] content = MessageHandler.marshalClientRequest(request);
-    // sendRequest(serverIP, serverPort, content);
+    // sendRequest(serverIp, serverPort, content);
     // Response response = receiveResponse();
     // return response;
     // }
@@ -76,7 +76,7 @@ public class ClientInterface {
     // Request request = new Request(requestId, OpType.DEPOSIT_MONEY.getCode(),
     // contentObjects);
     // byte[] content = MessageHandler.marshalClientRequest(request);
-    // sendRequest(serverIP, serverPort, content);
+    // sendRequest(serverIp, serverPort, content);
     // Response response = receiveResponse();
     // return response;
     // }
@@ -85,7 +85,7 @@ public class ClientInterface {
     // Request request = new Request(requestId,
     // OpType.WITHDRAW_MONEY.getCode(),contentObjects);
     // byte[] content = MessageHandler.marshalClientRequest(request);
-    // sendRequest(serverIP, serverPort, content);
+    // sendRequest(serverIp, serverPort, content);
     // Response response = receiveResponse();
     // return response;
     // }
@@ -94,7 +94,7 @@ public class ClientInterface {
     // Request request = new Request(requestId, OpType.TRANSFER_MONEY.getCode(),
     // contentObjects);
     // byte[] content = MessageHandler.marshalClientRequest(request);
-    // sendRequest(serverIP, serverPort, content);
+    // sendRequest(serverIp, serverPort, content);
     // Response response = receiveResponse();
     // return response;
     // }
@@ -103,7 +103,7 @@ public class ClientInterface {
     // Request request = new Request(requestId,
     // OpType.TRANSACTION_HISTORY.getCode(), contentObjects);
     // byte[] content = MessageHandler.marshalClientRequest(request);
-    // sendRequest(serverIP, serverPort, content);
+    // sendRequest(serverIp, serverPort, content);
     // Response response = receiveResponse();
     // return response;
 
@@ -112,7 +112,7 @@ public class ClientInterface {
     public Response monitorUpdates(Object[] contentObjects) {
         Request request = new Request(requestId, OpType.MONITOR_UPDATES.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
-        sendRequest(serverIP, serverPort, content);
+        sendRequest(serverIp, serverPort, content);
         int interval = (int) contentObjects[0];
         long elapsed = System.nanoTime();
         while ((System.nanoTime() - elapsed) / 1e9 <= interval) {
