@@ -85,7 +85,7 @@ public class BankHandler implements Runnable {
             responsesSent.put(Integer.valueOf(clientRequest.getId()) + clientIP.getHostAddress(), reply);
         }
 
-        if (operation == OpType.WITHDRAW_MONEY || operation == OpType.CREATE_ACCOUNT) {
+        if (operation == OpType.CLOSE_ACCOUNT || operation == OpType.DEPOSIT_MONEY) {
             if (simulate && !allowThroughSimulate) {
                 flipAllowFlag();
                 return;
