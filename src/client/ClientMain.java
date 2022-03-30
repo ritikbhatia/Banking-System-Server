@@ -96,9 +96,10 @@ public class ClientMain {
 
     public static void main(String args[]) throws IOException {
 
-        int serverPort = 6789; // Change this to change the server port number
+        int serverPort = 6789; // Change this to change the Server port number
         ClientInterface clientInterface = new ClientInterface(serverPort, SIMULATE, CLIENT_LOSS_RATE);
-        clientInterface.setServerIp(InetAddress.getByName("10.27.255.240"));
+        clientInterface.setServerIp(InetAddress.getByName("10.27.255.240")); // Change this to change the Server IP
+                                                                             // Address
         System.out.println("Starting bank client...");
         System.out.println();
 
@@ -139,14 +140,12 @@ public class ClientMain {
                     Utils.linebreaker(45);
                     System.out.println("Creating a new account");
                     Utils.linebreaker(45);
-                    // account = getinputDetails(true, true, true, true, false);
                     accountHolderName = getName();
                     password = getPassword();
                     currency = getCurrency();
                     accountBalance = getAccountBalance();
                     contentObject = new Object[] { accountHolderName, password, currency, accountBalance };
                     response = clientInterface.startService(contentObject, OpType.CREATE_ACCOUNT.getCode());
-                    // response = clientInterface.openAccount(contentObject);
                     Utils.printResponse(response);
                     break;
 
@@ -154,13 +153,11 @@ public class ClientMain {
                     Utils.linebreaker(45);
                     System.out.println("Closing the account");
                     Utils.linebreaker(45);
-                    // account = getinputDetails(true, true, false, false, true);
                     accountHolderName = getName();
                     password = getPassword();
                     accountNumber = getAccountNumber();
                     contentObject = new Object[] { accountHolderName, password, accountNumber };
                     response = clientInterface.startService(contentObject, OpType.CLOSE_ACCOUNT.getCode());
-                    // response = clientInterface.closeAccount(contentObject);
                     Utils.printResponse(response);
                     break;
 
@@ -168,7 +165,6 @@ public class ClientMain {
                     Utils.linebreaker(45);
                     System.out.println("Depositing Money");
                     Utils.linebreaker(45);
-                    // account = getinputDetails(true, true, true, false, true);
                     accountHolderName = getName();
                     password = getPassword();
                     currency = getCurrency();
@@ -189,7 +185,6 @@ public class ClientMain {
                     }
                     contentObject = new Object[] { accountHolderName, password, currency, amount, accountNumber };
                     response = clientInterface.startService(contentObject, OpType.DEPOSIT_MONEY.getCode());
-                    // response = clientInterface.depositMoney(contentObject);
                     Utils.printResponse(response);
                     break;
 
@@ -197,7 +192,6 @@ public class ClientMain {
                     Utils.linebreaker(45);
                     System.out.println("Withdrawing money");
                     Utils.linebreaker(45);
-                    // account = getinputDetails(true, true, true, false, true);
                     accountHolderName = getName();
                     password = getPassword();
                     currency = getCurrency();
@@ -218,7 +212,6 @@ public class ClientMain {
                     }
                     contentObject = new Object[] { accountHolderName, password, currency, amount, accountNumber };
                     response = clientInterface.startService(contentObject, OpType.WITHDRAW_MONEY.getCode());
-                    // response = clientInterface.withdrawMoney(contentObject);
                     Utils.printResponse(response);
                     break;
 
@@ -229,7 +222,6 @@ public class ClientMain {
 
                     System.out.println();
                     System.out.println("Transferring from:");
-                    // account = getinputDetails(true, true, true, true, false);
                     accountHolderName = getName();
                     password = getPassword();
                     currency = getCurrency();
@@ -238,7 +230,6 @@ public class ClientMain {
                     System.out.println();
                     System.out.println("Transferring to:");
                     int accountNumberTo = getAccountNumber();
-                    // Account account_to = getinputDetails(false, false, false, false, true);
                     while (true) {
                         try {
                             System.out.print("Enter the amount to transferred: ");
@@ -257,7 +248,6 @@ public class ClientMain {
                             accountNumberTo, amount };
 
                     response = clientInterface.startService(contentObject, OpType.TRANSFER_MONEY.getCode());
-                    // response = clientInterface.transferMoney(contentObject);
                     Utils.printResponse(response);
                     break;
 
@@ -272,7 +262,6 @@ public class ClientMain {
                     accountNumber = getAccountNumber();
                     contentObject = new Object[] { accountHolderName, password, accountNumber };
                     response = clientInterface.startService(contentObject, OpType.TRANSACTION_HISTORY.getCode());
-                    // response = clientInterface.transactionHistory(contentObject);
                     Utils.printResponse(response);
                     break;
 
