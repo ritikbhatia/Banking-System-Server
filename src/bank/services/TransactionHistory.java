@@ -1,6 +1,7 @@
 package bank.services;
 
 import java.util.TreeMap;
+import java.util.Formatter;
 import java.sql.Timestamp;
 import system.message.Response;
 import system.message.Response.Status;
@@ -10,15 +11,17 @@ public class TransactionHistory extends Service {
 
     private String generateTransactionStatement(TreeMap<Timestamp, Transaction> transactions) {
         StringBuilder transactionStatement = new StringBuilder();
+        Formatter formatter = new Formatter(transactionStatement);
         transactionStatement.append("Time Stamp \t\t Operation \t Currency \t Amount \t Balance \t  Information \n");
         for (Timestamp timestamp : transactions.keySet()) {
             Transaction transaction = transactions.get(timestamp);
-            transactionStatement.append(transaction.getTimestamp()).append("\t").append(transaction.getOperation())
-                    .append("\t  ").append(transaction.getCurrency()).append("\t\t  ").append(transaction.getAmount())
-                    .append("\t\t  ").append(transaction.getBalance()).append("\t\t")
-                    .append(transaction.getInformation())
-                    .append("\n");
+            formatter.format("%25s%20s%20s%20s%20s%50s\n", "Time Stamp", "Operation", "Currency", "Amount", "Balance",
+                    "Information");
+            formatter.format("%25s%20s%20s%20s%20s%50s\n", transaction.getTimestamp(), transaction.getOperation(),
+                    transaction.getCurrency(), transaction.getAmount(), transaction.getBalance(),
+                    transaction.getInformation());
         }
+        formatter.close();
         return transactionStatement.toString();
     }
 
