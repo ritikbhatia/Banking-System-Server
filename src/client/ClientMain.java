@@ -98,7 +98,7 @@ public class ClientMain {
 
         int serverPort = 6789; // Change this to change the server port number
         ClientInterface clientInterface = new ClientInterface(serverPort, SIMULATE, CLIENT_LOSS_RATE);
-        clientInterface.setServerIp(InetAddress.getByName("RITIK-DELL-XPS"));
+        clientInterface.setServerIp(InetAddress.getByName("10.27.255.240"));
 
         System.out.println("Starting bank client...");
         System.out.println();
@@ -162,6 +162,7 @@ public class ClientMain {
                     contentObject = new Object[] { accountHolderName, password, accountNumber };
                     response = clientInterface.startService(contentObject, OpType.CLOSE_ACCOUNT.getCode());
                     // response = clientInterface.closeAccount(contentObject);
+                    Utils.printResponse(response);
                     break;
 
                 case 3: // DEPOSIT MONEY
@@ -216,7 +217,7 @@ public class ClientMain {
                         }
                         break;
                     }
-                    contentObject = new Object[] { accountHolderName, password, currency, accountNumber, amount };
+                    contentObject = new Object[] { accountHolderName, password, currency, amount, accountNumber};
                     response = clientInterface.startService(contentObject, OpType.WITHDRAW_MONEY.getCode());
                     // response = clientInterface.withdrawMoney(contentObject);
                     Utils.printResponse(response);

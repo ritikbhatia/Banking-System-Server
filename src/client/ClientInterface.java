@@ -50,7 +50,6 @@ public class ClientInterface {
                 continue;
             break;
         }
-        ;
         return response;
     }
 
