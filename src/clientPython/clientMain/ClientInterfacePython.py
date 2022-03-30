@@ -15,7 +15,7 @@ class ClientInterface:
         try:
             self.ds = socket.socket(
                 family=socket.AF_INET, type=socket.SOCK_DGRAM)
-            self.ds.settimeout(10)
+            self.ds.settimeout(60)
             self.port = port
             self.request_id = 0
             self.serverIP = serverIP
@@ -34,6 +34,7 @@ class ClientInterface:
             response = self.receiveResponse(clientMessageHandler)
             if response == None:
                 continue
+            break
 
         return response
 
@@ -67,5 +68,5 @@ class ClientInterface:
                 break
             except:
                 continue
-        response = Response(ClientMessageHandler.unmarshal(packet))
+        response = ClientMessageHandler.unmarshal(self, packetData=packet)
         return response

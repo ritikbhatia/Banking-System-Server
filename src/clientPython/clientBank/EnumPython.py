@@ -1,14 +1,17 @@
 import enum
 
+
 class Currency(enum.Enum):
     SGD = 1
     INR = 2
     USD = 3
 
+
 class Status(enum.Enum):
-    FAILURE = 1
-    SUCCESS = 2
-    ERROR = 3
+    FAILURE = 0
+    SUCCESS = 1
+    ERROR = 2
+
 
 class OpType(enum.Enum):
     CREATE_ACCOUNT = 0

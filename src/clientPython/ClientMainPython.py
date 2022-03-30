@@ -84,7 +84,7 @@ def closeAccountMain(clientInterface):
     accountNumber = getAccountNumber()
     content = [accountHolderName, password, accountNumber]
     response = clientInterface.startService(
-        self, content, OpType.CLOSE_ACCOUNT.value)
+        content, OpType.CLOSE_ACCOUNT.value)
     #response = clientInterface.closeAccount(self, account)
     print(response)
 
@@ -108,7 +108,7 @@ def depositMoneyMain(clientInterface):
         break
     content = [accountHolderName, password, currency, amount, accountNumber]
     response = clientInterface.startService(
-        self, content, OpType.DEPOSIT_MONEY.value)
+        content, OpType.DEPOSIT_MONEY.value)
     #response = clientInterface.depositMoney(self, account)
     print(response)
 
@@ -133,7 +133,7 @@ def withdrawMoneyMain(clientInterface):
         break
     content = [accountHolderName, password, currency, accountNumber, amount]
     response = clientInterface.startService(
-        self, content, OpType.WITHDRAW_MONEY.value)
+        content, OpType.WITHDRAW_MONEY.value)
     #response = clientInterface.withdrawMoney(self, account, amount)
     print(response)
 
@@ -141,14 +141,12 @@ def withdrawMoneyMain(clientInterface):
 def transferMoneyMain(clientInterface):
     print("Transferring money")
     print("Transferring from:")
-    #account = self.getInputDetails(True,True,False,False,True)
     accountHolderName = getName()
     password = getPassword()
     currency = getCurrency()
     accountNumber = getAccountNumber()
     print("Transferring to:")
     accountNumberTo = getAccountNumber()
-    #account_to = self.getInputDetails(False,False, False, False, True)
     amount = 0
     while True:
         try:
@@ -163,21 +161,21 @@ def transferMoneyMain(clientInterface):
     content = [accountHolderName, password, currency,
                accountNumber, accountNumberTo, amount]
     response = clientInterface.startService(
-        self, content, OpType.TRANSFER_MONEY.value)
+        content, OpType.TRANSFER_MONEY.value)
     #response = clientInterface.transferMoney(self, account, account_to, amount)
     print(response)
 
 
 def viewTransactionHistoryMain(clientInterface):
     print("Viewing transaction history.")
-    account = self.getInputDetails(True, True, True, False, True)
+    account = getInputDetails(True, True, True, False, True)
     response = clientInterface.transactionHistory(account)
     print(response)
 
 
 def monitorUpdatesMain(clientInterface):
     print("Monitoring Updates.")
-    account = self.getInputDetails(True, True, True, True, False)
+    account = getInputDetails(True, True, True, True, False)
     response = clientInterface.monitorUpdates(account)
     # NEED TO DOOOO
 
@@ -201,7 +199,6 @@ def lineBreak(length):
 
 serverPort = 6789  # Modify this value to change Server port
 # serverIp = socket.gethostbyname('RITIK-DELL-XPS') # Modify this to change Server IP
-# serverIp = '10.27.255.240'
 serverIp = '192.168.0.130'
 simulate = False
 clientLossRate = 0.0
