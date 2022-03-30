@@ -248,7 +248,6 @@ while True:
 
     if option == 8:
         print('The program has ended!')
-        # ClientInterface.ds.close()
         break
     print()
     lineBreak(45)
@@ -261,5 +260,4 @@ while True:
         6: viewTransactionHistoryMain,
         7: monitorUpdatesMain
     }
-
     options[option](clientInterface)
