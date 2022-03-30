@@ -46,7 +46,7 @@ public class BankHandler implements Runnable {
         OpType operation = OpType.createFromType(clientRequest.getType());
 
         System.out.println();
-        System.out.println("Client request of type " + Integer.valueOf(operation.getCode()) + " received.");
+        System.out.println("Client request of type " + operation.name() + " received.");
         System.out.println();
 
         if (simulate && (operation == OpType.WITHDRAW_MONEY || operation == OpType.CREATE_ACCOUNT))
