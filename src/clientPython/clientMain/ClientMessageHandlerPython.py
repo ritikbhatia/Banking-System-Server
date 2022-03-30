@@ -1,0 +1,55 @@
+from clientMessage.RequestPython import Request
+from clientMessage.ResponsePython import Response
+from clientBank.EnumPython import Status
+import struct
+
+
+class ClientMessageHandler:
+
+    def __init__(self):
+        pass
+
+    def float_to_bytes(self, float_num):
+        byte_array = bytearray(struct.pack("f", float_num))
+        return bytes(byte_array)
+
+    def marshal(self, request) -> bytearray:
+
+        UPCOMING_STRING = b'0x01'
+        UPCOMING_INT = b'0x02'
+        UPCOMING_FLOAT = b'0x03'
+
+        requestID = request.id
+        opType = request.opType
+        mcontent = b''
+        for content in request.arguments:
+            if isinstance(content, str):
+                mcontent += UPCOMING_STRING
+                mcontent += len(bytes(content, 'UTF-16')).to_bytes(2, 'big')
+                mcontent += bytes(content, 'UTF-16')
+            elif isinstance(content, int):
+                mcontent += UPCOMING_INT
+                mcontent += content.to_bytes(2, 'big')
+            elif isinstance(content, float):
+                mcontent += UPCOMING_FLOAT
+                mcontent += self.float_to_bytes(content)
+
+        mcontent = requestID.to_bytes(
+            2, 'big') + opType.to_bytes(2, 'big') + mcontent
+        return(mcontent)
+
+    def unmarshal(self, packetData) -> Response:
+        SIZE_INT = 4
+        UPCOMING_STRING = b'0x01'
+        UPCOMING_INT = b'0x02'
+        UPCOMING_FLOAT = b'0x03'
+
+        index = 0
+        statusType = int.from_bytes(packetData[index:index + SIZE_INT], "big")
+        index += SIZE_INT
+        messageLen = int.from_bytes(packetData[index:index+SIZE_INT], "big")
+        index += SIZE_INT
+
+        message = packetData[index:index+messageLen]
+
+        return(Response(Status(statusType)))
