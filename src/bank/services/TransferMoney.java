@@ -23,7 +23,7 @@ public class TransferMoney extends Service {
         Account bankAccount = bank.getAccount(accountNumber);
         Account payeeAccount = bank.getAccount(payeeAccountNumber);
 
-        if (payeeAccount.getCurrency() != currency) {
+        if ((payeeAccount.getCurrency() != currency) || (bankAccount.getCurrency() != currency)) {
             String mssg = "Currency does not match.";
             return new Response(Status.FAILURE, mssg);
         }
