@@ -20,6 +20,11 @@ public class TransferMoney extends Service {
             return checkAccountResponse;
         }
 
+        if (bank.idExists(payeeAccountNumber) == 0) {
+            String mssg = "Account number " + payeeAccountNumber + " does not exist.";
+            return new Response(Status.FAILURE, mssg);
+        }    
+        
         Account bankAccount = bank.getAccount(accountNumber);
         Account payeeAccount = bank.getAccount(payeeAccountNumber);
 
