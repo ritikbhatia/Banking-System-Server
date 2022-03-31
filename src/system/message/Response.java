@@ -1,7 +1,9 @@
 package system.message;
 
+// class to define the structure of the Response message
 public class Response {
 
+    // enum for status of the message
     public enum Status {
         FAILURE,
         SUCCESS,

@@ -1,6 +1,10 @@
 package system.message;
 
+// class to define a Request message
 public class Request {
+
+    // essential parts of a request are its id, the operation type and the arguments
+    // specified in the message
     private int id;
     private int opType;
     private Object[] arguments;
