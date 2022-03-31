@@ -6,13 +6,15 @@ from clientMain.ClientInterfacePython import ClientInterface
 from clientBank.EnumPython import Currency
 from clientBank.EnumPython import OpType
 
+# The below functions are used to get the information required in order to perform the selected service
 
-def getName():
+
+def getName():  # Get the account name
     accountHolderName = input("Enter the account holder's name: ")
     return(accountHolderName)
 
 
-def getPassword():
+def getPassword():  # Get the account password
     while True:
         try:
             password = input("Enter the password: ")
@@ -25,7 +27,7 @@ def getPassword():
         return(password)
 
 
-def getCurrency():
+def getCurrency():  # Get the account currency
     for cur in (Currency):
         print(cur.value, end='. ')
         print(cur._name_)
@@ -43,7 +45,7 @@ def getCurrency():
         return(currency.value)
 
 
-def getAccountBalance():
+def getAccountBalance():  # Get the account balance
     while True:
         try:
             accountBalance = float(input("Enter the balance amount: "))
@@ -56,7 +58,7 @@ def getAccountBalance():
         return(accountBalance)
 
 
-def getAccountNumber():
+def getAccountNumber():  # Get the account number
     while True:
         try:
             accountNumber = int(input("Enter the bank account number: "))
@@ -65,8 +67,11 @@ def getAccountNumber():
             continue
         return(accountNumber)
 
+# Depending on the kind of service selected, there might be some addition information that are required.
+# These information are taken by the below functions before organising them and sending it to ClientInterfacePython
 
-def createNewAccountMain(clientInterface):
+
+def createNewAccountMain(clientInterface):  # Service: Adding a new account
     print("Creating a new account.")
     lineBreak(45)
     accountHolderName = getName()
@@ -80,7 +85,7 @@ def createNewAccountMain(clientInterface):
     print(response)
 
 
-def closeAccountMain(clientInterface):
+def closeAccountMain(clientInterface):  # Service: Closing an account
     print("Closing the account.")
     lineBreak(45)
     accountHolderName = getName()
@@ -93,7 +98,7 @@ def closeAccountMain(clientInterface):
     print(response)
 
 
-def depositMoneyMain(clientInterface):
+def depositMoneyMain(clientInterface):   # Service: Depositing money to an account
     print("Depositing Money.")
     lineBreak(45)
     accountHolderName = getName()
@@ -118,6 +123,7 @@ def depositMoneyMain(clientInterface):
     print(response)
 
 
+# Service: Withdrawing money from an account
 def withdrawMoneyMain(clientInterface):
     print("Withdrawing money.")
     lineBreak(45)
@@ -143,6 +149,7 @@ def withdrawMoneyMain(clientInterface):
     print(response)
 
 
+# Service: Transferring money from one account to another
 def transferMoneyMain(clientInterface):
     print("Transferring money")
     lineBreak(45)
@@ -174,6 +181,7 @@ def transferMoneyMain(clientInterface):
     print(response)
 
 
+# Service: Viewing all the transactions of an account
 def viewTransactionHistoryMain(clientInterface):
     print("Viewing transaction history.")
     lineBreak(45)
@@ -187,6 +195,7 @@ def viewTransactionHistoryMain(clientInterface):
     print(response)
 
 
+# Service: Monitoring Updates made by the Server.
 def monitorUpdatesMain(clientInterface):
     print("Monitoring Updates.")
     lineBreak(45)
@@ -203,6 +212,7 @@ def monitorUpdatesMain(clientInterface):
         content, OpType.MONITOR_UPDATES.value)
 
 
+# This function prints all the services available to the user.
 def printOptions():
     lineBreak(45)
     print("Enter your choice!")
@@ -224,12 +234,10 @@ def lineBreak(length):
 
 
 serverPort = 6789  # Modify this value to change Server port
-# Modify this to change Server IP
-serverIp = socket.gethostbyname('RITIK-DELL-XPS')
-# serverIp = '192.168.0.130'
+
+serverIp = '192.168.0.130'  # Modify this to change Server IP
 simulate = False
 clientLossRate = 0.0
-# INITIALIZE THE LISTENER11
 
 print('Starting bank client...')
 clientInterface = ClientInterface(

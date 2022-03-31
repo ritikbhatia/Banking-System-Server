@@ -33,10 +33,17 @@ public class ClientInterface {
 
     }
 
+    // This function is used to set the Server IP
     public void setServerIp(InetAddress ip) {
         serverIp = ip;
     }
 
+    /*
+     * This function received the organised input from the user, sends it to
+     * ClientMessageHandlerPython
+     * to be marshalled and then sends the marshaled data to sendRequest function to
+     * be sent to the Server.
+     */
     public Response startService(Object[] contentObjects, int OpType) {
         Response response = null;
         Request request = new Request(requestId, OpType,
@@ -53,6 +60,7 @@ public class ClientInterface {
         return response;
     }
 
+    // This function is used to send the monitoring request to the Server.
     public Response monitorUpdates(Object[] contentObjects) {
         Request request = new Request(requestId, OpType.MONITOR_UPDATES.getCode(), contentObjects);
         byte[] content = MessageHandler.marshalClientRequest(request);
@@ -69,6 +77,7 @@ public class ClientInterface {
         return (new Response(Status.SUCCESS, "Monitoring period complete!"));
     }
 
+    // This function is used to send the Request to the Server
     public void sendRequest(InetAddress address, int port, byte[] requestBytes) {
 
         if (simulate && Math.random() < clientLossRate) {
@@ -90,6 +99,7 @@ public class ClientInterface {
         }
     }
 
+    // This function is used to receive the Response from the Server
     public Response receiveResponse() {
         byte[] responseBytes = new byte[10240];
         DatagramPacket packet = new DatagramPacket(responseBytes, responseBytes.length);

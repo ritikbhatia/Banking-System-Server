@@ -15,12 +15,17 @@ public class ClientMain {
     private static boolean SIMULATE = false;
     private static double CLIENT_LOSS_RATE = 0.0;
 
+    // The below functions are used to get the information required in order to
+    // perform the selected service
+
+    // Get the account name
     public static String getName() throws IOException {
         System.out.print("Enter the account holder's name: ");
         String accountHolderName = in.readLine();
         return (accountHolderName);
     }
 
+    // Get the account password
     public static String getPassword() throws IOException {
         String password;
         while (true) {
@@ -35,6 +40,7 @@ public class ClientMain {
         return (password);
     }
 
+    // Get the account currency
     public static int getCurrency() throws IOException {
         Currency currency;
         int length = 0;
@@ -60,6 +66,7 @@ public class ClientMain {
         return currency.getId();
     }
 
+    // Get the account balance
     public static double getAccountBalance() throws IOException {
         double accountBalance;
         while (true) {
@@ -79,6 +86,7 @@ public class ClientMain {
         return (accountBalance);
     }
 
+    // Get the Account Number
     public static int getAccountNumber() throws IOException {
         int accountNumber;
         while (true) {
@@ -100,6 +108,7 @@ public class ClientMain {
         ClientInterface clientInterface = new ClientInterface(serverPort, SIMULATE, CLIENT_LOSS_RATE);
         clientInterface.setServerIp(InetAddress.getByName("10.27.255.240")); // Change this to change the Server IP
                                                                              // Address
+
         System.out.println("Starting bank client...");
         System.out.println();
 
@@ -135,7 +144,12 @@ public class ClientMain {
             Object[] contentObject;
             Response response;
             switch (option) {
-
+                /*
+                 * Depending on the kind of service selected, there might be some addition
+                 * information that are required.
+                 * These information are taken by the below functions before organising them and
+                 * sending it to ClientInterfacePython
+                 */
                 case 1: // CREATE A NEW ACCOUNT
                     Utils.linebreaker(45);
                     System.out.println("Creating a new account");
