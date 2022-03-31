@@ -30,6 +30,10 @@ public class Bank {
     public void removeAccount(Account account) {
         accounts.remove(account.getAccountNumber());
     }
+    
+    public int idExists(int id){
+        return accounts.containsKey(id) ? 1 : 0;
+    }
 
     public List<Subscriber> getSubscribers() {
         return subscribers;
