@@ -224,8 +224,9 @@ def lineBreak(length):
 
 
 serverPort = 6789  # Modify this value to change Server port
-# serverIp = socket.gethostbyname('RITIK-DELL-XPS') # Modify this to change Server IP
-serverIp = '192.168.0.130'
+# Modify this to change Server IP
+serverIp = socket.gethostbyname('RITIK-DELL-XPS')
+# serverIp = '192.168.0.130'
 simulate = False
 clientLossRate = 0.0
 # INITIALIZE THE LISTENER11

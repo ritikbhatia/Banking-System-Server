@@ -97,13 +97,7 @@ public class BankHandler implements Runnable {
         informSubscribers(reply);
     }
 
-    // TODO: Where to put the simulate flag? (inside the loop?)
     private void send(InetAddress clientIP, int clientPort, byte[] msg) {
-        if (simulate && (Math.random() < serverLossRate)) {
-            System.out.println("Simulating server loss");
-            return;
-        }
-
         for (int i = 0; i < 3; i++) {
             try {
                 DatagramPacket replyPacket = new DatagramPacket(msg, msg.length, clientIP, clientPort);
