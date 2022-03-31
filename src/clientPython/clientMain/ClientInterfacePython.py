@@ -20,6 +20,11 @@ class ClientInterface:
         except:
             pass
 
+    '''
+    This function received the organised input from the user, sends it to ClientMessageHandlerPython
+    to be marshalled and then sends the marshaled data to sendRequest function to be sent to the Server.
+    '''
+
     def startService(self, icontent, opType):
         request = Request(self.requestID, opType, icontent)
         clientMessageHandler = ClientMessageHandler()
@@ -34,6 +39,7 @@ class ClientInterface:
         self.requestID += 1
         return response
 
+    # This function is used to send the monitoring request to the Server.
     def monitorUpdates(self, interval, opType):
         request = Request(self.requestID, opType, interval)
         clientMessageHandler = ClientMessageHandler()
@@ -50,14 +56,15 @@ class ClientInterface:
         self.requestID += 1
         print("Monitoring Finished")
 
+    # This function is used to send the Request to the Server
     def sendRequest(self, content):
         try:
             serverAddressPort = (self.serverIP, self.port)
             self.ds.sendto(content, serverAddressPort)
         except:
-            retry += 1
-            print('trying again')  # Remove this line later
+            pass
 
+    # This function is used to receive the Response from the Server
     def receiveResponse(self, clientMessageHandler):
         packet = b''
         bufferSize = 10240

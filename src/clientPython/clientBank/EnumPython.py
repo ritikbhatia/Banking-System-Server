@@ -1,5 +1,9 @@
 import enum
 
+# Declares all the enum types used on the client side
+
+#
+
 
 class Currency(enum.Enum):
     SGD = 1
