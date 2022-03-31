@@ -10,6 +10,9 @@ public class TransferMoney extends Service {
         super();
     }
 
+    // Transfers money from account with given id, account name, and password
+    // Return response with updated balance if successful
+
     public Response transferMoney(String accountHolderName, String password, int currencyCode, int accountNumber,
             int payeeAccountNumber, double amount) {
 
@@ -23,8 +26,8 @@ public class TransferMoney extends Service {
         if (bank.idExists(payeeAccountNumber) == 0) {
             String mssg = "Account number " + payeeAccountNumber + " does not exist.";
             return new Response(Status.FAILURE, mssg);
-        }    
-        
+        }
+
         Account bankAccount = bank.getAccount(accountNumber);
         Account payeeAccount = bank.getAccount(payeeAccountNumber);
 

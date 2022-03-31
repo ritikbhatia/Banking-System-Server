@@ -6,6 +6,9 @@ import system.message.Response.Status;
 
 public class DepositMoney extends Service {
 
+    // Deposits money into account with given id, account name, and password
+    // Returns response with updated balance if successful
+
     public Response depositMoney(String accountHolderName, String password, int currencyCode, double amount,
             int accountNumber) {
 

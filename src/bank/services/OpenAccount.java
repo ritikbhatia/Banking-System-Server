@@ -36,6 +36,9 @@ public class OpenAccount extends Service {
         return cur_account_number;
     }
 
+    // Opens account with given name, password, currency type, and initial
+    // Returns response with account number if successful
+
     public Response openAccount(String name, String password, int currencyCode, double balance) {
 
         int accountNumber = getAccountNumber();

@@ -20,6 +20,8 @@ public class Service{
         this.bank = bank;
     }
 
+    // Checks whether account details are correct
+
     public Response checkAccountDetails(int accountNumber, String accountHolderName, String password){
         
         if(!bank.checkAccountNumberExists(accountNumber)){

@@ -5,6 +5,8 @@ import system.message.Response.Status;
 
 public class MonitorUpdates extends Service {
 
+    // Starts monitoring updates 
+
     public Response monitorUpdates(int monitoringInterval) {
         String mssg = "Starting monitoring for client with monitoring interval = "
                 + Integer.valueOf(monitoringInterval);
