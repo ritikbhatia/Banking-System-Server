@@ -33,7 +33,7 @@ public class TransactionHistory extends Service {
         }
 
         Account bankAccount = bank.getAccount(accountNumber);
-        String mssg = generateTransactionStatement(bankAccount.getTranactionHistory());
+        String mssg = generateTransactionStatement(bankAccount.getTransactionHistory());
 
         return new Response(Status.SUCCESS, mssg);
     }

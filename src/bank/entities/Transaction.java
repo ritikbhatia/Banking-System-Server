@@ -2,6 +2,7 @@ package bank.entities;
 
 import java.sql.Timestamp;
 
+// class to define a transaction in the bank
 public class Transaction {
 
     private final Timestamp timestamp;
@@ -11,6 +12,8 @@ public class Transaction {
     private double balance;
     private String information;
 
+    // parameterized constructor to initialize a transaction with important
+    // information
     public Transaction(OpType operation, Currency currency, double amount, double balance, String information) {
         this.timestamp = new Timestamp(System.currentTimeMillis());
         this.operation = operation;
@@ -20,6 +23,7 @@ public class Transaction {
         this.information = information;
     }
 
+    // getters and setters below for essential components of a transaction
     public Timestamp getTimestamp() {
         return timestamp;
     }

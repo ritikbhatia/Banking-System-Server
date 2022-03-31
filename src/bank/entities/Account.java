@@ -3,6 +3,7 @@ package bank.entities;
 import java.util.TreeMap;
 import java.sql.Timestamp;
 
+// class to define a bank account opened by the client
 public class Account {
     private int accountNumber;
     private String accountHolderName;
@@ -13,6 +14,8 @@ public class Account {
 
     private TreeMap<Timestamp, Transaction> transactionHistory;
 
+    // parameterized constructor to initialize the essential information of the
+    // account
     public Account(int accountNumber, String accountHolderName, String password, Currency currency,
             double accountBalance) {
         this.accountNumber = accountNumber;
@@ -23,6 +26,7 @@ public class Account {
         transactionHistory = new TreeMap<Timestamp, Transaction>();
     }
 
+    // getters and setters for important fields
     public int getAccountNumber() {
         return accountNumber;
     }
@@ -63,10 +67,13 @@ public class Account {
         this.balance = balance;
     }
 
-    public TreeMap<Timestamp, Transaction> getTranactionHistory() {
+    // method to retrieve the history of all transactions the account was involved
+    // in
+    public TreeMap<Timestamp, Transaction> getTransactionHistory() {
         return transactionHistory;
     }
 
+    // add a new transaction the account was involved in
     public void addTransaction(Transaction transaction) {
         transactionHistory.put(transaction.getTimestamp(), transaction);
     }

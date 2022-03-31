@@ -6,6 +6,7 @@ import system.message.Response;
 import bank.services.*;
 import system.Subscriber;
 
+// class to define the bank
 public class Bank {
 
     private HashMap<Integer, Account> accounts;
@@ -18,6 +19,7 @@ public class Bank {
         subscribers = new ArrayList<Subscriber>();
     }
 
+    // helper methods below to add and remove components of the bank
     public void addService(OpType operation, Service service) {
         services.put(operation, service);
         service.setBank(this);
@@ -30,8 +32,8 @@ public class Bank {
     public void removeAccount(Account account) {
         accounts.remove(account.getAccountNumber());
     }
-    
-    public int idExists(int id){
+
+    public int idExists(int id) {
         return accounts.containsKey(id) ? 1 : 0;
     }
 
@@ -43,6 +45,7 @@ public class Bank {
         subscribers.add(subscriber);
     }
 
+    // method to remove subscribers who monitoring period has expired
     public void purgeInvalidSubscribers(List<Subscriber> invalidSubscribers) {
         for (Subscriber invalidSubscriber : invalidSubscribers) {
             subscribers.remove(invalidSubscriber);
@@ -57,9 +60,12 @@ public class Bank {
         return accounts.containsKey(accountNumber);
     }
 
+    // method to server the operation requested by the client
     public Response serve(OpType op, Object... params) {
 
         switch (op) {
+
+            // call the relevant method to serve client request
             case CREATE_ACCOUNT: {
                 OpenAccount service = (OpenAccount) this.services.get(op);
                 return service.openAccount((String) params[0], (String) params[1], (Integer) params[2],
@@ -94,12 +100,12 @@ public class Bank {
                 return service.viewHistory((String) params[0], (String) params[1], (Integer) params[2]);
             }
 
-            // TODO: Is this montor updates OK?
             case MONITOR_UPDATES: {
                 MonitorUpdates service = (MonitorUpdates) this.services.get(op);
                 return service.monitorUpdates((Integer) params[0]);
             }
 
+            // default response if an invalid operation type is received
             default:
                 return new Response(Response.Status.ERROR, "Invalid operation");
         }

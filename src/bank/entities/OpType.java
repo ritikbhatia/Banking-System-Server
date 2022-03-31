@@ -1,5 +1,6 @@
 package bank.entities;
 
+// enum for the type of requested operation
 public enum OpType {
     CREATE_ACCOUNT(0),
     CLOSE_ACCOUNT(1),
@@ -17,6 +18,7 @@ public enum OpType {
         return this.opCode;
     }
 
+    // create OpType from the integer for the operation
     public static OpType createFromType(int opCode) {
         for (OpType type : OpType.values()) {
             if (type.getCode() == opCode) {
