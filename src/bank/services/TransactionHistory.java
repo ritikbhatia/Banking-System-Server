@@ -12,7 +12,7 @@ public class TransactionHistory extends Service {
     private String generateTransactionStatement(TreeMap<Timestamp, Transaction> transactions) {
         StringBuilder transactionStatement = new StringBuilder();
         Formatter formatter = new Formatter(transactionStatement);
-        formatter.format("%25s%20s%20s%20s%20s%50s\n", "Time Stamp", "Operation", "Currency", "Amount", "Balance",
+        formatter.format("\n%25s%20s%20s%20s%20s%50s\n", "Time Stamp", "Operation", "Currency", "Amount", "Balance",
                 "Information");
         for (Timestamp timestamp : transactions.keySet()) {
             Transaction transaction = transactions.get(timestamp);

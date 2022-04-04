@@ -106,7 +106,7 @@ public class ClientMain {
 
         int serverPort = 6789; // Change this to change the Server port number
         ClientInterface clientInterface = new ClientInterface(serverPort, SIMULATE, CLIENT_LOSS_RATE);
-        clientInterface.setServerIp(InetAddress.getByName("10.27.255.240")); // Change this to change the Server IP
+        clientInterface.setServerIp(InetAddress.getByName("10.27.63.117")); // Change this to change the Server IP
                                                                              // Address
 
         System.out.println("Starting bank client...");

@@ -38,7 +38,9 @@ public class WithdrawMoney extends Service {
                     "Total Balance: " + bankAccount.getBalance());
             bankAccount.addTransaction(transaction);
 
-            String mssg = currency.toString() + " " + String.valueOf(amount) + " withdrawn from account successfully.";
+            String mssg = currency.toString() + " " + String.valueOf(amount)
+                    + " withdrawn from account successfully. New Balance: "
+                    + bankAccount.getBalance();
             return new Response(Status.SUCCESS, mssg);
         }
     }
