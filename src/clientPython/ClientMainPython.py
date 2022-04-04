@@ -235,7 +235,7 @@ def lineBreak(length):
 
 serverPort = 6789  # Modify this value to change Server port
 
-serverIp = '192.168.0.130'  # Modify this to change Server IP
+serverIp = '10.27.63.117'  # Modify this to change Server IP
 simulate = False
 clientLossRate = 0.0
 
