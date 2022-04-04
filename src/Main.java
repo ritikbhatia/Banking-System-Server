@@ -7,8 +7,8 @@ public class Main {
 
     // constant initialization to configure the server
     private static int PORT = 6789;
-    private static boolean AT_MOST_ONCE_FLAG = true;
-    private static boolean SIMULATE = false;
+    private static boolean AT_MOST_ONCE_FLAG = false;
+    private static boolean SIMULATE = true;
     private static float SERVER_LOSS_RATE = 0;
 
     public static void main(String[] args) {
