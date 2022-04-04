@@ -81,7 +81,9 @@ public class BankHandler implements Runnable {
                 System.out.println("Duplicate request detected...");
                 System.out.println("Replying with cached response as per at-most-once protocol");
                 System.out.println();
+                flipAllowFlag();
                 send(clientIP, clientPort, MessageHandler.marshalServerResponse(reply));
+                informSubscribers(reply);
                 return;
             }
         }
@@ -138,36 +140,40 @@ public class BankHandler implements Runnable {
 
     // method to inform subscribers regarding latest update
     private void informSubscribers(Response resp) {
-        linebreaker(45);
-        System.out.println("Informing subscribers...");
-        System.out.println();
 
-        // get the list of subscribers from the bank
-        List<Subscriber> subscribers = bank.getSubscribers();
+        // only inform subscribers if it is a successful transaction
+        if (resp.getStatus() == Status.SUCCESS) {
+            linebreaker(45);
+            System.out.println("Informing subscribers...");
+            System.out.println();
 
-        // list to track subscribers whose monitoring interval is over
-        List<Subscriber> invalidSubscribers = new ArrayList<Subscriber>();
+            // get the list of subscribers from the bank
+            List<Subscriber> subscribers = bank.getSubscribers();
 
-        for (Subscriber sub : subscribers) {
-            // if the subscriber's monitoring interval is not complete, send them update
-            if (sub.withinMonitoringInterval()) {
-                send(sub.getIP(), sub.getPort(), MessageHandler.marshalServerResponse(resp));
-                System.out.println("Informed subscriber with IP: " + sub.getIP().getHostAddress() + " sucessfully");
-            } else {
-                // otherwise, add to the list of invalid subscribers
-                invalidSubscribers.add(sub);
+            // list to track subscribers whose monitoring interval is over
+            List<Subscriber> invalidSubscribers = new ArrayList<Subscriber>();
+
+            for (Subscriber sub : subscribers) {
+                // if the subscriber's monitoring interval is not complete, send them update
+                if (sub.withinMonitoringInterval()) {
+                    send(sub.getIP(), sub.getPort(), MessageHandler.marshalServerResponse(resp));
+                    System.out.println("Informed subscriber with IP: " + sub.getIP().getHostAddress() + " sucessfully");
+                } else {
+                    // otherwise, add to the list of invalid subscribers
+                    invalidSubscribers.add(sub);
+                }
             }
+
+            // remove subscribers whose monitoring interval has terminated
+            bank.purgeInvalidSubscribers(invalidSubscribers);
+
+            if (bank.getSubscribers().size() == 0) {
+                System.out.println("No subscribers to inform!");
+            }
+
+            linebreaker(45);
+            linebreaker(45);
         }
-
-        // remove subscribers whose monitoring interval has terminated
-        bank.purgeInvalidSubscribers(invalidSubscribers);
-
-        if (bank.getSubscribers().size() == 0) {
-            System.out.println("No subscribers to inform!");
-        }
-
-        linebreaker(45);
-        linebreaker(45);
     }
 
     // helper function for pretty printing on the terminal
