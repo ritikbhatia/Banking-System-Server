@@ -18,8 +18,8 @@ def getPassword():  # Get the account password
     while True:
         try:
             password = input("Enter the password: ")
-            if len(password) < 1:
-                print("Error: Please enter a password of length atleast 1 character!")
+            if len(password) != 6:
+                print("Error: Please enter a password of length  6 character!")
                 continue
         except:
             print('Invalid Input!')
