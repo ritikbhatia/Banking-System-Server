@@ -31,8 +31,8 @@ public class ClientMain {
         while (true) {
             System.out.print("Enter the password: ");
             password = in.readLine();
-            if (password.length() < 1) {
-                System.out.println("Invalid Input!");
+            if (password.length() != 6) {
+                System.out.println("Error: Please enter a password of length 6 character!");
                 continue;
             }
             break;
@@ -107,7 +107,7 @@ public class ClientMain {
         int serverPort = 6789; // Change this to change the Server port number
         ClientInterface clientInterface = new ClientInterface(serverPort, SIMULATE, CLIENT_LOSS_RATE);
         clientInterface.setServerIp(InetAddress.getByName("10.27.63.117")); // Change this to change the Server IP
-                                                                             // Address
+                                                                            // Address
 
         System.out.println("Starting bank client...");
         System.out.println();
